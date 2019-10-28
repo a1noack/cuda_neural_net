@@ -1,0 +1,11 @@
+10-20:
+
+Replicate a MNIST architecture in C++
+
+Run on CPU, using CUDA on non-parallelized GPU, then parallelize on GPU for CUDA.
+
+CPU/ NP GPU is base line
+Evaluate performance on p GPU implementation. 
+
+To do: Read up on CUDA, go to office hours and discuss plan.
+
