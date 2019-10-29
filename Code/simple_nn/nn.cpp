@@ -7,19 +7,37 @@
     This file contains the class implementations of the neural network class, and node (neuron) class. All class and function definitions should be in the nn.hpp file
   */
 
-/* "Network" constructor. Creates the layers. Takes the node counts as an array and number of layers */
+/* creating a network should work as follows:
+ * call the nework constructor
+ *  specify the number of layers and the node count for each layer
+ *
+ * "Network" constructor.
+ *      Creates the layers. Takes the node counts as an array and number of layers
+ *      Then initialize layers and set prev and next layer pointers
+ *
+ *  Network connect
+ *      will go through and connect all the nodes in the layers
+ *
+ *  Layer constructor
+ *      Creates thge nodes in each layer
+ *
+ *  Connection constructor will create all the connection objects and store them in the respective node vectors
+ *
+ *  */
+
+
+
 Network::Network(int* node_counts, int number_layers) {
 
     layers = new Layer*[num_layers];
 
-       for(int i = 0; i < number_layers; i++) {
+    for(int i = 0; i < number_layers; i++) {
         Layer* new_layer = new Layer(node_counts[i]);
         layers[i] = new_layer;
+    }
 
-        if(new_layer->prev_layer != NULL) {
-            new_layer->previous_layer = prev_layer;
-            prev_layer->next_layer = new_layer;
-        }
+    for(int j = 0; j < number_layers - 1; j++) {
+        layers[j]->add_connections(layers[j+1]);
     }
 }
 
@@ -31,41 +49,20 @@ Layer::Layer(int num_nodes) {
     nodes = new Node*[num_nodes];
 
     for(int i = 0; i < num_nodes; i++) {
-        Node* new_node = new Node();
-        nodes[i] = new_node();
-    }
-
-}
-
-/* This function adds connections between the current layer and the previous layer */
-Layer::add_connections() {
-
-    if(previous_layer != NULL) {
-        for(int i = 0; i < prev_layer->num_nodes; i++) {
-            for(int j = 0; j < num_nodes; j++) {
-                prev_layer->nodes[i]->add_output_connection(this->nodes[j]);
-                this->nodes[j]->add_input_connection(prev_layer->nodes[i]);
-            }
-        }
+        Node* new_node = new Node(this);
+        nodes[i] = new_node; //<-- Not sure here
     }
 }
 
+/* Node constructor */
 Node::Node(Layer* a_layer) {
     num_output_connections = 0;
     num_input_connections = 0;
     activation = 0.0;
     cur_layer = a_layer;
-
-    inputs = new connection_list;
-    inputs->connections = new Connection*[];
-
 }
 
-Node::add_output_connection(Node* next) {
-    Connection* n_connection = new Connection(this, next);
-    outputs[out_itr] = n_connection;
-}
-
+/* Connection constructor */
 Connection::Connection(Node* input, Node* output) {
     input_node = input;
     output_node = output;
@@ -73,3 +70,40 @@ Connection::Connection(Node* input, Node* output) {
 }
 
 
+/* This function adds connections between two layers, this layer and its next*/
+void Layer::add_connections(Layer* next) {
+
+    for(int i = 0; i < this->num_nodes; i++) {
+        for(int j = 0; j < next->num_nodes; i++) {
+            this->nodes[i]->create_connections(next->nodes[j]);
+        }
+    }
+}
+
+void Node::create_connections(Node* c_node) {
+    Connection* c = new Connection(this, c_node);
+    this->inputs.push_back(c);
+    c_node->inputs.push_back(c);
+}
+
+Node::~Node() {
+    for(int i = 0; i < outputs.size(); i++) {
+        delete outputs[i];
+    }
+}
+
+Layer::~Layer() {
+    for(int i = 0; i < num_nodes; i++) {
+        delete nodes[i];
+    }
+    delete nodes;
+}
+
+Network::~Network() {
+    for(int i = 0; i < num_layers; i++) {
+        delete layers[i];
+    }
+    delete layers;
+}
+
+Connection::~Connection(){}
