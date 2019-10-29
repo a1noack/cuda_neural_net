@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <math.h>
 
 /* CIS631 Parallel processing -Univeristy of Oregon - Fall 2019
    Class project - Parallelizing Neural Networks
@@ -22,15 +25,21 @@ class Node {
         //Connection** inputs; //list of input connections
         //Connection** outputs; //list of output connections
         Layer* cur_layer; //layer that node exists in
-
-        float activation;
+        float bias;
+        float output_value;
         /* other stuff the neuron needs */
 
     public:
         Node(Layer*); //Constructor
         void create_connections(Node*);
+        void set_bias(float b) { bias = b; }
         void compute_activation();
-        //float get_activation();
+        float get_bias() {return bias;}
+        float get_output() {return output_value;}
+        void set_output(float o) {output_value = o;}
+        int get_output_count() { return outputs.size(); }
+
+        Connection* get_out_connection_at(int i) { return outputs[i]; }
         ~Node();
 };
 
@@ -42,6 +51,9 @@ class Connection {
 
     public:
         Connection(Node*, Node*);
+        Node* get_input() {return input_node;}
+        Node* get_output() {return output_node;}
+        void set_weight(float w) {weight = w; printf("weight set\n");}
         float get_weight() {return weight;}
         ~Connection();
 };
@@ -54,7 +66,9 @@ class Layer {
         Layer* next_layer;
 
     public:
+        int get_num_nodes() { return num_nodes; }
         Layer(int num_nodes);
+        Node* get_node_at(int i) { return nodes[i]; }
         void add_connections(Layer*);
         ~Layer();
 };
@@ -66,5 +80,7 @@ class Network {
 
     public:
         Network(int* node_counts, int number_layers);
+        void randomize_weights();
+        void randomize_bias();
         ~Network();
 };

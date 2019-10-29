@@ -39,6 +39,7 @@ Network::Network(int* node_counts, int number_layers) {
     for(int j = 0; j < number_layers - 1; j++) {
         layers[j]->add_connections(layers[j+1]);
     }
+    printf("Network Initialized\n");
 }
 
 /* Layer constructor. Creates the layer container. */
@@ -52,14 +53,16 @@ Layer::Layer(int num_nodes) {
         Node* new_node = new Node(this);
         nodes[i] = new_node; //<-- Not sure here
     }
+    printf("Layer initialized\n");
 }
 
 /* Node constructor */
 Node::Node(Layer* a_layer) {
     num_output_connections = 0;
     num_input_connections = 0;
-    activation = 0.0;
+    output_value = 0.0;
     cur_layer = a_layer;
+    printf("Node Initialized\n");
 }
 
 /* Connection constructor */
@@ -85,6 +88,47 @@ void Node::create_connections(Node* c_node) {
     this->inputs.push_back(c);
     c_node->inputs.push_back(c);
 }
+
+/* this function computes the output for each node using the activation function sigmoid */
+void Node::compute_activation() {
+    // Linear activation function o = w dat x + b
+    float sum = 0.0;
+
+    for(int i = 0; i < outputs.size(); i++) {
+        sum += outputs[i]->get_input()->get_output() * outputs[i]->get_weight();
+    }
+
+     sum += bias;
+
+     float r = expf(-1*sum);
+     output_value =  1/1+r;
+}
+
+void Network::randomize_weights() {
+    srand(static_cast <unsigned> (time(0)));
+    printf("random weights\n");
+    for(int i = 0; i < num_layers - 1; i++) {
+        for(int j = 0; j < layers[i]->get_num_nodes(); j++) {
+            for(int k = 0; k < layers[i]->get_node_at(j)->get_output_count(); k++) {
+
+                layers[i]->get_node_at(j)->get_out_connection_at(k)->set_weight(0 + static_cast <float> (rand()) /(static_cast <float> (RAND_MAX/(15-0))));
+                printf("Weight set\n");
+            }
+        }
+    }
+}
+
+void Network::randomize_bias() {
+    srand(static_cast <unsigned> (time(0)));
+
+    for(int i = 0; i < num_layers; i++) {
+        for(int j = 0; j < layers[i]->get_num_nodes(); j++) {
+            layers[i]->get_node_at(j)->set_bias( 0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(10-0))));
+            printf("Bias set\n");
+        }
+    }
+}
+
 
 Node::~Node() {
     for(int i = 0; i < outputs.size(); i++) {
