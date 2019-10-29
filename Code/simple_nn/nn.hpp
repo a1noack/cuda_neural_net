@@ -7,18 +7,33 @@
    This file contains the class and function definitions of the neural network class, and node (neuron) class. All class and      function implementations should be in the nn.cpp file
    */
 
+typedef struct {
+    Connection** connections;
+    int itr;
+} connection_list;
+
 class Node {
     private:
         int num_output_connections;
         int num_input_connections;
-        Connection* inputs; //list of input connections
-        Connection* outputs; //list of output connections
+
+        int in_itr;
+        int out_itr;
+
+        connection_list* inputs;
+        connection_list* outputs;
+
+        //Connection** inputs; //list of input connections
+        //Connection** outputs; //list of output connections
+        Layer* cur_layer; //layer that node exists in
+
         float activation;
         /* other stuff the neuron needs */
 
     public:
         Node(); //Constructor
         void add_output_connection(Node* next_node);
+        void add_input_connection(Node* prev_node);
         void compute_activation();
         float get_activation();
         ~Node();
@@ -32,7 +47,7 @@ class Connection {
 
     public:
         Connection(Node* input, Node* output);
-        float get_weight();
+        float get_weight() {return weight;}
         ~Connection();
 };
 
@@ -45,6 +60,7 @@ class Layer {
 
     public:
         Layer(int num_nodes);
+        void initialize_nodes(int num_nodes);
         ~Layer();
 };
 
