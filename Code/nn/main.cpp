@@ -2,8 +2,8 @@
 
 int main() {
     srand(static_cast <unsigned> (time(NULL)));
-    int layout[3] = {5,3,2};
-    int n = 3;
+    int layout[4] = {5,7,5,2};
+    int n = 4;
 
     Network* my_net = new Network(layout, n);
 
@@ -18,6 +18,12 @@ int main() {
     my_net->forward_pass();
     my_net->print_layers();
     my_net->print_weights();
+    printf("\n\n");
 
+    int out_dat[2] = {0,1};
+
+    my_net->back_propogate(out_dat);
+    my_net->update_weights();
+    my_net->print_weights();
     delete my_net;
 }
