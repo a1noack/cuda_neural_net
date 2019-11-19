@@ -1,5 +1,5 @@
 #include "nn.hpp"
-
+#include <stdio.h>
 
 /* Network Constructor - creates the network class you taking a list of the node counts in each layer
  * and number of layers.*/
@@ -41,12 +41,12 @@ void Network::forward_pass() {
 }
 
 /* Stupid. Sets the input data on the first layer */
-void Network::set_input(int* data) {
+void Network::set_input(float* data) {
     layers[0]->set_output(data);
 }
 
 /* Again, stupid. Sets all the outputs of the first (input) layer, as the training data example. */
-void Layer::set_output(int* data) {
+void Layer::set_output(float* data) {
     for(int i = 0; i < num_nodes; i++) {
         outputs[i] = data[i];
     }
@@ -168,7 +168,7 @@ float MSE(float* v1, float* v2, int n) {
 }
 
 /* Function that backpropogates error thru the entire network */
-void Network::back_propogate(int* targets) {
+void Network::back_propogate(float* targets) {
     int i = num_layers - 1;
     layers[i]->back_prop_input(targets);
     i--;
@@ -180,7 +180,7 @@ void Network::back_propogate(int* targets) {
 }
 
 /* The good shit. Back propogate the error on just the input layer. */
-void Layer::back_prop_input(int* targets) {
+void Layer::back_prop_input(float* targets) {
     int num_weights = prev_layer->get_num_nodes();
 
     for(int i = 0; i < num_nodes; i++) {

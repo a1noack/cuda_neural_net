@@ -26,11 +26,11 @@ class Network {
         Network(int*, int);
         void connect();
         void forward_pass();
-        void set_input(int*);
+        void set_input(float*);
         void print_layers();
         void print_weights();
 
-        void back_propogate(int*);
+        void back_propogate(float*);
         void update_weights();
 
         ~Network();
@@ -51,7 +51,7 @@ class Layer {
 
     public:
         Layer(int);
-        void set_output(int*);
+        void set_output(float*);
         void set_next_layer(Layer* n) { next_layer = n; }
         void set_prev_layer(Layer* p) {prev_layer = p; }
         int get_num_nodes() { return num_nodes; }
@@ -61,7 +61,7 @@ class Layer {
         void compute_outputs(Layer*);
         void print_lweights();
 
-        void back_prop_input(int*);
+        void back_prop_input(float*);
         void back_prop();
 
         float** get_weights() { return weights; }
