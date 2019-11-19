@@ -1,4 +1,3 @@
-#include "nn.hpp"
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
@@ -26,7 +25,8 @@ void load_data(std::string fname, float **x, float **y, int *n, int *m) {
 
     int r, c;
     int k = 2;
-    // process data
+
+    // allocate space for data
     x = (float **)malloc(*n * sizeof(float *));
     y = (float **)malloc(*n * sizeof(float *));
     for(r = 0; r < *n; r++) {
@@ -34,6 +34,8 @@ void load_data(std::string fname, float **x, float **y, int *n, int *m) {
         y[r] = (float *)malloc(k * sizeof(float));
         for(int a = 0; a < k; a++) y[r][a] = 0;
     }
+
+    // process data
     std::string val;
     float label;
     for(r = 0; r < *n; r++) {
@@ -59,12 +61,12 @@ void load_data(std::string fname, float **x, float **y, int *n, int *m) {
     }
 }
 
-int main() {
-    std::string fname = "../data/data_n100_m5_mu1.5.csv";
-
-    float **x, **y;
-    int *n, *m;
-
-    load_data(fname, x, y, n, m);
-}
+//int main() {
+//    std::string fname = "../data/data_n100_m5_mu1.5.csv";
+//
+//    float **x, **y;
+//    int *n, *m;
+//
+//    load_data(fname, x, y, n, m);
+//}
 
