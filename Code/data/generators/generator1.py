@@ -15,16 +15,18 @@ n, m, std, mean  = int(sys.argv[1]), int(sys.argv[2]), float(sys.argv[3]), float
 
 # draw values from negative distribution to create negative samples
 x_neg = np.random.normal(loc=-mean, scale=std, size=(int(n/2), m))
-y_neg = np.full((int(n/2), 1), -1)
+y_neg = np.empty((int(n/2), 1))
+y_neg.fill(0)
 data_neg = np.concatenate((x_neg, y_neg), axis=1)
 # draw values from positive distribution to create positive samples
 x_pos = np.random.normal(loc=mean, scale=std, size=(int(n/2), m))
-y_pos = np.full((int(n/2), 1), 1)
+y_pos = np.empty((int(n/2), 1))
+y_pos.fill(1)
 data_pos = np.concatenate((x_pos, y_pos), axis=1)
 # concatenate negative and positive data and shuffle it
 data = np.concatenate((data_neg, data_pos), axis=0)
 np.random.shuffle(data)
 
-fname = f'../data_n{n}_m{m}_mu{mean}.csv'
-header = f'{n},{m}'
+fname = '../data_n{}_m{}_mu{}.csv'.format(n, m, mean)
+header = '{},{}'.format(n, m)
 np.savetxt(fname, data, delimiter=",", fmt='%.3f', header=header)
