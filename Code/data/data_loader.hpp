@@ -3,4 +3,4 @@
 #include <sstream>
 #include <string>
 
-void load_data(std::string, float **, float **, int *, int *);
+void load_data(std::string, float **, float **, int *);
