@@ -1,22 +1,25 @@
+#define _GLIBCXX_USE_CXX11_ABI 0
 #include "dataset.hpp"
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <string>
 
-Dataset::Dataset(std::string fname, int batch_size) {
+Dataset::Dataset(char* fname, int batch_size) {
     this->load_data(fname);
     this->fname = fname;
     this->batch_size = batch_size;
     this->minibatch = new float*[this->batch_size];
     for(int i = 0; i < this->batch_size; i++)
         this->minibatch[i] = new float[this->m];
-    this->sample_order = int[this->n];
-    for(int i = 0; i < this->n; i++) this->sample_order[i] = i;
+    this->sample_order = new int[this->n];
+    for(int i = 0; i < this->n; i++) 
+        this->sample_order[i] = i;
     this->shuffle_sample_order();
 }
 
-void Dataset::load_data(std::string fname) {
+void Dataset::load_data(char* fname) {
     // load file
     std::ifstream file(fname);
     
@@ -73,6 +76,7 @@ void Dataset::load_data(std::string fname) {
 }
 
 void Dataset::load_next_batch() {
+    int idx;
     for(int i = 0; i < this->batch_size; i++) {
         idx = this->sample_order[this->position + i];
         this->minibatch[i] = this->x[idx];
@@ -83,7 +87,7 @@ void Dataset::load_next_batch() {
 }
 
 void Dataset::shuffle_sample_order() {
-   random_shuffle(&this->sample_order[0], &this->sample_order[n-1]);
+    std::random_shuffle(&this->sample_order[0], &this->sample_order[n-1]);
 }
 
 

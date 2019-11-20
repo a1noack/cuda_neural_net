@@ -5,8 +5,8 @@
 
 
 int main() {
-    std::string fname = "../data/data_n100_m5_mu1.5.csv";
-    Dataset d;
+    char fname[] = "../data/data_n100_m5_mu1.5.csv";
+    Dataset d(fname, 10);
     printf("%f", d.x[0][5]);
     printf("%f", d.minibatch[0][5]);
     
@@ -24,6 +24,7 @@ int main() {
             my_net->back_propogate(d.y[i]);
             my_net->update_weights();
         }
+        printf("done with epoch %d\n", epoch);
     }
     delete my_net;
 }
