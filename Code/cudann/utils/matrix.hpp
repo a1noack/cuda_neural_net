@@ -1,4 +1,4 @@
-/* definition file for the matrix class. This class stores the values for each layer and convolutional kernels. It needs to keep the device and host pointers*/
+/* definition file for the matrix class. This class stores the values and manages the memory between host and device. Functions set() and replace() will update the data on both host and device. */
 #pragma once
 
 #include <memory>
@@ -29,10 +29,15 @@ class matrix {
         void copy_host_to_dev();
         void copy_dev_to_host();
 
+        void set_mem(float*);
+        void update_mem(float*);
+        void print();
+
+        ~matrix();
+
+        //======== TESTING FUNCTIONS =========
         void pst_vals();
         void add_one();
-        void print();
-        ~matrix();
 //        float& operator[](const int index);
 //        const float& operator[](const int index) const;
 };
