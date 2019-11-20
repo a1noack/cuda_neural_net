@@ -4,6 +4,11 @@
 #include <memory>
 #include <cuda.h>
 #include <cuda_runtime_api.h>
+#include <cstdlib>
+#include <ctime>
+
+#define LO_r 0.01
+#define HI_r 0.99
 
 class matrix {
 	private:
@@ -29,7 +34,9 @@ class matrix {
         void copy_host_to_dev();
         void copy_dev_to_host();
 
-        void set_mem(float*);
+        void set_mem(float*, int, int);
+        void set_mem_zero(int, int);
+        void set_mem_random(int, int);
         void update_mem(float*);
         void print();
 

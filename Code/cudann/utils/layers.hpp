@@ -24,9 +24,11 @@ class Layer {
         Layer() {};
         ~Layer() {};
         void connect(Layer*);
+        void set_next(Layer*);
         void init_weights();
         virtual void forward() = 0;
         virtual void backprop() = 0;
+        int get_num_nodes() { return num_nodes;}
 };
 
 class Linear_Layer:public Layer{

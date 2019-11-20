@@ -75,6 +75,26 @@ void matrix::set_mem(float* new_vals, int x, int y) {
     copy_host_to_dev();
 }
 
+//function to set memory to all zeroes
+void matrix::set_mem_zero(int x, int y) {
+    float* vals = (float*) calloc((x*y), sizeof(float));
+    if(x == this->dim_x && y == this->dim_y) {
+       this->update_mem(vals);
+    } else {
+       this->set_mem(vals, x, y);
+    }
+}
+
+void matrix::set_mem_random(int x, int y) {
+    int size = x * y;
+    float* vals = new float[size];
+    for(int i = 0; i < size; i++) {
+        vals[i] = ((float) rand() / (float) RAND_MAX) * (HI_r - LO_r) - LO_r;
+    }
+    this->set_mem(vals, x, y);
+}
+
+
 // function to update memory if the memory is the same size.
 // THIS FUNCTION WILL NOT CHECK MEMORY SIZE must check before.
 void matrix::update_mem(float* new_vals) {
