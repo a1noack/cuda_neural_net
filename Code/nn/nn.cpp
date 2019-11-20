@@ -174,7 +174,7 @@ void Network::back_propogate(float* targets) {
     i--;
 
     for(; i >=1; i--) { // Not bp for the input layer
-        printf("back prop layer %d\n", i);
+        //printf("back prop layer %d\n", i);
         layers[i]->back_prop();
     }
 }

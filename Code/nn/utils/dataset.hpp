@@ -5,8 +5,8 @@
 
 class Dataset {
 public:
-    Dataset() = default;
-    void load_data();
+    Dataset(char*, int);
+    void load_data(char*);
     void load_next_batch();
     void shuffle_sample_order();
     int n;
@@ -19,7 +19,7 @@ private:
     int k;
     int batch_size;
     int position;
-    int sample_order[];
+    int *sample_order;
 };
 
 #endif /* dataset_hpp */
