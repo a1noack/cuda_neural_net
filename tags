@@ -1,0 +1,97 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Data Parallelism	Proposal/Proposal.tex	/^\\subsection{Data Parallelism}$/;"	b
+Data Parallelism	Report/Proposal.tex	/^\\subsection{Data Parallelism}$/;"	b
+Dataset	Code/nn/utils/dataset.cpp	/^Dataset::Dataset(std::string fname, int batch_size) {$/;"	f	class:Dataset
+Dataset	Code/nn/utils/dataset.hpp	/^class Dataset {$/;"	c
+Directions of investigation expected results	Proposal/Proposal.tex	/^\\section{Directions of investigation \/ expected results}$/;"	s
+Directions of investigation expected results	Report/Proposal.tex	/^\\section{Directions of investigation \/ expected results}$/;"	s
+Introduction background	Proposal/Proposal.tex	/^\\section{Introduction \/ background}$/;"	s
+Introduction background	Report/Proposal.tex	/^\\section{Introduction \/ background}$/;"	s
+Layer	Code/nn/nn.cpp	/^Layer::Layer(int numNodes) {$/;"	f	class:Layer
+Layer	Code/nn/nn.hpp	/^class Layer {$/;"	c
+MSE	Code/nn/nn.cpp	/^float MSE(float* v1, float* v2, int n) {$/;"	f
+Model Parallelism	Proposal/Proposal.tex	/^\\subsection{Model Parallelism}$/;"	b
+Model Parallelism	Report/Proposal.tex	/^\\subsection{Model Parallelism}$/;"	b
+Network	Code/nn/nn.cpp	/^Network::Network(int* numNodes, int numLayers) {$/;"	f	class:Network
+Network	Code/nn/nn.hpp	/^class Network {$/;"	c
+Problem formulation motivation	Proposal/Proposal.tex	/^\\section{Problem formulation \/ motivation}$/;"	s
+Problem formulation motivation	Report/Proposal.tex	/^\\section{Problem formulation \/ motivation}$/;"	s
+back_prop	Code/nn/nn.cpp	/^void Layer::back_prop() {$/;"	f	class:Layer
+back_prop_input	Code/nn/nn.cpp	/^void Layer::back_prop_input(float* targets) {$/;"	f	class:Layer
+back_propogate	Code/nn/nn.cpp	/^void Network::back_propogate(float* targets) {$/;"	f	class:Network
+batch_size	Code/nn/utils/dataset.hpp	/^    int batch_size;$/;"	m	class:Dataset
+bias	Code/nn/nn.hpp	/^        float* bias;$/;"	m	class:Layer
+compute_outputs	Code/nn/nn.cpp	/^void Layer::compute_outputs(Layer* prev) {$/;"	f	class:Layer
+connect	Code/nn/nn.cpp	/^void Network::connect() {$/;"	f	class:Network
+connect_layers	Code/nn/nn.cpp	/^void Layer::connect_layers(Layer* prev) {$/;"	f	class:Layer
+data	Code/data/generators/generator1.py	/^data = np.concatenate((data_neg, data_pos), axis=0)$/;"	v
+data_neg	Code/data/generators/generator1.py	/^data_neg = np.concatenate((x_neg, y_neg), axis=1)$/;"	v
+data_pos	Code/data/generators/generator1.py	/^data_pos = np.concatenate((x_pos, y_pos), axis=1)$/;"	v
+dataset_hpp	Code/nn/utils/dataset.hpp	/^#define dataset_hpp$/;"	d
+del_bias	Code/nn/nn.hpp	/^        float* del_bias;$/;"	m	class:Layer
+del_weights	Code/nn/nn.hpp	/^        float** del_weights;$/;"	m	class:Layer
+dev_alloc	Code/cudann/utils/matrix.hpp	/^        bool dev_alloc;$/;"	m	class:matrix
+dev_data	Code/cudann/utils/matrix.hpp	/^        float* dev_data;$/;"	m	class:matrix
+dim_x	Code/cudann/utils/matrix.hpp	/^        int dim_x;$/;"	m	class:matrix
+dim_y	Code/cudann/utils/matrix.hpp	/^        int dim_y;$/;"	m	class:matrix
+dot_prod	Code/nn/nn.cpp	/^float dot_prod(float* x, float* y, int num) {$/;"	f
+fname	Code/data/generators/generator1.py	/^fname = '..\/data_n{}_m{}_mu{}.csv'.format(n, m, mean)$/;"	v
+fname	Code/nn/utils/dataset.hpp	/^    std::string fname;$/;"	m	class:Dataset
+forward_pass	Code/nn/nn.cpp	/^void Network::forward_pass() {$/;"	f	class:Network
+get_bias	Code/nn/nn.hpp	/^        float* get_bias() { return bias; }$/;"	f	class:Layer
+get_del_bias	Code/nn/nn.hpp	/^        float* get_del_bias() { return del_bias; }$/;"	f	class:Layer
+get_del_weights	Code/nn/nn.hpp	/^        float** get_del_weights() { return del_weights; }$/;"	f	class:Layer
+get_num_nodes	Code/nn/nn.hpp	/^        int get_num_nodes() { return num_nodes; }$/;"	f	class:Layer
+get_outputs	Code/nn/nn.hpp	/^        float* get_outputs() { return outputs; }$/;"	f	class:Layer
+get_random_f	Code/nn/nn.cpp	/^float get_random_f() {$/;"	f
+get_weights	Code/nn/nn.hpp	/^        float** get_weights() { return weights; }$/;"	f	class:Layer
+header	Code/data/generators/generator1.py	/^header = '{},{}'.format(n, m)$/;"	v
+host_alloc	Code/cudann/utils/matrix.hpp	/^        bool host_alloc;$/;"	m	class:matrix
+host_data	Code/cudann/utils/matrix.hpp	/^        float* host_data;$/;"	m	class:matrix
+k	Code/nn/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
+layers	Code/nn/nn.hpp	/^        Layer** layers;$/;"	m	class:Network
+load_data	Code/data/data_loader.cpp	/^void load_data(std::string fname, float **x, float **y, int *args) {$/;"	f
+load_data	Code/nn/utils/dataset.cpp	/^void Dataset::load_data(std::string fname) {$/;"	f	class:Dataset
+load_next_batch	Code/nn/utils/dataset.cpp	/^void Dataset::load_next_batch() {$/;"	f	class:Dataset
+m	Code/nn/utils/dataset.hpp	/^    int m;$/;"	m	class:Dataset
+main	Code/nn/main.cpp	/^int main() {$/;"	f
+main	Code/nn/main2.cpp	/^int main() {$/;"	f
+main	Code/nn/main3.cpp	/^int main() {$/;"	f
+matrix	Code/cudann/utils/matrix.hpp	/^class matrix {$/;"	c
+minibatch	Code/nn/utils/dataset.hpp	/^    float **minibatch;$/;"	m	class:Dataset
+n	Code/nn/utils/dataset.hpp	/^    int n;$/;"	m	class:Dataset
+next_layer	Code/nn/nn.hpp	/^        Layer* next_layer;$/;"	m	class:Layer
+np	Code/data/generators/generator1.py	/^import numpy as np$/;"	i
+num_layers	Code/nn/nn.hpp	/^        int num_layers;$/;"	m	class:Network
+num_nodes	Code/nn/nn.hpp	/^        int num_nodes;$/;"	m	class:Layer
+outputs	Code/nn/nn.hpp	/^        float* outputs;$/;"	m	class:Layer
+position	Code/nn/utils/dataset.hpp	/^    int position;$/;"	m	class:Dataset
+prev_layer	Code/nn/nn.hpp	/^        Layer* prev_layer;$/;"	m	class:Layer
+print_layers	Code/nn/nn.cpp	/^void Network::print_layers() {$/;"	f	class:Network
+print_lweights	Code/nn/nn.cpp	/^void Layer::print_lweights() {$/;"	f	class:Layer
+print_weights	Code/nn/nn.cpp	/^void Network::print_weights() {$/;"	f	class:Network
+r_HI	Code/nn/nn.hpp	/^#define r_HI /;"	d
+r_LO	Code/nn/nn.hpp	/^#define r_LO /;"	d
+sample_order	Code/nn/utils/dataset.hpp	/^    int sample_order[];$/;"	m	class:Dataset
+set_input	Code/nn/nn.cpp	/^void Network::set_input(float* data) {$/;"	f	class:Network
+set_next_layer	Code/nn/nn.hpp	/^        void set_next_layer(Layer* n) { next_layer = n; }$/;"	f	class:Layer
+set_output	Code/nn/nn.cpp	/^void Layer::set_output(float* data) {$/;"	f	class:Layer
+set_prev_layer	Code/nn/nn.hpp	/^        void set_prev_layer(Layer* p) {prev_layer = p; }$/;"	f	class:Layer
+shuffle_sample_order	Code/nn/utils/dataset.cpp	/^void Dataset::shuffle_sample_order() {$/;"	f	class:Dataset
+sys	Code/data/generators/generator1.py	/^import sys$/;"	i
+update	Code/nn/nn.cpp	/^void Layer::update() {$/;"	f	class:Layer
+update_weights	Code/nn/nn.cpp	/^void Network::update_weights() {$/;"	f	class:Network
+weights	Code/nn/nn.hpp	/^        float** weights;$/;"	m	class:Layer
+x	Code/nn/utils/dataset.hpp	/^    float **x;$/;"	m	class:Dataset
+x_neg	Code/data/generators/generator1.py	/^x_neg = np.random.normal(loc=-mean, scale=std, size=(int(n\/2), m))$/;"	v
+x_pos	Code/data/generators/generator1.py	/^x_pos = np.random.normal(loc=mean, scale=std, size=(int(n\/2), m))$/;"	v
+y	Code/nn/utils/dataset.hpp	/^    float **y;$/;"	m	class:Dataset
+y_neg	Code/data/generators/generator1.py	/^y_neg = np.empty((int(n\/2), 1))$/;"	v
+y_pos	Code/data/generators/generator1.py	/^y_pos = np.empty((int(n\/2), 1))$/;"	v
+~Layer	Code/nn/nn.cpp	/^Layer::~Layer() {$/;"	f	class:Layer
+~Network	Code/nn/nn.cpp	/^Network::~Network() {$/;"	f	class:Network
