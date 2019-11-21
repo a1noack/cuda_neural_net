@@ -67,11 +67,10 @@ void matrix::set_mem(float* new_vals, int x, int y) {
         cudaFree(dev_data);
         dev_alloc = false;
     }
-
     dim_x = x;
     dim_y = y;
     mem_alloc();
-    memcpy(host_data, new_vals, (x*y));
+    memcpy(host_data, new_vals, sizeof(float) * (x*y));
     copy_host_to_dev();
 }
 
@@ -92,6 +91,7 @@ void matrix::set_mem_random(int x, int y) {
         vals[i] = ((float) rand() / (float) RAND_MAX) * (HI_r - LO_r) - LO_r;
     }
     this->set_mem(vals, x, y);
+    copy_host_to_dev();
 }
 
 
@@ -108,16 +108,64 @@ matrix::~matrix() {
 }
 
 void matrix::print() {
-    for(int i = 0; i < dim_x*dim_y; i++) {
-        printf("%f ", host_data[i]);
+    for(int i = 0; i < dim_x; i++) {
+        for(int j = 0; j < dim_y; j++) {
+            printf("%f ", host_data[i * dim_y + j]);
+        }
+        printf("\n");
     }
-    printf("\n");
+
 }
+
+float* matrix::get_row(int idx) {
+    float* row = new float[dim_y];
+    memcpy(row, &host_data[idx*dim_y], sizeof(float) * dim_y);
+
+    return row;
+}
+
+float* matrix::get_col(int idx) {
+    float* col = new float[dim_x];
+    int j = 0;
+    for(int i = idx; i < dim_x * dim_y; i+=dim_y) {
+        col[j] = host_data[i];
+        j++;
+    }
+    return col;
+}
+
+// Stuff for matrix padding...
+
+void matrix::pad_columns(int num_cols) {
+    int num_to_pad = num_cols - dim_x;
+    float* new_vals = (float*) calloc(num_cols * dim_y, sizeof(float));
+    int j = 0;
+    int i = 0;
+    for(i = 0; i < num_cols * dim_y; i+=num_cols) {
+        for(j = 0; j < num_to_pad; j++) {
+            new_vals[(i * num_cols) + j] = host_data[(i*dim_x) + j];
+        }
+    }
+    this->set_mem(new_vals, num_cols, dim_y);
+}
+
+void matrix::pad_rows(int num_rows) {
+    int num_to_pad = num_rows - dim_y;
+    float* new_vals = (float*) calloc(num_rows * dim_x, sizeof (float));
+    memcpy(new_vals, host_data, dim_x * dim_y);
+    this->set_mem(new_vals, dim_x, num_rows);
+}
+
 
 //===== ALL FUNCTIONS AFTER FOR TESTING ====
 void matrix::pst_vals() {
-    for(int i = 0; i < dim_x * dim_y; i++) {
-        host_data[i] = 1;
+    float a[12] = {1,2,3,4,5,6,7,8,9,10,11,12};
+    int itr = 0;
+    for(int i = 0; i < dim_y; i++) {
+        for(int j = 0; j < dim_x; j++) {
+            host_data[i * dim_x + j] = a[itr];
+            itr++;
+        }
     }
 }
 __global__ void add_one_vec(float* dev_mem, int size) {

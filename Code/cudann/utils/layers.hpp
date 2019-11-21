@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_THREADS_PER_BLOCK 512
+
 class Layer {
-    private:
+    protected:
         Layer* next;
         Layer* previous;
 
@@ -29,9 +31,18 @@ class Layer {
         virtual void forward() = 0;
         virtual void backprop() = 0;
         int get_num_nodes() { return num_nodes;}
+        matrix* get_outputs() { return outputs; }
+
+        //Testing functions!!
+        void set_weights(float*, int, int);
+        void set_bias(float*, int, int);
+        void set_outs(float*, int, int);
+        void print_outs();
+        void print_weights();
+        void print_bias();
 };
 
-class Linear_Layer:public Layer{
+class Linear_Layer: public Layer{
     private:
 
 
@@ -42,24 +53,24 @@ class Linear_Layer:public Layer{
         void backprop();
 };
 
-class RELU_Layer:public Layer {
+class RELU_Layer: public Layer {
     private:
 
     public:
         RELU_Layer(char*, int);
         ~RELU_Layer();
         void forward();
-        void backward();
+        void backprop();
 };
 
-class Sigmoid_Layer:public Layer {
+class Sigmoid_Layer: public Layer {
     private:
 
     public:
         Sigmoid_Layer(char*, int);
         ~Sigmoid_Layer();
         void forward();
-        void backward();
+        void backprop();
 };
 
 

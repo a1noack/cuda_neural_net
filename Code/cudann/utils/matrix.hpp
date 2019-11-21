@@ -38,15 +38,21 @@ class matrix {
         void set_mem_zero(int, int);
         void set_mem_random(int, int);
         void update_mem(float*);
+
         void print();
 
+        void pad_columns(int);
+        void pad_rows(int);
         ~matrix();
+
+        float* get_row(int);
+        float* get_col(int);
 
         //======== TESTING FUNCTIONS =========
         void pst_vals();
         void add_one();
-//        float& operator[](const int index);
-//        const float& operator[](const int index) const;
+        //float* operator[](const int);
+        //const float* operator[](const int) const;
 };
 
 
