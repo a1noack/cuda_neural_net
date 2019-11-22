@@ -10,13 +10,39 @@ Dataset::Dataset(char* fname, int batch_size) {
     this->load_data(fname);
     this->fname = fname;
     this->batch_size = batch_size;
-    this->minibatch = new float*[this->batch_size];
-    for(int i = 0; i < this->batch_size; i++)
-        this->minibatch[i] = new float[this->m];
+
+    this->batch_x = new float*[this->batch_size];
+    this->batch_y = new float*[this->batch_size];
+//    for(int i = 0; i < this->batch_size; i++) {
+//        this->minibatch[i] = new float[this->m];
+//        this->minibatch[i] = new float[this->k];
+//    }
+
     this->sample_order = new int[this->n];
     for(int i = 0; i < this->n; i++) 
         this->sample_order[i] = i;
-    this->shuffle_sample_order();
+    //this->shuffle_sample_order();
+    //printf("bs = %d\n", this->batch_size);
+
+    this->position = 0;
+}
+
+Dataset::~Dataset() {
+//    for(int i = 0; i < this->batch_size; i++) {
+//        delete this->batch_x[i];
+//        delete this->batch_y[i];
+//    }
+    delete this->batch_x;
+    delete this->batch_y;
+
+    delete this->sample_order;
+
+    for(int r = 0; r < this->n; r++) {
+        delete this->x[r];
+        delete this->y[r];
+    }
+    delete this->x;
+    delete this->y;
 }
 
 void Dataset::load_data(char* fname) {
@@ -72,22 +98,37 @@ void Dataset::load_data(char* fname) {
             }
         }
     }
-    printf("x[1][5] = %f", this->x[1][5]);
+    printf("x[1][4] = %f\n", this->x[1][4]);
 }
 
 void Dataset::load_next_batch() {
     int idx;
     for(int i = 0; i < this->batch_size; i++) {
         idx = this->sample_order[this->position + i];
-        this->minibatch[i] = this->x[idx];
+        this->batch_x[i] = this->x[idx];
+        this->batch_y[i] = this->y[idx];
     }
     this->position += this->batch_size;
     if(this->position >= this->n - this->batch_size)
         this->position = 0;
 }
 
-void Dataset::shuffle_sample_order() {
-    std::random_shuffle(&this->sample_order[0], &this->sample_order[n-1]);
+void print_intarray2(int *arr, int len) {
+    for(int i = 0; i < len; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
 }
 
+void Dataset::shuffle_sample_order() {
+    //print_intarray2(this->sample_order, 100);    
+    std::random_shuffle(&this->sample_order[0], &this->sample_order[this->n]);
+    //print_intarray2(this->sample_order, 100);    
+}
 
+int Dataset::get_batch_size() {
+    return this->batch_size;
+}
+
+int *Dataset::get_sample_order() {
+    return this->sample_order;
+}
