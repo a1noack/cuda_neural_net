@@ -52,6 +52,10 @@ void Layer::set_output(float* data) {
     }
 }
 
+float* Network::get_output() {
+    return this->layers[this->num_layers - 1]->get_outputs();
+}
+
 /* testing function, prints the outputs of each node */
 void Network::print_layers() {
     for(int i = 0; i < num_layers; i++) {

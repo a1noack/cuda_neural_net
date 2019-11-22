@@ -29,7 +29,7 @@ class Network {
         void set_input(float*);
         void print_layers();
         void print_weights();
-
+        float* get_output();
         void back_propogate(float*);
         void update_weights();
 
