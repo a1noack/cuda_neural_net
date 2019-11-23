@@ -31,10 +31,10 @@ void print_intarray(int *arr, int len) {
 int main() {
     char fname[] = "../data/data_n100_m5_mu1.5.csv";
     Dataset d(fname, 10);
-    
+
     int layout[4] = {5,7,5,2};
     int num_layers = 4;
-    int epochs = 100;
+    int epochs = 10;
 
     Network* my_net = new Network(layout, num_layers);
     my_net->connect();
@@ -48,12 +48,11 @@ int main() {
                 my_net->set_input(d.batch_x[i]);
                 my_net->forward_pass();
                 my_net->back_propogate(d.batch_y[i]);
-                my_net->update_weights();
-                printf("%f, ", MSE(my_net->get_output(), d.batch_y[i], 2));
+                printf("MSE Loss: %f, \n", MSE(my_net->get_output(), d.batch_y[i], 2));
             }
         }
         printf("\ndone with epoch %d\n", epoch);
-        
+
 
         printf("testing network accuracy on one minibatch: \n");
         int correct = 0;
