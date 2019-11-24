@@ -31,12 +31,12 @@ void print_intarray(int *arr, int len) {
 int main() {
     char fname[] = "../data/data_n100_m5_mu1.5.csv";
     Dataset d(fname, 10);
-
+    layer_type lts[4] = {RELU, Sigmoid, Sigmoid, Softmax};
     int layout[4] = {5,7,5,2};
     int num_layers = 4;
     int epochs = 10;
 
-    Network* my_net = new Network(layout, num_layers);
+    Network* my_net = new Network(layout, num_layers, lts);
     my_net->connect();
     for(int epoch = 1; epoch < epochs; epoch++) {
         d.shuffle_sample_order();

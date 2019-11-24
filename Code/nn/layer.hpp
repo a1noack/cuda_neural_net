@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <ctime>
 #include <math.h>
 #include <vector>
@@ -9,7 +11,7 @@
 
 class Layer {
 
-    private:
+    protected:
         Layer* prev_layer;
         Layer* next_layer;
         int num_nodes;
@@ -21,19 +23,20 @@ class Layer {
         float* del_bias;
 
     public:
-        Layer(int);
+        //Layer(int) {};
         void set_output(float*);
         void set_next_layer(Layer* n) { next_layer = n; }
         void set_prev_layer(Layer* p) {prev_layer = p; }
         int get_num_nodes() { return num_nodes; }
         float* get_outputs() { return outputs; }
         float* get_bias() { return bias; }
+
         void connect_layers(Layer*);
-        void compute_outputs(Layer*);
+        virtual void forward_pass(Layer*) = 0; //<------ Forward pass. Rename
         void print_lweights();
 
-        void back_prop_input(float*);
-        void back_prop();
+        virtual void back_prop_input(float*) = 0;
+        virtual void back_prop() = 0;
 
         float** get_weights() { return weights; }
         float* get_del_bias() { return del_bias; }
@@ -41,10 +44,10 @@ class Layer {
 
         void set_weights(float*);
         void set_bias(float*);
-        void update();
+        void update(float);
 
         void print_bias();
-        ~Layer();
+        virtual ~Layer() {};
 };
 
 float get_random_f();

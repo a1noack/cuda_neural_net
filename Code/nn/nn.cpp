@@ -3,14 +3,21 @@
 
 /* Network Constructor - creates the network class you taking a list of the node counts in each layer
  * and number of layers.*/
-Network::Network(int* numNodes, int numLayers) {
+Network::Network(int* numNodes, int numLayers, layer_type* types) {
 
     num_layers = numLayers;
 
     layers = new Layer*[num_layers];
 
     for(int i = 0; i < num_layers; i++) {
-        Layer* nl = new Layer(numNodes[i]);
+        Layer* nl = NULL;
+        switch(types[i])
+        {
+            case(RELU): nl = new RELU_Layer(numNodes[i]); break;
+            case(Sigmoid): nl = new Sigmoid_Layer(numNodes[i]); break;
+            case(Softmax): nl = new Softmax_Layer(numNodes[i]); break;
+        }
+        //Layer* nl = new Sigmoid_Layer(numNodes[i]);
         layers[i] = nl;
     }
     //printf("Network Created\n");
@@ -37,7 +44,7 @@ void Network::connect() {
 void Network::forward_pass() {
     for(int i = 1; i < num_layers; i++) {
         //printf("Forward Pass for Layer %d\n", i);
-        layers[i]->compute_outputs(layers[i-1]);
+        layers[i]->forward_pass(layers[i-1]);
     }
 }
 
@@ -68,6 +75,7 @@ void Network::print_layers() {
 /* Function that backpropogates error thru the entire network */
 void Network::back_propogate(float* targets) {
     int i = num_layers - 1;
+    //printf("backprop last layer\n");
     layers[i]->back_prop_input(targets);
     i--;
 
@@ -80,9 +88,9 @@ void Network::back_propogate(float* targets) {
 
 
 /* update network weights */
-void Network::update_weights() {
+void Network::update_weights(float learn_rate) {
     for(int i = num_layers -1; i >=1; i--) {
-        layers[i]->update();
+        layers[i]->update(learn_rate);
     }
 }
 

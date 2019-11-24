@@ -1,5 +1,8 @@
 
-#include "layer.hpp"
+//#include "layer.hpp"
+#include "sigmoid_layer.hpp"
+#include "relu_layer.hpp"
+#include "softmax_layer.hpp"
 
 /* The network can be seen as a set of layers. Each layer contains a matrix of weights and a matrix of outputs */
 
@@ -11,6 +14,8 @@
  * Destructor for layers!!!! Clean up memory leaks. Probably do this before scaling.
  * --------------------------------------------------------------------------------------- */
 
+typedef enum {Sigmoid, RELU, Softmax} layer_type;
+
 //class Layer;
 
 class Network {
@@ -19,7 +24,7 @@ class Network {
         Layer** layers;
 
     public:
-        Network(int*, int);
+        Network(int*, int, layer_type*);
         void connect();
         void forward_pass();
         void set_input(float*);
@@ -28,7 +33,7 @@ class Network {
         void print_bias();
         float* get_output();
         void back_propogate(float*);
-        void update_weights();
+        void update_weights(float);
         void set_weights(float**);
         void set_bias(float**);
         ~Network();
