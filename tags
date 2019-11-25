@@ -4,117 +4,60 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-ARCHITECTURE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#   define ARCHITECTURE_ID /;"	d	file:
-ARCHITECTURE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID /;"	d	file:
-ARCHITECTURE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID$/;"	d	file:
-ARCHITECTURE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define ARCHITECTURE_ID /;"	d	file:
-ARCHITECTURE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID /;"	d	file:
-ARCHITECTURE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID$/;"	d	file:
-CMAKE_BINARY_DIR	Code/nn/cmake-build-debug/Makefile	/^CMAKE_BINARY_DIR = \/Users\/trevorbergstrom\/631_project\/Code\/nn\/cmake-build-debug$/;"	m
-CMAKE_COMMAND	Code/nn/cmake-build-debug/Makefile	/^CMAKE_COMMAND = \/Applications\/CLion.app\/Contents\/bin\/cmake\/mac\/bin\/cmake$/;"	m
-CMAKE_SOURCE_DIR	Code/nn/cmake-build-debug/Makefile	/^CMAKE_SOURCE_DIR = \/Users\/trevorbergstrom\/631_project\/Code\/nn$/;"	m
-COMPILER_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_ID /;"	d	file:
-COMPILER_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_ID /;"	d	file:
-COMPILER_VERSION_INTERNAL	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
-COMPILER_VERSION_INTERNAL	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
-COMPILER_VERSION_INTERNAL	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
-COMPILER_VERSION_INTERNAL	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
-COMPILER_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
-COMPILER_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
-COMPILER_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
-COMPILER_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
-COMPILER_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
-COMPILER_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
-COMPILER_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
-COMPILER_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
-COMPILER_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MINOR /;"	d	file:
-COMPILER_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
-COMPILER_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
-COMPILER_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MINOR /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_PATCH /;"	d	file:
-COMPILER_VERSION_TWEAK	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
-COMPILER_VERSION_TWEAK	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
-COMPILER_VERSION_TWEAK	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
-COMPILER_VERSION_TWEAK	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
-CXX_STD	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define CXX_STD /;"	d	file:
-C_DIALECT	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT /;"	d	file:
-C_DIALECT	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT$/;"	d	file:
-C_DIALECT	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define C_DIALECT /;"	d	file:
-DEC	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#define DEC(/;"	d	file:
-DEC	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define DEC(/;"	d	file:
+BATCH_SIZE	Code/nn/networkTraining.cpp	/^#define BATCH_SIZE /;"	d	file:
 Data Parallelism	Proposal/Proposal.tex	/^\\subsection{Data Parallelism}$/;"	b
 Data Parallelism	Report/Proposal.tex	/^\\subsection{Data Parallelism}$/;"	b
 Dataset	Code/nn/utils/dataset.cpp	/^Dataset::Dataset(char* fname, int batch_size) {$/;"	f	class:Dataset
 Dataset	Code/nn/utils/dataset.hpp	/^class Dataset {$/;"	c
 Directions of investigation expected results	Proposal/Proposal.tex	/^\\section{Directions of investigation \/ expected results}$/;"	s
 Directions of investigation expected results	Report/Proposal.tex	/^\\section{Directions of investigation \/ expected results}$/;"	s
-EQUALS	Code/nn/cmake-build-debug/Makefile	/^EQUALS = =$/;"	m
-HEX	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#define HEX(/;"	d	file:
-HEX	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define HEX(/;"	d	file:
+EPOCHS	Code/nn/networkTraining.cpp	/^#define EPOCHS /;"	d	file:
 HI_r	Code/cudann/utils/matrix.hpp	/^#define HI_r /;"	d
-ID_VOID_MAIN	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define ID_VOID_MAIN$/;"	d	file:
 Introduction background	Proposal/Proposal.tex	/^\\section{Introduction \/ background}$/;"	s
 Introduction background	Report/Proposal.tex	/^\\section{Introduction \/ background}$/;"	s
+LEARNING_RATE	Code/nn/networkTraining.cpp	/^#define LEARNING_RATE /;"	d	file:
 LO_r	Code/cudann/utils/matrix.hpp	/^#define LO_r /;"	d
 Layer	Code/cudann/utils/layers.hpp	/^        Layer() {};$/;"	f	class:Layer
 Layer	Code/cudann/utils/layers.hpp	/^class Layer {$/;"	c
-Layer	Code/nn/layer.cpp	/^Layer::Layer(int numNodes) {$/;"	f	class:Layer
 Layer	Code/nn/layer.hpp	/^class Layer {$/;"	c
 Linear_Layer	Code/cudann/utils/layers.hpp	/^class Linear_Layer: public Layer{$/;"	c
 MAX_THREADS_PER_BLOCK	Code/cudann/utils/layers.hpp	/^#define MAX_THREADS_PER_BLOCK /;"	d
+MIN_ERR	Code/nn/networkTraining.cpp	/^#define MIN_ERR /;"	d	file:
 MSE	Code/nn/layer.cpp	/^float MSE(float* v1, float* v2, int n) {$/;"	f
 Model Parallelism	Proposal/Proposal.tex	/^\\subsection{Model Parallelism}$/;"	b
 Model Parallelism	Report/Proposal.tex	/^\\subsection{Model Parallelism}$/;"	b
 Network	Code/cudann/utils/network.hpp	/^class Network {$/;"	c
-Network	Code/nn/nn.cpp	/^Network::Network(int* numNodes, int numLayers) {$/;"	f	class:Network
+Network	Code/nn/nn.cpp	/^Network::Network(int* numNodes, int numLayers, layer_type* types) {$/;"	f	class:Network
 Network	Code/nn/nn.hpp	/^class Network {$/;"	c
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID /;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID$/;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID /;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID$/;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID /;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID$/;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID /;"	d	file:
-PLATFORM_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID$/;"	d	file:
 Problem formulation motivation	Proposal/Proposal.tex	/^\\section{Problem formulation \/ motivation}$/;"	s
 Problem formulation motivation	Report/Proposal.tex	/^\\section{Problem formulation \/ motivation}$/;"	s
+RELU	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon1
 RELU_Layer	Code/cudann/utils/layers.hpp	/^class RELU_Layer: public Layer {$/;"	c
-RM	Code/nn/cmake-build-debug/Makefile	/^RM = \/Applications\/CLion.app\/Contents\/bin\/cmake\/mac\/bin\/cmake -E remove -f$/;"	m
-SHELL	Code/nn/cmake-build-debug/Makefile	/^SHELL = \/bin\/sh$/;"	m
-SIMULATE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_ID /;"	d	file:
-SIMULATE_ID	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_ID /;"	d	file:
-SIMULATE_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
-SIMULATE_VERSION_MAJOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
-SIMULATE_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
-SIMULATE_VERSION_MINOR	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
-SIMULATE_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
-SIMULATE_VERSION_PATCH	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
-STRINGIFY	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY(/;"	d	file:
-STRINGIFY	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY(/;"	d	file:
-STRINGIFY_HELPER	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY_HELPER(/;"	d	file:
-STRINGIFY_HELPER	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY_HELPER(/;"	d	file:
-SUFFIXES	Code/nn/cmake-build-debug/Makefile	/^SUFFIXES =$/;"	m
+RELU_Layer	Code/nn/relu_layer.cpp	/^RELU_Layer::RELU_Layer(int numNodes) {$/;"	f	class:RELU_Layer
+RELU_Layer	Code/nn/relu_layer.hpp	/^class RELU_Layer: public Layer {$/;"	c
+Sigmoid	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon1
 Sigmoid_Layer	Code/cudann/utils/layers.hpp	/^class Sigmoid_Layer: public Layer {$/;"	c
+Sigmoid_Layer	Code/nn/sigmoid_layer.cpp	/^Sigmoid_Layer::Sigmoid_Layer(int numNodes) {$/;"	f	class:Sigmoid_Layer
+Sigmoid_Layer	Code/nn/sigmoid_layer.hpp	/^class Sigmoid_Layer: public Layer {$/;"	c
+Softmax	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon1
+Softmax_Layer	Code/nn/softmax_layer.cpp	/^Softmax_Layer::Softmax_Layer(int numNodes) {$/;"	f	class:Softmax_Layer
+Softmax_Layer	Code/nn/softmax_layer.hpp	/^class Softmax_Layer: public Layer {$/;"	c
 _GLIBCXX_USE_CXX11_ABI	Code/nn/utils/dataset.cpp	/^#define _GLIBCXX_USE_CXX11_ABI /;"	d	file:
-back_prop	Code/nn/layer.cpp	/^void Layer::back_prop() {$/;"	f	class:Layer
-back_prop_input	Code/nn/layer.cpp	/^void Layer::back_prop_input(float* targets) {$/;"	f	class:Layer
+average_err	Code/nn/networkTraining.cpp	/^float average_err(float* errors, int num) {$/;"	f
+back_prop	Code/nn/relu_layer.cpp	/^void RELU_Layer::back_prop() {$/;"	f	class:RELU_Layer
+back_prop	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop() {$/;"	f	class:Sigmoid_Layer
+back_prop	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop() {$/;"	f	class:Softmax_Layer
+back_prop_input	Code/nn/relu_layer.cpp	/^void RELU_Layer::back_prop_input(float* targets) {$/;"	f	class:RELU_Layer
+back_prop_input	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop_input(float* targets) {$/;"	f	class:Sigmoid_Layer
+back_prop_input	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop_input(float* targets) {$/;"	f	class:Softmax_Layer
 back_propogate	Code/nn/nn.cpp	/^void Network::back_propogate(float* targets) {$/;"	f	class:Network
 batch_size	Code/nn/utils/dataset.hpp	/^    int batch_size;$/;"	m	class:Dataset
 batch_x	Code/nn/utils/dataset.hpp	/^    float **batch_x;$/;"	m	class:Dataset
 batch_y	Code/nn/utils/dataset.hpp	/^    float **batch_y;$/;"	m	class:Dataset
 bias	Code/cudann/utils/layers.hpp	/^        matrix* bias;$/;"	m	class:Layer
 bias	Code/nn/layer.hpp	/^        float* bias;$/;"	m	class:Layer
-compute_outputs	Code/nn/layer.cpp	/^void Layer::compute_outputs(Layer* prev) {$/;"	f	class:Layer
 connect	Code/nn/nn.cpp	/^void Network::connect() {$/;"	f	class:Network
 connect_layers	Code/nn/layer.cpp	/^void Layer::connect_layers(Layer* prev) {$/;"	f	class:Layer
-const	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define const$/;"	d	file:
 dBias	Code/cudann/utils/layers.hpp	/^        matrix* dBias;$/;"	m	class:Layer
 dWeights	Code/cudann/utils/layers.hpp	/^        matrix* dWeights;$/;"	m	class:Layer
 data	Code/data/generators/generator1.py	/^data = np.concatenate((data_neg, data_pos), axis=0)$/;"	v
@@ -128,9 +71,14 @@ dev_data	Code/cudann/utils/matrix.hpp	/^        float* dev_data;$/;"	m	class:mat
 dim_x	Code/cudann/utils/matrix.hpp	/^        int dim_x;$/;"	m	class:matrix
 dim_y	Code/cudann/utils/matrix.hpp	/^        int dim_y;$/;"	m	class:matrix
 dot_prod	Code/nn/layer.cpp	/^float dot_prod(float* x, float* y, int num) {$/;"	f
+dp	Code/nn/softmax_layer.hpp	/^	float* dp;$/;"	m	class:Softmax_Layer
+esum	Code/nn/softmax_layer.hpp	/^	float esum;$/;"	m	class:Softmax_Layer
 fname	Code/data/generators/generator1.py	/^fname = '..\/data_n{}_m{}_mu{}.csv'.format(n, m, mean)$/;"	v
 fname	Code/nn/utils/dataset.hpp	/^    std::string fname;$/;"	m	class:Dataset
 forward_pass	Code/nn/nn.cpp	/^void Network::forward_pass() {$/;"	f	class:Network
+forward_pass	Code/nn/relu_layer.cpp	/^void RELU_Layer::forward_pass(Layer* prev) {$/;"	f	class:RELU_Layer
+forward_pass	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::forward_pass(Layer* prev) {$/;"	f	class:Sigmoid_Layer
+forward_pass	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::forward_pass(Layer* prev) {$/;"	f	class:Softmax_Layer
 get_batch_size	Code/nn/utils/dataset.cpp	/^int Dataset::get_batch_size() {$/;"	f	class:Dataset
 get_bias	Code/nn/layer.hpp	/^        float* get_bias() { return bias; }$/;"	f	class:Layer
 get_del_bias	Code/nn/layer.hpp	/^        float* get_del_bias() { return del_bias; }$/;"	f	class:Layer
@@ -146,34 +94,14 @@ get_weights	Code/nn/layer.hpp	/^        float** get_weights() { return weights; 
 header	Code/data/generators/generator1.py	/^header = '{},{}'.format(n, m)$/;"	v
 host_alloc	Code/cudann/utils/matrix.hpp	/^        bool host_alloc;$/;"	m	class:matrix
 host_data	Code/cudann/utils/matrix.hpp	/^        float* host_data;$/;"	m	class:matrix
-info_arch	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
-info_arch	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
-info_compiler	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
-info_compiler	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
-info_cray	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v
-info_cray	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v
-info_language_dialect_default	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^const char* info_language_dialect_default =$/;"	v
-info_language_dialect_default	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^const char* info_language_dialect_default = "INFO" ":" "dialect_default["$/;"	v
-info_platform	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
-info_platform	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
-info_simulate	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v
-info_simulate	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v
-info_simulate_version	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const info_simulate_version[] = {$/;"	v
-info_simulate_version	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_simulate_version[] = {$/;"	v
-info_version	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const info_version[] = {$/;"	v
-info_version	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
-info_version_internal	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const info_version_internal[] = {$/;"	v
-info_version_internal	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version_internal[] = {$/;"	v
 k	Code/nn/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
+layer_type	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	t	typeref:enum:__anon1
 layers	Code/cudann/utils/network.hpp	/^        Layer** layers;$/;"	m	class:Network
 layers	Code/nn/nn.hpp	/^        Layer** layers;$/;"	m	class:Network
 load_data	Code/data/data_loader.cpp	/^void load_data(std::string fname, float **x, float **y, int *args) {$/;"	f
 load_data	Code/nn/utils/dataset.cpp	/^void Dataset::load_data(char* fname) {$/;"	f	class:Dataset
 load_next_batch	Code/nn/utils/dataset.cpp	/^void Dataset::load_next_batch() {$/;"	f	class:Dataset
 m	Code/nn/utils/dataset.hpp	/^    int m;$/;"	m	class:Dataset
-main	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^int main(argc, argv) int argc; char *argv[];$/;"	f
-main	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f
-main	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
 main	Code/nn/main3.cpp	/^int main() {$/;"	f
 main	Code/nn/networkTraining.cpp	/^int main(int argv, char** argc) {$/;"	f
 main2	Code/nn/main.cpp	/^int main2() {$/;"	f
@@ -197,13 +125,12 @@ print_array	Code/nn/main3.cpp	/^void print_array(float *arr, int len) {$/;"	f
 print_bias	Code/nn/layer.cpp	/^void Layer::print_bias() {$/;"	f	class:Layer
 print_bias	Code/nn/nn.cpp	/^void Network::print_bias() {$/;"	f	class:Network
 print_f_arr	Code/nn/layer.cpp	/^void print_f_arr(float* a, int n) {$/;"	f
+print_float_arr	Code/nn/networkTraining.cpp	/^void print_float_arr(float* a, int n) {$/;"	f
 print_intarray	Code/nn/main3.cpp	/^void print_intarray(int *arr, int len) {$/;"	f
 print_intarray2	Code/nn/utils/dataset.cpp	/^void print_intarray2(int *arr, int len) {$/;"	f
 print_layers	Code/nn/nn.cpp	/^void Network::print_layers() {$/;"	f	class:Network
 print_lweights	Code/nn/layer.cpp	/^void Layer::print_lweights() {$/;"	f	class:Layer
 print_weights	Code/nn/nn.cpp	/^void Network::print_weights() {$/;"	f	class:Network
-qnxnto	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v
-qnxnto	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v
 r_HI	Code/nn/layer.hpp	/^#define r_HI /;"	d
 r_LO	Code/nn/layer.hpp	/^#define r_LO /;"	d
 sample_order	Code/nn/utils/dataset.hpp	/^    int *sample_order;$/;"	m	class:Dataset
@@ -217,9 +144,8 @@ set_weights	Code/nn/layer.cpp	/^void Layer::set_weights(float* n_weights) {$/;"	
 set_weights	Code/nn/nn.cpp	/^void Network::set_weights(float** a) {$/;"	f	class:Network
 shuffle_sample_order	Code/nn/utils/dataset.cpp	/^void Dataset::shuffle_sample_order() {$/;"	f	class:Dataset
 sys	Code/data/generators/generator1.py	/^import sys$/;"	i
-update	Code/nn/layer.cpp	/^void Layer::update() {$/;"	f	class:Layer
-update_weights	Code/nn/nn.cpp	/^void Network::update_weights() {$/;"	f	class:Network
-volatile	Code/nn/cmake-build-debug/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c	/^# define volatile$/;"	d	file:
+update	Code/nn/layer.cpp	/^void Layer::update(float learn_rate, int batch_size) {$/;"	f	class:Layer
+update_weights	Code/nn/nn.cpp	/^void Network::update_weights(float learn_rate, int batch_size) {$/;"	f	class:Network
 weights	Code/cudann/utils/layers.hpp	/^        matrix* weights;$/;"	m	class:Layer
 weights	Code/nn/layer.hpp	/^        float** weights;$/;"	m	class:Layer
 x	Code/nn/utils/dataset.hpp	/^    float **x;$/;"	m	class:Dataset
@@ -228,7 +154,12 @@ x_pos	Code/data/generators/generator1.py	/^x_pos = np.random.normal(loc=mean, sc
 y	Code/nn/utils/dataset.hpp	/^    float **y;$/;"	m	class:Dataset
 y_neg	Code/data/generators/generator1.py	/^y_neg = np.empty((int(n\/2), 1))$/;"	v
 y_pos	Code/data/generators/generator1.py	/^y_pos = np.empty((int(n\/2), 1))$/;"	v
+zero_grad	Code/nn/layer.cpp	/^void Layer::zero_grad() {$/;"	f	class:Layer
+zero_grad	Code/nn/nn.cpp	/^void Network::zero_grad() {$/;"	f	class:Network
 ~Dataset	Code/nn/utils/dataset.cpp	/^Dataset::~Dataset() {$/;"	f	class:Dataset
 ~Layer	Code/cudann/utils/layers.hpp	/^        ~Layer() {};$/;"	f	class:Layer
-~Layer	Code/nn/layer.cpp	/^Layer::~Layer() {$/;"	f	class:Layer
+~Layer	Code/nn/layer.hpp	/^        virtual ~Layer() {};$/;"	f	class:Layer
 ~Network	Code/nn/nn.cpp	/^Network::~Network() {$/;"	f	class:Network
+~RELU_Layer	Code/nn/relu_layer.cpp	/^RELU_Layer::~RELU_Layer() {$/;"	f	class:RELU_Layer
+~Sigmoid_Layer	Code/nn/sigmoid_layer.cpp	/^Sigmoid_Layer::~Sigmoid_Layer() {$/;"	f	class:Sigmoid_Layer
+~Softmax_Layer	Code/nn/softmax_layer.cpp	/^Softmax_Layer::~Softmax_Layer() {$/;"	f	class:Softmax_Layer

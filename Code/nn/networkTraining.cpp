@@ -1,8 +1,8 @@
 #include "nn.hpp"
 #include "utils/dataset.hpp"
 #include <stdio.h>
-#define BATCH_SIZE 1
-#define EPOCHS 100
+#define BATCH_SIZE 5
+#define EPOCHS 5
 #define MIN_ERR 0.0001
 #define LEARNING_RATE 0.1
 float average_err(float* errors, int num) {
@@ -33,7 +33,7 @@ int main(int argv, char** argc) {
     int num_batches = d.n / BATCH_SIZE;
     int layout[4] = {5,7,5,2};
     int num_layers = 4;
-    layer_type lts[4] = {RELU, Sigmoid, Sigmoid, Sigmoid}; 
+    layer_type lts[4] = {Sigmoid, Sigmoid, Sigmoid, Sigmoid};
 
     Network* my_net = new Network(layout, num_layers, lts);
 
@@ -48,6 +48,7 @@ int main(int argv, char** argc) {
         for(int j = 0; j < num_batches; j++) {
             printf("Batch#%d, Current error: %f\n", j+1, cur_error);
             d.load_next_batch();
+            my_net->zero_grad();
             float errors[BATCH_SIZE] = {};
             for(int k = 0; k < BATCH_SIZE; k++) {
                 my_net->set_input(d.batch_x[k]);
@@ -58,6 +59,7 @@ int main(int argv, char** argc) {
                 //print_float_arr(d.batch_y[k], 2);
                 //printf("Before mse:\n");
                 errors[k] = MSE(my_net->get_output(), d.batch_y[k], 2);
+                my_net->back_propogate(d.batch_y[k]); // <-------- Do we back prop with the last results from the batch? or use MSE somehow?
             }
             cur_batch = j;
             //printf("cur error calc\n");
@@ -65,9 +67,8 @@ int main(int argv, char** argc) {
             if( cur_error <= MIN_ERR) goto done_training;
             //printf("Backprop\n");
             //print_float_arr(d.batch_y[0], 2);
-            my_net->back_propogate(d.batch_y[0]); // <-------- Do we back prop with the last results from the batch? or use MSE somehow?
             //printf("updates\n");
-            my_net->update_weights(LEARNING_RATE);
+            my_net->update_weights(LEARNING_RATE, BATCH_SIZE);
         }
     }
 

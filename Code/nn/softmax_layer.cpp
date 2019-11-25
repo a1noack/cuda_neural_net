@@ -58,16 +58,16 @@ void Softmax_Layer::back_prop_input(float* targets) {
 
     for(int i = 0; i < num_nodes; i++) {
         float o = outputs[i];
-        
+
         float e_sum = esum - expf(dp[i]);
-        del_bias[i] = ( expf(dp[i]) * e_sum ) / powf(esum, 2);
+        del_bias[i] += ( expf(dp[i]) * e_sum ) / powf(esum, 2);
 
         float* dw = new float[num_weights];
         float* po = prev_layer->get_outputs();
 
         for(int j = 0; j < num_weights; j++) {
 
-            dw[j] = del_bias[i] * po[j];
+            dw[j] += del_bias[i] * po[j];
         }
 
         del_weights[i] = dw;
@@ -87,7 +87,7 @@ void Softmax_Layer::back_prop() {
         float db = 0.0;
 
         for(int j = 0; j < next_layer->get_num_nodes(); j++) {
-            
+
             db += ndb[j] * w[j][i];
         }
 
@@ -97,14 +97,14 @@ void Softmax_Layer::back_prop() {
         float e_sum = esum - expf(dp[i]);
         float dr = ( expf(dp[i]) * e_sum ) / powf(esum, 2);
 
-        del_bias[i] = db * dr;
+        del_bias[i] += db * dr;
         //printf("fdb:::%f\n", del_bias[i]);
         float* dw = new float[num_nodes];
 
         float* po = prev_layer->get_outputs();
 
         for(int k = 0; k < num_nodes; k++) {
-            dw[k] = del_bias[i] * po[k];
+            dw[k] += del_bias[i] * po[k];
           //  printf("dw = %f, db = %f, po = %f\n", dw[k], del_bias[i], po[k]);
         }
 

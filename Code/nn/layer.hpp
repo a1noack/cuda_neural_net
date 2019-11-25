@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <ctime>
 #include <math.h>
@@ -44,8 +44,9 @@ class Layer {
 
         void set_weights(float*);
         void set_bias(float*);
-        void update(float);
+        void update(float, int);
 
+        void zero_grad();
         void print_bias();
         virtual ~Layer() {};
 };
@@ -55,3 +56,5 @@ float get_random_f();
 float dot_prod(float*, float*, int);
 
 float MSE(float*, float*, int);
+
+void print_f_arr(float*, int);

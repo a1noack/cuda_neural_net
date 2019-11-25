@@ -46,11 +46,11 @@ void RELU_Layer::back_prop_input(float* targets) {
 
     for(int i = 0; i < num_nodes; i++) {
         float o = outputs[i];
-        
+
         if(o > 0) {
-            del_bias[i] = 1; //<----- Is this correct??
+            del_bias[i] += 1; //<----- Is this correct??
         } else {
-            del_bias[i] = 0;
+            del_bias[i] += 0;
         }
 
         float* dw = new float[num_weights];
@@ -58,7 +58,7 @@ void RELU_Layer::back_prop_input(float* targets) {
 
         for(int j = 0; j < num_weights; j++) {
 
-            dw[j] = del_bias[i] * po[j];
+            dw[j] += del_bias[i] * po[j];
         }
 
         del_weights[i] = dw;
@@ -78,7 +78,7 @@ void RELU_Layer::back_prop() {
         float db = 0.0;
 
         for(int j = 0; j < next_layer->get_num_nodes(); j++) {
-            
+
             db += ndb[j] * w[j][i];
         }
 
@@ -92,14 +92,14 @@ void RELU_Layer::back_prop() {
             dr = 0;
         }
 
-        del_bias[i] = db * dr;
+        del_bias[i] += db * dr;
         //printf("fdb:::%f\n", del_bias[i]);
         float* dw = new float[num_nodes];
 
         float* po = prev_layer->get_outputs();
 
         for(int k = 0; k < num_nodes; k++) {
-            dw[k] = del_bias[i] * po[k];
+            dw[k] += del_bias[i] * po[k];
           //  printf("dw = %f, db = %f, po = %f\n", dw[k], del_bias[i], po[k]);
         }
 

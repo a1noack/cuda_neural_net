@@ -45,20 +45,21 @@ void Sigmoid_Layer::back_prop_input(float* targets) {
 
     for(int i = 0; i < num_nodes; i++) {
         float o = outputs[i];
-     
-        del_bias[i] = (o - targets[i]) * (o * (1.0 - o));
+
+        float dbloc = (o - targets[i]) * (o * (1.0 - o));
+
+        del_bias[i] += dbloc;
         //printf("delb = %f\n", del_bias[i]);
 
-        float* dw = new float[num_weights];
+        float* dw = del_weights[i];//new float[num_weights];
         float* po = prev_layer->get_outputs();
 
         for(int j = 0; j < num_weights; j++) {
-
-            dw[j] = del_bias[i] * po[j];
+            dw[j] += dbloc * po[j];
             //printf("dw = %f, (bd = %f, pw = %f\n", dw[j], del_bias[i], po[j]);
         }
 
-        del_weights[i] = dw;
+        //del_weights[i] = dw; //<------- MEMORY LEAK HERE
     }
     //printf("\n");
 
@@ -66,6 +67,7 @@ void Sigmoid_Layer::back_prop_input(float* targets) {
 
 /* the really good shit. Back propgates the error for the hidden layers */
 void Sigmoid_Layer::back_prop() {
+
     int num_weights = prev_layer->get_num_nodes();
     float* ndb = next_layer->get_del_bias();
 
@@ -76,24 +78,28 @@ void Sigmoid_Layer::back_prop() {
         float db = 0.0;
 
         for(int j = 0; j < next_layer->get_num_nodes(); j++) {
-            
+
             db += ndb[j] * w[j][i];
         }
 
         //printf("delb:::%f\n", db);
         float o = outputs[i];
         //printf("out: %f\n", o);
-        del_bias[i] = db * (o * (1.0-o));
+        float dbloc = db * (o * (1.0-o));
+
+        del_bias[i] += dbloc;
         //printf("fdb:::%f\n", del_bias[i]);
-        float* dw = new float[num_nodes];
+        float* dw = del_weights[i];//new float[num_nodes];
 
         float* po = prev_layer->get_outputs();
 
+        //printf("delweights: \n");
         for(int k = 0; k < num_nodes; k++) {
-            dw[k] = del_bias[i] * po[k];
+            dw[k] += dbloc * po[k];
+          //  printf("%f ", dw[k]);
           //  printf("dw = %f, db = %f, po = %f\n", dw[k], del_bias[i], po[k]);
         }
-
-        del_weights[i] = dw;
+        //printf("\n");
+        //del_weights[i] = dw; //<------ MEMORY LEAK
     }
 }

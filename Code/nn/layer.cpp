@@ -12,7 +12,7 @@ void Layer::set_output(float* data) {
 /* SIGMOID ACTIVATION!!! */
 
 
-/* Clearly a incomplete destructor 
+/* Clearly a incomplete destructor
 Layer::~Layer() {
 }
 */
@@ -25,12 +25,14 @@ void Layer::connect_layers(Layer* prev) {
 
     for(int i = 0; i < this->num_nodes; i++) {
         float* wl = new float[prev->get_num_nodes()];
-
+        float* dwl = new float[prev->get_num_nodes()];
         for (int j = 0; j < prev->get_num_nodes(); j++) {
             wl[j] = get_random_f();
+            dwl[j] = 0.0;
         }
 
         weights[i] = wl;
+        del_weights[i] = dwl;
     }
     printf("Layer Connected\n");
 }
@@ -38,7 +40,7 @@ void Layer::connect_layers(Layer* prev) {
 
 
 /* update weights on each layer */
-void Layer::update(float learn_rate) {
+void Layer::update(float learn_rate, int batch_size) {
     //double learn_rate = 0.01; //<---------------- Maybe put this somewhere else
 
     int num_weights = prev_layer->get_num_nodes(); //<------- BAD
@@ -48,10 +50,10 @@ void Layer::update(float learn_rate) {
         float* dw = del_weights[i];
 
         for(int j = 0; j < num_weights; j++) {
-            w[j] = w[j] - (learn_rate * dw[j]);
+            w[j] = w[j] - (learn_rate * (dw[j] / batch_size));
         }
 
-        bias[i] = bias[i] - (learn_rate * del_bias[i]);
+        bias[i] = bias[i] - (learn_rate * (del_bias[i] / (float) batch_size));
     }
 }
 
@@ -89,6 +91,20 @@ void Layer::set_bias(float* n_bias) {
 	for(int i = 0; i < num_nodes; i++) {
 		bias[i] = n_bias[i];
 	}
+}
+
+void Layer::zero_grad() {
+
+     int num_weights = prev_layer->get_num_nodes(); //<------- BAD
+
+    for(int i = 0; i < num_nodes; i++) {
+        del_bias[i] = 0.0;
+        float* dw = del_weights[i];
+        for(int j = 0; j < num_weights; j++) {
+            dw[j] = 0.0;
+        }
+    }
+    //print_f_arr(del_bias, num_nodes);
 }
 /*************************************************************************************
 	Accessory functions:
@@ -132,3 +148,4 @@ float MSE(float* v1, float* v2, int n) {
     //printf("got to ret\n");
     return ((float) 1 / (float) n) * s;
 }
+

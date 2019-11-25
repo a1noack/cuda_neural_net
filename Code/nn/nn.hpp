@@ -33,9 +33,10 @@ class Network {
         void print_bias();
         float* get_output();
         void back_propogate(float*);
-        void update_weights(float);
+        void update_weights(float, int);
         void set_weights(float**);
         void set_bias(float**);
+        void zero_grad();
         ~Network();
 
 };

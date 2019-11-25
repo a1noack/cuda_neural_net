@@ -88,9 +88,15 @@ void Network::back_propogate(float* targets) {
 
 
 /* update network weights */
-void Network::update_weights(float learn_rate) {
+void Network::update_weights(float learn_rate, int batch_size) {
     for(int i = num_layers -1; i >=1; i--) {
-        layers[i]->update(learn_rate);
+        layers[i]->update(learn_rate, batch_size);
+    }
+}
+
+void Network::zero_grad() {
+    for(int i = 1; i < num_layers; i++) {
+        layers[i]->zero_grad();
     }
 }
 
