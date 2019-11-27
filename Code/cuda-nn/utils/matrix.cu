@@ -2,12 +2,13 @@
 
 // constructor for a multidim container
 matrix::matrix(int x, int y) {
+    // number of rows is x dim, number of cols is y dim
     dim_x = x;
     dim_y = y;
 
     dev_alloc = false;
     host_alloc = false;
-
+    mem_alloc();
 }
 
 // Constructor for a general container

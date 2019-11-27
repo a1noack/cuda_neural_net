@@ -4,162 +4,277 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+BATCH_SIZE	Code/cuda-nn/networkTraining.cpp	/^#define BATCH_SIZE /;"	d	file:
 BATCH_SIZE	Code/nn/networkTraining.cpp	/^#define BATCH_SIZE /;"	d	file:
 Data Parallelism	Proposal/Proposal.tex	/^\\subsection{Data Parallelism}$/;"	b
 Data Parallelism	Report/Proposal.tex	/^\\subsection{Data Parallelism}$/;"	b
+Dataset	Code/cuda-nn/utils/dataset.cpp	/^Dataset::Dataset(char* fname, int batch_size) {$/;"	f	class:Dataset
+Dataset	Code/cuda-nn/utils/dataset.hpp	/^class Dataset {$/;"	c
 Dataset	Code/nn/utils/dataset.cpp	/^Dataset::Dataset(char* fname, int batch_size) {$/;"	f	class:Dataset
 Dataset	Code/nn/utils/dataset.hpp	/^class Dataset {$/;"	c
 Directions of investigation expected results	Proposal/Proposal.tex	/^\\section{Directions of investigation \/ expected results}$/;"	s
 Directions of investigation expected results	Report/Proposal.tex	/^\\section{Directions of investigation \/ expected results}$/;"	s
+EPOCHS	Code/cuda-nn/networkTraining.cpp	/^#define EPOCHS /;"	d	file:
 EPOCHS	Code/nn/networkTraining.cpp	/^#define EPOCHS /;"	d	file:
+HI_r	Code/cuda-nn/utils/matrix.hpp	/^#define HI_r /;"	d
 HI_r	Code/cudann/utils/matrix.hpp	/^#define HI_r /;"	d
 Introduction background	Proposal/Proposal.tex	/^\\section{Introduction \/ background}$/;"	s
 Introduction background	Report/Proposal.tex	/^\\section{Introduction \/ background}$/;"	s
+LEARNING_RATE	Code/cuda-nn/networkTraining.cpp	/^#define LEARNING_RATE /;"	d	file:
 LEARNING_RATE	Code/nn/networkTraining.cpp	/^#define LEARNING_RATE /;"	d	file:
+LO_r	Code/cuda-nn/utils/matrix.hpp	/^#define LO_r /;"	d
 LO_r	Code/cudann/utils/matrix.hpp	/^#define LO_r /;"	d
+Layer	Code/cuda-nn/layer.hpp	/^class Layer {$/;"	c
 Layer	Code/cudann/utils/layers.hpp	/^        Layer() {};$/;"	f	class:Layer
 Layer	Code/cudann/utils/layers.hpp	/^class Layer {$/;"	c
 Layer	Code/nn/layer.hpp	/^class Layer {$/;"	c
 Linear_Layer	Code/cudann/utils/layers.hpp	/^class Linear_Layer: public Layer{$/;"	c
 MAX_THREADS_PER_BLOCK	Code/cudann/utils/layers.hpp	/^#define MAX_THREADS_PER_BLOCK /;"	d
+MIN_ERR	Code/cuda-nn/networkTraining.cpp	/^#define MIN_ERR /;"	d	file:
 MIN_ERR	Code/nn/networkTraining.cpp	/^#define MIN_ERR /;"	d	file:
+MSE	Code/cuda-nn/layer.cpp	/^float MSE(float* v1, float* v2, int n) {$/;"	f
 MSE	Code/nn/layer.cpp	/^float MSE(float* v1, float* v2, int n) {$/;"	f
 Model Parallelism	Proposal/Proposal.tex	/^\\subsection{Model Parallelism}$/;"	b
 Model Parallelism	Report/Proposal.tex	/^\\subsection{Model Parallelism}$/;"	b
+Network	Code/cuda-nn/nn.cpp	/^Network::Network(int* numNodes, int numLayers, layer_type* types) {$/;"	f	class:Network
+Network	Code/cuda-nn/nn.hpp	/^class Network {$/;"	c
 Network	Code/cudann/utils/network.hpp	/^class Network {$/;"	c
 Network	Code/nn/nn.cpp	/^Network::Network(int* numNodes, int numLayers, layer_type* types) {$/;"	f	class:Network
 Network	Code/nn/nn.hpp	/^class Network {$/;"	c
 Problem formulation motivation	Proposal/Proposal.tex	/^\\section{Problem formulation \/ motivation}$/;"	s
 Problem formulation motivation	Report/Proposal.tex	/^\\section{Problem formulation \/ motivation}$/;"	s
+RELU	Code/cuda-nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon2
 RELU	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon1
+RELU_Layer	Code/cuda-nn/relu_layer.cpp	/^RELU_Layer::RELU_Layer(int numNodes) {$/;"	f	class:RELU_Layer
+RELU_Layer	Code/cuda-nn/relu_layer.hpp	/^class RELU_Layer: public Layer {$/;"	c
 RELU_Layer	Code/cudann/utils/layers.hpp	/^class RELU_Layer: public Layer {$/;"	c
 RELU_Layer	Code/nn/relu_layer.cpp	/^RELU_Layer::RELU_Layer(int numNodes) {$/;"	f	class:RELU_Layer
 RELU_Layer	Code/nn/relu_layer.hpp	/^class RELU_Layer: public Layer {$/;"	c
+Sigmoid	Code/cuda-nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon2
 Sigmoid	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon1
+Sigmoid_Layer	Code/cuda-nn/sigmoid_layer.cpp	/^Sigmoid_Layer::Sigmoid_Layer(int numNodes) {$/;"	f	class:Sigmoid_Layer
+Sigmoid_Layer	Code/cuda-nn/sigmoid_layer.hpp	/^class Sigmoid_Layer: public Layer {$/;"	c
 Sigmoid_Layer	Code/cudann/utils/layers.hpp	/^class Sigmoid_Layer: public Layer {$/;"	c
 Sigmoid_Layer	Code/nn/sigmoid_layer.cpp	/^Sigmoid_Layer::Sigmoid_Layer(int numNodes) {$/;"	f	class:Sigmoid_Layer
 Sigmoid_Layer	Code/nn/sigmoid_layer.hpp	/^class Sigmoid_Layer: public Layer {$/;"	c
+Softmax	Code/cuda-nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon2
 Softmax	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	e	enum:__anon1
+Softmax_Layer	Code/cuda-nn/softmax_layer.cpp	/^Softmax_Layer::Softmax_Layer(int numNodes) {$/;"	f	class:Softmax_Layer
+Softmax_Layer	Code/cuda-nn/softmax_layer.hpp	/^class Softmax_Layer: public Layer {$/;"	c
 Softmax_Layer	Code/nn/softmax_layer.cpp	/^Softmax_Layer::Softmax_Layer(int numNodes) {$/;"	f	class:Softmax_Layer
 Softmax_Layer	Code/nn/softmax_layer.hpp	/^class Softmax_Layer: public Layer {$/;"	c
+_GLIBCXX_USE_CXX11_ABI	Code/cuda-nn/utils/dataset.cpp	/^#define _GLIBCXX_USE_CXX11_ABI /;"	d	file:
 _GLIBCXX_USE_CXX11_ABI	Code/nn/utils/dataset.cpp	/^#define _GLIBCXX_USE_CXX11_ABI /;"	d	file:
+average_err	Code/cuda-nn/networkTraining.cpp	/^float average_err(float* errors, int num) {$/;"	f
 average_err	Code/nn/networkTraining.cpp	/^float average_err(float* errors, int num) {$/;"	f
+back_prop	Code/cuda-nn/relu_layer.cpp	/^void RELU_Layer::back_prop() {$/;"	f	class:RELU_Layer
+back_prop	Code/cuda-nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop() {$/;"	f	class:Sigmoid_Layer
+back_prop	Code/cuda-nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop() {$/;"	f	class:Softmax_Layer
 back_prop	Code/nn/relu_layer.cpp	/^void RELU_Layer::back_prop() {$/;"	f	class:RELU_Layer
 back_prop	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop() {$/;"	f	class:Sigmoid_Layer
 back_prop	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop() {$/;"	f	class:Softmax_Layer
+back_prop_input	Code/cuda-nn/relu_layer.cpp	/^void RELU_Layer::back_prop_input(float* targets) {$/;"	f	class:RELU_Layer
+back_prop_input	Code/cuda-nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop_input(float* targets) {$/;"	f	class:Sigmoid_Layer
+back_prop_input	Code/cuda-nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop_input(float* targets) {$/;"	f	class:Softmax_Layer
 back_prop_input	Code/nn/relu_layer.cpp	/^void RELU_Layer::back_prop_input(float* targets) {$/;"	f	class:RELU_Layer
 back_prop_input	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop_input(float* targets) {$/;"	f	class:Sigmoid_Layer
 back_prop_input	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop_input(float* targets) {$/;"	f	class:Softmax_Layer
+back_propogate	Code/cuda-nn/nn.cpp	/^void Network::back_propogate(float* targets) {$/;"	f	class:Network
 back_propogate	Code/nn/nn.cpp	/^void Network::back_propogate(float* targets) {$/;"	f	class:Network
+batch_size	Code/cuda-nn/utils/dataset.hpp	/^    int batch_size;$/;"	m	class:Dataset
 batch_size	Code/nn/utils/dataset.hpp	/^    int batch_size;$/;"	m	class:Dataset
+batch_x	Code/cuda-nn/utils/dataset.hpp	/^    float **batch_x;$/;"	m	class:Dataset
 batch_x	Code/nn/utils/dataset.hpp	/^    float **batch_x;$/;"	m	class:Dataset
+batch_y	Code/cuda-nn/utils/dataset.hpp	/^    float **batch_y;$/;"	m	class:Dataset
 batch_y	Code/nn/utils/dataset.hpp	/^    float **batch_y;$/;"	m	class:Dataset
+bias	Code/cuda-nn/layer.hpp	/^        matrix* bias; \/\/single dim 1 x num_nodes$/;"	m	class:Layer
 bias	Code/cudann/utils/layers.hpp	/^        matrix* bias;$/;"	m	class:Layer
 bias	Code/nn/layer.hpp	/^        float* bias;$/;"	m	class:Layer
+connect	Code/cuda-nn/nn.cpp	/^void Network::connect() {$/;"	f	class:Network
 connect	Code/nn/nn.cpp	/^void Network::connect() {$/;"	f	class:Network
+connect_layers	Code/cuda-nn/layer.cpp	/^void Layer::connect_layers(Layer* prev) {$/;"	f	class:Layer
 connect_layers	Code/nn/layer.cpp	/^void Layer::connect_layers(Layer* prev) {$/;"	f	class:Layer
 dBias	Code/cudann/utils/layers.hpp	/^        matrix* dBias;$/;"	m	class:Layer
 dWeights	Code/cudann/utils/layers.hpp	/^        matrix* dWeights;$/;"	m	class:Layer
 data	Code/data/generators/generator1.py	/^data = np.concatenate((data_neg, data_pos), axis=0)$/;"	v
 data_neg	Code/data/generators/generator1.py	/^data_neg = np.concatenate((x_neg, y_neg), axis=1)$/;"	v
 data_pos	Code/data/generators/generator1.py	/^data_pos = np.concatenate((x_pos, y_pos), axis=1)$/;"	v
+dataset_hpp	Code/cuda-nn/utils/dataset.hpp	/^#define dataset_hpp$/;"	d
 dataset_hpp	Code/nn/utils/dataset.hpp	/^#define dataset_hpp$/;"	d
+del_bias	Code/cuda-nn/layer.hpp	/^        matrix* del_bias;$/;"	m	class:Layer
 del_bias	Code/nn/layer.hpp	/^        float* del_bias;$/;"	m	class:Layer
+del_weights	Code/cuda-nn/layer.hpp	/^        matrix* del_weights; \/\/multideminsional matrix of weight derivatives$/;"	m	class:Layer
 del_weights	Code/nn/layer.hpp	/^        float** del_weights;$/;"	m	class:Layer
+dev_alloc	Code/cuda-nn/utils/matrix.hpp	/^        bool dev_alloc;$/;"	m	class:matrix
 dev_alloc	Code/cudann/utils/matrix.hpp	/^        bool dev_alloc;$/;"	m	class:matrix
+dev_data	Code/cuda-nn/utils/matrix.hpp	/^        float* dev_data;$/;"	m	class:matrix
 dev_data	Code/cudann/utils/matrix.hpp	/^        float* dev_data;$/;"	m	class:matrix
+dim_x	Code/cuda-nn/utils/matrix.hpp	/^        int dim_x;$/;"	m	class:matrix
 dim_x	Code/cudann/utils/matrix.hpp	/^        int dim_x;$/;"	m	class:matrix
+dim_y	Code/cuda-nn/utils/matrix.hpp	/^        int dim_y;$/;"	m	class:matrix
 dim_y	Code/cudann/utils/matrix.hpp	/^        int dim_y;$/;"	m	class:matrix
+dot_prod	Code/cuda-nn/layer.cpp	/^float dot_prod(float* x, float* y, int num) {$/;"	f
 dot_prod	Code/nn/layer.cpp	/^float dot_prod(float* x, float* y, int num) {$/;"	f
+dp	Code/cuda-nn/softmax_layer.hpp	/^	float* dp;$/;"	m	class:Softmax_Layer
 dp	Code/nn/softmax_layer.hpp	/^	float* dp;$/;"	m	class:Softmax_Layer
+esum	Code/cuda-nn/softmax_layer.hpp	/^	float esum;$/;"	m	class:Softmax_Layer
 esum	Code/nn/softmax_layer.hpp	/^	float esum;$/;"	m	class:Softmax_Layer
+fname	Code/cuda-nn/utils/dataset.hpp	/^    std::string fname;$/;"	m	class:Dataset
 fname	Code/data/generators/generator1.py	/^fname = '..\/data_n{}_m{}_mu{}.csv'.format(n, m, mean)$/;"	v
 fname	Code/nn/utils/dataset.hpp	/^    std::string fname;$/;"	m	class:Dataset
+forward_pass	Code/cuda-nn/nn.cpp	/^void Network::forward_pass() {$/;"	f	class:Network
+forward_pass	Code/cuda-nn/relu_layer.cpp	/^void RELU_Layer::forward_pass(Layer* prev) {$/;"	f	class:RELU_Layer
+forward_pass	Code/cuda-nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::forward_pass(Layer* prev) {$/;"	f	class:Sigmoid_Layer
+forward_pass	Code/cuda-nn/softmax_layer.cpp	/^void Softmax_Layer::forward_pass(Layer* prev) {$/;"	f	class:Softmax_Layer
 forward_pass	Code/nn/nn.cpp	/^void Network::forward_pass() {$/;"	f	class:Network
 forward_pass	Code/nn/relu_layer.cpp	/^void RELU_Layer::forward_pass(Layer* prev) {$/;"	f	class:RELU_Layer
 forward_pass	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::forward_pass(Layer* prev) {$/;"	f	class:Sigmoid_Layer
 forward_pass	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::forward_pass(Layer* prev) {$/;"	f	class:Softmax_Layer
+get_batch_size	Code/cuda-nn/utils/dataset.cpp	/^int Dataset::get_batch_size() {$/;"	f	class:Dataset
 get_batch_size	Code/nn/utils/dataset.cpp	/^int Dataset::get_batch_size() {$/;"	f	class:Dataset
+get_bias	Code/cuda-nn/layer.hpp	/^        matrix* get_bias() { return bias; }$/;"	f	class:Layer
 get_bias	Code/nn/layer.hpp	/^        float* get_bias() { return bias; }$/;"	f	class:Layer
+get_del_bias	Code/cuda-nn/layer.hpp	/^        matrix* get_del_bias() { return del_bias; }$/;"	f	class:Layer
 get_del_bias	Code/nn/layer.hpp	/^        float* get_del_bias() { return del_bias; }$/;"	f	class:Layer
+get_del_weights	Code/cuda-nn/layer.hpp	/^        matrix* get_del_weights() { return del_weights; }$/;"	f	class:Layer
 get_del_weights	Code/nn/layer.hpp	/^        float** get_del_weights() { return del_weights; }$/;"	f	class:Layer
+get_num_nodes	Code/cuda-nn/layer.hpp	/^        int get_num_nodes() { return num_nodes; }$/;"	f	class:Layer
 get_num_nodes	Code/cudann/utils/layers.hpp	/^        int get_num_nodes() { return num_nodes;}$/;"	f	class:Layer
 get_num_nodes	Code/nn/layer.hpp	/^        int get_num_nodes() { return num_nodes; }$/;"	f	class:Layer
+get_output	Code/cuda-nn/nn.cpp	/^float* Network::get_output() {$/;"	f	class:Network
 get_output	Code/nn/nn.cpp	/^float* Network::get_output() {$/;"	f	class:Network
+get_outputs	Code/cuda-nn/layer.hpp	/^        matrix* get_outputs() { return outputs; }$/;"	f	class:Layer
 get_outputs	Code/cudann/utils/layers.hpp	/^        matrix* get_outputs() { return outputs; }$/;"	f	class:Layer
 get_outputs	Code/nn/layer.hpp	/^        float* get_outputs() { return outputs; }$/;"	f	class:Layer
+get_random_f	Code/cuda-nn/layer.cpp	/^float get_random_f() {$/;"	f
 get_random_f	Code/nn/layer.cpp	/^float get_random_f() {$/;"	f
+get_sample_order	Code/cuda-nn/utils/dataset.cpp	/^int *Dataset::get_sample_order() {$/;"	f	class:Dataset
 get_sample_order	Code/nn/utils/dataset.cpp	/^int *Dataset::get_sample_order() {$/;"	f	class:Dataset
+get_weights	Code/cuda-nn/layer.hpp	/^        matrix* get_weights() { return weights; }$/;"	f	class:Layer
 get_weights	Code/nn/layer.hpp	/^        float** get_weights() { return weights; }$/;"	f	class:Layer
 header	Code/data/generators/generator1.py	/^header = '{},{}'.format(n, m)$/;"	v
+host_alloc	Code/cuda-nn/utils/matrix.hpp	/^        bool host_alloc;$/;"	m	class:matrix
 host_alloc	Code/cudann/utils/matrix.hpp	/^        bool host_alloc;$/;"	m	class:matrix
+host_data	Code/cuda-nn/utils/matrix.hpp	/^        float* host_data;$/;"	m	class:matrix
 host_data	Code/cudann/utils/matrix.hpp	/^        float* host_data;$/;"	m	class:matrix
+k	Code/cuda-nn/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
 k	Code/nn/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
+layer_type	Code/cuda-nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	t	typeref:enum:__anon2
 layer_type	Code/nn/nn.hpp	/^typedef enum {Sigmoid, RELU, Softmax} layer_type;$/;"	t	typeref:enum:__anon1
+layers	Code/cuda-nn/nn.hpp	/^        Layer** layers;$/;"	m	class:Network
 layers	Code/cudann/utils/network.hpp	/^        Layer** layers;$/;"	m	class:Network
 layers	Code/nn/nn.hpp	/^        Layer** layers;$/;"	m	class:Network
+load_data	Code/cuda-nn/utils/dataset.cpp	/^void Dataset::load_data(char* fname) {$/;"	f	class:Dataset
 load_data	Code/data/data_loader.cpp	/^void load_data(std::string fname, float **x, float **y, int *args) {$/;"	f
 load_data	Code/nn/utils/dataset.cpp	/^void Dataset::load_data(char* fname) {$/;"	f	class:Dataset
+load_next_batch	Code/cuda-nn/utils/dataset.cpp	/^void Dataset::load_next_batch() {$/;"	f	class:Dataset
 load_next_batch	Code/nn/utils/dataset.cpp	/^void Dataset::load_next_batch() {$/;"	f	class:Dataset
+m	Code/cuda-nn/utils/dataset.hpp	/^    int m;$/;"	m	class:Dataset
 m	Code/nn/utils/dataset.hpp	/^    int m;$/;"	m	class:Dataset
+main	Code/cuda-nn/main3.cpp	/^int main() {$/;"	f
+main	Code/cuda-nn/networkTraining.cpp	/^int main(int argv, char** argc) {$/;"	f
 main	Code/nn/main3.cpp	/^int main() {$/;"	f
 main	Code/nn/networkTraining.cpp	/^int main(int argv, char** argc) {$/;"	f
+main2	Code/cuda-nn/main.cpp	/^int main2() {$/;"	f
 main2	Code/nn/main.cpp	/^int main2() {$/;"	f
+matrix	Code/cuda-nn/utils/matrix.hpp	/^class matrix {$/;"	c
 matrix	Code/cudann/utils/matrix.hpp	/^class matrix {$/;"	c
+n	Code/cuda-nn/utils/dataset.hpp	/^    int n;$/;"	m	class:Dataset
 n	Code/nn/utils/dataset.hpp	/^    int n;$/;"	m	class:Dataset
 name	Code/cudann/utils/layers.hpp	/^        char* name;$/;"	m	class:Layer
 next	Code/cudann/utils/layers.hpp	/^        Layer* next;$/;"	m	class:Layer
+next_layer	Code/cuda-nn/layer.hpp	/^        Layer* next_layer;$/;"	m	class:Layer
 next_layer	Code/nn/layer.hpp	/^        Layer* next_layer;$/;"	m	class:Layer
 np	Code/data/generators/generator1.py	/^import numpy as np$/;"	i
+num_layers	Code/cuda-nn/nn.hpp	/^        int num_layers;$/;"	m	class:Network
 num_layers	Code/cudann/utils/network.hpp	/^        int num_layers;$/;"	m	class:Network
 num_layers	Code/nn/nn.hpp	/^        int num_layers;$/;"	m	class:Network
+num_nodes	Code/cuda-nn/layer.hpp	/^        int num_nodes;$/;"	m	class:Layer
 num_nodes	Code/cudann/utils/layers.hpp	/^        int num_nodes;$/;"	m	class:Layer
 num_nodes	Code/nn/layer.hpp	/^        int num_nodes;$/;"	m	class:Layer
+outputs	Code/cuda-nn/layer.hpp	/^        matrix* outputs; \/\/single dim 1 x num_nodes$/;"	m	class:Layer
 outputs	Code/cudann/utils/layers.hpp	/^        matrix* outputs;$/;"	m	class:Layer
 outputs	Code/nn/layer.hpp	/^        float* outputs;$/;"	m	class:Layer
+position	Code/cuda-nn/utils/dataset.hpp	/^    int position;$/;"	m	class:Dataset
 position	Code/nn/utils/dataset.hpp	/^    int position;$/;"	m	class:Dataset
 predictions	Code/cudann/utils/network.hpp	/^        matrix* predictions;$/;"	m	class:Network
+prev_layer	Code/cuda-nn/layer.hpp	/^        Layer* prev_layer;$/;"	m	class:Layer
 prev_layer	Code/nn/layer.hpp	/^        Layer* prev_layer;$/;"	m	class:Layer
 previous	Code/cudann/utils/layers.hpp	/^        Layer* previous;$/;"	m	class:Layer
+print_array	Code/cuda-nn/main3.cpp	/^void print_array(float *arr, int len) {$/;"	f
 print_array	Code/nn/main3.cpp	/^void print_array(float *arr, int len) {$/;"	f
+print_bias	Code/cuda-nn/layer.cpp	/^void Layer::print_bias() {$/;"	f	class:Layer
+print_bias	Code/cuda-nn/nn.cpp	/^void Network::print_bias() {$/;"	f	class:Network
 print_bias	Code/nn/layer.cpp	/^void Layer::print_bias() {$/;"	f	class:Layer
 print_bias	Code/nn/nn.cpp	/^void Network::print_bias() {$/;"	f	class:Network
+print_f_arr	Code/cuda-nn/layer.cpp	/^void print_f_arr(float* a, int n) {$/;"	f
 print_f_arr	Code/nn/layer.cpp	/^void print_f_arr(float* a, int n) {$/;"	f
+print_float_arr	Code/cuda-nn/networkTraining.cpp	/^void print_float_arr(float* a, int n) {$/;"	f
 print_float_arr	Code/nn/networkTraining.cpp	/^void print_float_arr(float* a, int n) {$/;"	f
+print_intarray	Code/cuda-nn/main3.cpp	/^void print_intarray(int *arr, int len) {$/;"	f
 print_intarray	Code/nn/main3.cpp	/^void print_intarray(int *arr, int len) {$/;"	f
+print_intarray2	Code/cuda-nn/utils/dataset.cpp	/^void print_intarray2(int *arr, int len) {$/;"	f
 print_intarray2	Code/nn/utils/dataset.cpp	/^void print_intarray2(int *arr, int len) {$/;"	f
+print_layers	Code/cuda-nn/nn.cpp	/^void Network::print_layers() {$/;"	f	class:Network
 print_layers	Code/nn/nn.cpp	/^void Network::print_layers() {$/;"	f	class:Network
+print_lweights	Code/cuda-nn/layer.cpp	/^void Layer::print_lweights() {$/;"	f	class:Layer
 print_lweights	Code/nn/layer.cpp	/^void Layer::print_lweights() {$/;"	f	class:Layer
+print_weights	Code/cuda-nn/nn.cpp	/^void Network::print_weights() {$/;"	f	class:Network
 print_weights	Code/nn/nn.cpp	/^void Network::print_weights() {$/;"	f	class:Network
+r_HI	Code/cuda-nn/layer.hpp	/^#define r_HI /;"	d
 r_HI	Code/nn/layer.hpp	/^#define r_HI /;"	d
+r_LO	Code/cuda-nn/layer.hpp	/^#define r_LO /;"	d
 r_LO	Code/nn/layer.hpp	/^#define r_LO /;"	d
+sample_order	Code/cuda-nn/utils/dataset.hpp	/^    int *sample_order;$/;"	m	class:Dataset
 sample_order	Code/nn/utils/dataset.hpp	/^    int *sample_order;$/;"	m	class:Dataset
+set_bias	Code/cuda-nn/layer.cpp	/^void Layer::set_bias(float* n_bias) {$/;"	f	class:Layer
+set_bias	Code/cuda-nn/nn.cpp	/^void Network::set_bias(float** a) {$/;"	f	class:Network
 set_bias	Code/nn/layer.cpp	/^void Layer::set_bias(float* n_bias) {$/;"	f	class:Layer
 set_bias	Code/nn/nn.cpp	/^void Network::set_bias(float** a) {$/;"	f	class:Network
+set_input	Code/cuda-nn/nn.cpp	/^void Network::set_input(float* data) {$/;"	f	class:Network
 set_input	Code/nn/nn.cpp	/^void Network::set_input(float* data) {$/;"	f	class:Network
+set_next_layer	Code/cuda-nn/layer.hpp	/^        void set_next_layer(Layer* n) { next_layer = n; }$/;"	f	class:Layer
 set_next_layer	Code/nn/layer.hpp	/^        void set_next_layer(Layer* n) { next_layer = n; }$/;"	f	class:Layer
+set_output	Code/cuda-nn/layer.cpp	/^void Layer::set_output(float* data) {$/;"	f	class:Layer
 set_output	Code/nn/layer.cpp	/^void Layer::set_output(float* data) {$/;"	f	class:Layer
+set_prev_layer	Code/cuda-nn/layer.hpp	/^        void set_prev_layer(Layer* p) {prev_layer = p; }$/;"	f	class:Layer
 set_prev_layer	Code/nn/layer.hpp	/^        void set_prev_layer(Layer* p) {prev_layer = p; }$/;"	f	class:Layer
+set_weights	Code/cuda-nn/layer.cpp	/^void Layer::set_weights(float* n_weights) {$/;"	f	class:Layer
+set_weights	Code/cuda-nn/nn.cpp	/^void Network::set_weights(float** a) {$/;"	f	class:Network
 set_weights	Code/nn/layer.cpp	/^void Layer::set_weights(float* n_weights) {$/;"	f	class:Layer
 set_weights	Code/nn/nn.cpp	/^void Network::set_weights(float** a) {$/;"	f	class:Network
+shuffle_sample_order	Code/cuda-nn/utils/dataset.cpp	/^void Dataset::shuffle_sample_order() {$/;"	f	class:Dataset
 shuffle_sample_order	Code/nn/utils/dataset.cpp	/^void Dataset::shuffle_sample_order() {$/;"	f	class:Dataset
 sys	Code/data/generators/generator1.py	/^import sys$/;"	i
+update	Code/cuda-nn/layer.cpp	/^void Layer::update(float learn_rate, int batch_size) {$/;"	f	class:Layer
 update	Code/nn/layer.cpp	/^void Layer::update(float learn_rate, int batch_size) {$/;"	f	class:Layer
+update_weights	Code/cuda-nn/nn.cpp	/^void Network::update_weights(float learn_rate, int batch_size) {$/;"	f	class:Network
 update_weights	Code/nn/nn.cpp	/^void Network::update_weights(float learn_rate, int batch_size) {$/;"	f	class:Network
+weights	Code/cuda-nn/layer.hpp	/^        matrix* weights; \/\/ Multidimensional matrix of the weights$/;"	m	class:Layer
 weights	Code/cudann/utils/layers.hpp	/^        matrix* weights;$/;"	m	class:Layer
 weights	Code/nn/layer.hpp	/^        float** weights;$/;"	m	class:Layer
+x	Code/cuda-nn/utils/dataset.hpp	/^    float **x;$/;"	m	class:Dataset
 x	Code/nn/utils/dataset.hpp	/^    float **x;$/;"	m	class:Dataset
 x_neg	Code/data/generators/generator1.py	/^x_neg = np.random.normal(loc=-mean, scale=std, size=(int(n\/2), m))$/;"	v
 x_pos	Code/data/generators/generator1.py	/^x_pos = np.random.normal(loc=mean, scale=std, size=(int(n\/2), m))$/;"	v
+y	Code/cuda-nn/utils/dataset.hpp	/^    float **y;$/;"	m	class:Dataset
 y	Code/nn/utils/dataset.hpp	/^    float **y;$/;"	m	class:Dataset
 y_neg	Code/data/generators/generator1.py	/^y_neg = np.empty((int(n\/2), 1))$/;"	v
 y_pos	Code/data/generators/generator1.py	/^y_pos = np.empty((int(n\/2), 1))$/;"	v
+zero_grad	Code/cuda-nn/layer.cpp	/^void Layer::zero_grad() {$/;"	f	class:Layer
+zero_grad	Code/cuda-nn/nn.cpp	/^void Network::zero_grad() {$/;"	f	class:Network
 zero_grad	Code/nn/layer.cpp	/^void Layer::zero_grad() {$/;"	f	class:Layer
 zero_grad	Code/nn/nn.cpp	/^void Network::zero_grad() {$/;"	f	class:Network
+~Dataset	Code/cuda-nn/utils/dataset.cpp	/^Dataset::~Dataset() {$/;"	f	class:Dataset
 ~Dataset	Code/nn/utils/dataset.cpp	/^Dataset::~Dataset() {$/;"	f	class:Dataset
+~Layer	Code/cuda-nn/layer.hpp	/^        virtual ~Layer() {};$/;"	f	class:Layer
 ~Layer	Code/cudann/utils/layers.hpp	/^        ~Layer() {};$/;"	f	class:Layer
 ~Layer	Code/nn/layer.hpp	/^        virtual ~Layer() {};$/;"	f	class:Layer
+~Network	Code/cuda-nn/nn.cpp	/^Network::~Network() {$/;"	f	class:Network
 ~Network	Code/nn/nn.cpp	/^Network::~Network() {$/;"	f	class:Network
+~RELU_Layer	Code/cuda-nn/relu_layer.cpp	/^RELU_Layer::~RELU_Layer() {$/;"	f	class:RELU_Layer
 ~RELU_Layer	Code/nn/relu_layer.cpp	/^RELU_Layer::~RELU_Layer() {$/;"	f	class:RELU_Layer
+~Sigmoid_Layer	Code/cuda-nn/sigmoid_layer.cpp	/^Sigmoid_Layer::~Sigmoid_Layer() {$/;"	f	class:Sigmoid_Layer
 ~Sigmoid_Layer	Code/nn/sigmoid_layer.cpp	/^Sigmoid_Layer::~Sigmoid_Layer() {$/;"	f	class:Sigmoid_Layer
+~Softmax_Layer	Code/cuda-nn/softmax_layer.cpp	/^Softmax_Layer::~Softmax_Layer() {$/;"	f	class:Softmax_Layer
 ~Softmax_Layer	Code/nn/softmax_layer.cpp	/^Softmax_Layer::~Softmax_Layer() {$/;"	f	class:Softmax_Layer
