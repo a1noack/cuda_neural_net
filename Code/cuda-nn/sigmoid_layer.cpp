@@ -7,36 +7,56 @@ Sigmoid_Layer::Sigmoid_Layer(int numNodes) {
     next_layer = NULL;
 
     weights = NULL;
-    outputs = new float[numNodes];
 
+    /*
+    outputs = new float[numNodes];
     bias = new float[numNodes];
     del_bias = new float[numNodes];
+    */
 
+    outputs = new matrix(1, numNodes);
+    bias = new matrix(1, numNodes);
+    del_bias = new matrix(1, numNodes);
+
+    /*
     for(int i = 0; i < numNodes; i++) {
         bias[i] = get_random_f();
         outputs[i] = 0.0;
         del_bias[i] = 0.0;
     }
+    */
+
+    outputs->set_mem_zero(outputs->dim_x, outputs->dim_y);
+    bias->set_mem_random(bias->dim_x, outputs->dim_y);
+    del_bias->set_mem_zero(del_bias->dim_x, del_bias->dim_y);
 
     printf("Sigmoid layer Created %d nodes\n", this->num_nodes);
 }
 
 Sigmoid_Layer::~Sigmoid_Layer() {
     if(weights != NULL) {
-        delete [] weights;
-        delete [] del_weights;
+        delete weights;
+        delete del_weights;
     }
 
-    delete [] outputs;
-    delete [] bias;
-    delete [] del_bias;
+    delete outputs;
+    delete bias;
+    delete del_bias;
 }
 
 void Sigmoid_Layer::forward_pass(Layer* prev) {
+    /*
     for(int i = 0; i < num_nodes; i++) {
         float dp = dot_prod(weights[i], prev->get_outputs(), num_nodes);
         outputs[i] = (1 / (1+ expf( -1* (dp + bias[i]) ) ) );
     }
+    */
+    float* opts = outputs->host_data;
+    for(int i = 0; i < num_nodes; i++) {
+        float dp = dot_prod(weights->host_data[i], prev->get_outputs()->host_data, num_nodes);
+        opts[i] = (1/ (1+ expf( -1 * (dp + bias->host_data[i]))));
+    }
+
 }
 
 /* The good shit. Back propogate the error on just the input layer. */

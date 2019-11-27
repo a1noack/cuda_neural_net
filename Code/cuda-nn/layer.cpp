@@ -56,7 +56,8 @@ void Layer::connect_layers(Layer* prev) {
 void Layer::update(float learn_rate, int batch_size) {
     //double learn_rate = 0.01; //<---------------- Maybe put this somewhere else
 
-    int num_weights = prev_layer->get_num_nodes(); //<------- BAD
+/*    int num_weights = prev_layer->get_num_nodes(); //<------- BAD
+
 
     for(int i = 0; i < num_nodes; i++) {
         float* w = weights[i];
@@ -68,6 +69,21 @@ void Layer::update(float learn_rate, int batch_size) {
 
         bias[i] = bias[i] - (learn_rate * (del_bias[i] / (float) batch_size));
     }
+    */
+
+    int num_weights = this->get_num_nodes() * prev_layer->get_num_nodes();
+    float* w = weights->host_data;
+    float* dw = del_weights->host_data;
+    float* b = bias->host_data;
+    float* db = del_bias->host_data;
+
+    for(int i = 0; i < num_weights; i++) {
+        w[i] = w[i] -(learn_rate * (dw[i] / batch_size));
+        if(i < num_nodes) {
+            b[i] = b[i] - (learn_rate * (db[i] / batch_size));
+        }
+    }
+
 }
 
 
