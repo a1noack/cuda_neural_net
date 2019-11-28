@@ -2,8 +2,8 @@
 #pragma once
 
 #include <memory>
-#include <cuda.h>
-#include <cuda_runtime_api.h>
+//#include <cuda.h>
+//#include <cuda_runtime_api.h>
 #include <cstdlib>
 #include <ctime>
 
