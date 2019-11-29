@@ -55,14 +55,14 @@ void Network::set_input(float* data) {
 
 
 float* Network::get_output() {
-    return this->layers[this->num_layers - 1]->get_outputs();
+    return this->layers[this->num_layers - 1]->get_outputs()->host_data;
 }
 
 /* testing function, prints the outputs of each node */
 void Network::print_layers() {
     for(int i = 0; i < num_layers; i++) {
         //printf("For layer #%d, with %d nodes: ", i, layers[i]->get_num_nodes());
-        float* od = layers[i]->get_outputs();
+        float* od = layers[i]->get_outputs()->host_data;
         for(int j = 0; j < layers[i]->get_num_nodes(); j++) {
             printf("%f ", od[j]);
         }
