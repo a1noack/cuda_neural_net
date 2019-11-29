@@ -34,6 +34,7 @@ void Layer::set_next_layer(Layer* next_layer) {
     next = next_layer;
     out_weights = new matrix(next->num_nodes, num_nodes);
     next->in_weights = out_weights;
+    next->inputs = outputs;
 
     out_del_weights = new matrix(next->num_nodes, num_nodes);
     next->in_del_weights = out_del_weights;
@@ -47,10 +48,11 @@ void Layer::zero_grad() {
 }
 
 void Layer::forward_pass() {
-    if(lp != output) {
+    if(lp != input) {
 
-        for(int i = 0; i < next->num_nodes; i++) {
-            float dp = dot_prod(out_weights->get_row(i), inputs->get_row(0), next->num_nodes);
+        for(int i = 0; i < num_nodes; i++) {
+            float dp = dot_prod(in_weights->get_row(i), inputs->get_row(0), num_nodes);
+            printf("dp = %f\n", dp + *bias->get_row(0)[i]);
             *outputs->get_row(0)[i] = ( 1 / ( 1 + expf( -1 * (dp + *bias->get_row(0)[i] ) ) ) );
         }
     }
@@ -70,9 +72,11 @@ void Layer::back_prop(float* targets) {
 
             float db = 0.0;
             for(int j = 0; j < out_weights->num_cols; j++) {
-                db = *ndb[j] + *w[j];
+                printf("weights err: %f, %f\n", *ndb[j], *w[j]);
+                db += *ndb[j] * *w[j];
             }
 
+            printf("dbloc: %f, db: %f\n", dbloc, db);
             dbloc *= db;
         }
 
@@ -138,6 +142,16 @@ float MSE(float** v1, float** v2, int num) {
 
     for(int i = 0; i < num; i++) {
         s += pow( (double) *v1[i] - *v2[i], 2);
+    }
+
+    return ( (float) 1 / (float) num ) * s;
+}
+
+float MSE(float** v1, float* v2, int num) {
+    float s = 0.0;
+
+    for(int i = 0; i < num; i++) {
+        s += pow( (double) *v1[i] - v2[i], 2);
     }
 
     return ( (float) 1 / (float) num ) * s;

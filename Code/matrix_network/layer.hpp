@@ -48,9 +48,13 @@ class Layer {
         void print_out_del_W() { out_del_weights->print(); }
         void print_bias() { bias->print(); }
         void print_del_bias() { del_bias->print(); }
+
+        void set_weights(float* w) { out_weights->set_memory(w); }
+        void set_bias(float* b) { bias->set_memory(b); }
 };
 
 float dot_prod(float*, float*, int);
 float dot_prod(float**, float**, int);
 float MSE(float*, float*, int);
+float MSE(float**, float*, int);
 float MSE(float**, float**, int);
