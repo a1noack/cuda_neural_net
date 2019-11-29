@@ -4,7 +4,7 @@
 #include <math.h>
 #include <vector>
 #include <cstdlib>
-
+#include <stdio.h>
 
 #define r_HI 1.0
 #define r_LO 0.0
