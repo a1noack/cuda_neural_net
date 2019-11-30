@@ -33,10 +33,13 @@ void Layer::set_next_layer(Layer* next_layer) {
 
     next = next_layer;
     out_weights = new matrix(next->num_nodes, num_nodes);
+    out_weights->set_mem_random();
+
     next->in_weights = out_weights;
     next->inputs = outputs;
 
     out_del_weights = new matrix(next->num_nodes, num_nodes);
+    out_del_weights->set_mem_zero();
     next->in_del_weights = out_del_weights;
 }
 
@@ -51,8 +54,8 @@ void Layer::forward_pass() {
     if(lp != input) {
 
         for(int i = 0; i < num_nodes; i++) {
-            float dp = dot_prod(in_weights->get_row(i), inputs->get_row(0), num_nodes);
-            printf("dp = %f\n", dp + *bias->get_row(0)[i]);
+            float dp = dot_prod(in_weights->get_row(i), inputs->get_row(0), prev->num_nodes);
+            //printf("dp = %f\n", dp + *bias->get_row(0)[i]);
             *outputs->get_row(0)[i] = ( 1 / ( 1 + expf( -1 * (dp + *bias->get_row(0)[i] ) ) ) );
         }
     }
@@ -68,15 +71,18 @@ void Layer::back_prop(float* targets) {
             dbloc *= o - targets[i];
         } else {
             float** w = out_weights->get_col(i);
+            //out_weights->print();
+            //float** w = out_weights->get_row(i);
             float** ndb = next->del_bias->get_row(0);
+            //printf("nextdelb = %d\n", next->del_bias->num_cols);
 
             float db = 0.0;
-            for(int j = 0; j < out_weights->num_cols; j++) {
-                printf("weights err: %f, %f\n", *ndb[j], *w[j]);
+            for(int j = 0; j < out_weights->num_rows; j++) {
+                //printf("weights err itr#%d out of %d: ndb[%d], %f\n",j, out_weights->num_cols, /**ndb[i]*/i, *w[j]);
                 db += *ndb[j] * *w[j];
             }
 
-            printf("dbloc: %f, db: %f\n", dbloc, db);
+            //printf("dbloc: %f, db: %f\n", dbloc, db);
             dbloc *= db;
         }
 
@@ -102,6 +108,7 @@ void Layer::update(float learn_rate, int batch_size) {
         float** dw = in_del_weights->get_row(i);
 
         for(int j = 0; j < prev->num_nodes; j++) {
+            //printf("delw at #%d = %f\n",j, *dw[j]);
             *w[j] = *w[j] - (learn_rate * (*dw[j] / batch_size) );
         }
 
@@ -119,6 +126,7 @@ float dot_prod(float* x, float* y, int num) {
 }
 
 float dot_prod(float** x, float** y, int num) {
+    //printf("in dp\n");
     float dp = 0.0;
 
     for(int i = 0; i < num; i++) {
