@@ -2,8 +2,8 @@
 #include <memory>
 #include <cstring>
 #include <stdlib.h>
-#include <cuda.h>
-#include <cuda_runtime_api.h>
+//#include <cuda.h>
+//#include <cuda_runtime_api.h>
 
 #define RF_HI 0.99
 #define RF_LO 0.01
