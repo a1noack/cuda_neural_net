@@ -5,14 +5,29 @@ matrix::matrix(int rows, int cols) {
     num_rows = rows;
     num_cols = cols;
     num_vals = rows * cols;
-
+    on_device = 0;
     host_data = new float[num_vals];
-
+    cudaMalloc(&device_data, num_vals * sizeof(float)); 
 }
 
 //matrix destructor
 matrix::~matrix() {
+    cudaFree(device_data);
     delete [] host_data;
+}
+
+void matrix::move_to_device() {
+    if(!on_device) {
+        cudaMemcpy(device_data, host_data, num_vals * sizeof(float), cudaMemcpyHostToDevice);    
+        on_device = 1;
+    }
+}
+
+void matrix::move_to_host() {
+    if(on_device) {
+        cudaMemcpy(host_data, device_data, num_vals * sizeof(float), cudaMemcpyDeviceToHost);    
+        on_device = 0;
+    }
 }
 
 void matrix::set_memory(float* new_vals) {
@@ -74,11 +89,23 @@ float** matrix::get_all_data() {
 }
 
 void matrix::print() {
-    for(int i = 0; i < num_rows; i++) {
-        for(int j = 0; j < num_cols; j++) {
-            printf("%f ", host_data[(i*num_cols) + j]);
+    if(!on_device) {
+        for(int i = 0; i < num_rows; i++) {
+            for(int j = 0; j < num_cols; j++) {
+                printf("%f ", host_data[(i*num_cols) + j]);
+            }
+            printf("\n");
         }
-        printf("\n");
+    }
+    else {
+        float temp[num_vals];
+        cudaMemcpy(temp, device_data, num_vals * sizeof(float), cudaMemcpyDeviceToHost);
+        for(int i = 0; i < num_rows; i++) {
+            for(int j = 0; j < num_cols; j++) {
+                printf("%f ", temp[(i*num_cols) + j]);
+            }
+            printf("\n");
+        }
     }
 }
 
