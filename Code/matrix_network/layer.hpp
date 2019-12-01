@@ -49,8 +49,14 @@ class Layer {
         void print_bias() { bias->print(); }
         void print_del_bias() { del_bias->print(); }
 
+        void print_layer();
+
         void set_weights(float* w) { out_weights->set_memory(w); }
         void set_bias(float* b) { bias->set_memory(b); }
+
+
+        matrix* w_idx;
+        matrix* n_idx;
 };
 
 float dot_prod(float*, float*, int);

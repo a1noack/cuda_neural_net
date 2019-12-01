@@ -23,5 +23,6 @@ class Network {
         int get_num_predictions();
 };
 
-float average_err(float*, int num);
+float average_err(float*, int n);
 
+void print_f_arr(float* f, int n);

@@ -36,6 +36,7 @@ void matrix::set_mem_zero() {
 }
 
 void matrix::set_mem_random() {
+    srand(time(NULL));
     for(int i = 0; i < num_vals; i++) {
         host_data[i] = RF_LO + (float) ( rand() / ( (float) (RAND_MAX / (RF_HI - RF_LO))));
 

@@ -247,6 +247,7 @@ matrix	Code/matrix_network/utils/matrix.hpp	/^class matrix {$/;"	c
 n	Code/cuda-nn/utils/dataset.hpp	/^    int n;$/;"	m	class:Dataset
 n	Code/matrix_network/utils/dataset.hpp	/^    int n;$/;"	m	class:Dataset
 n	Code/nn/utils/dataset.hpp	/^    int n;$/;"	m	class:Dataset
+n_idx	Code/matrix_network/layer.hpp	/^        matrix* n_idx;$/;"	m	class:Layer
 name	Code/cudann/utils/layers.hpp	/^        char* name;$/;"	m	class:Layer
 next	Code/cudann/utils/layers.hpp	/^        Layer* next;$/;"	m	class:Layer
 next	Code/matrix_network/layer.hpp	/^        Layer* next;$/;"	m	class:Layer
@@ -280,6 +281,7 @@ prev_layer	Code/cuda-nn/layer.hpp	/^        Layer* prev_layer;$/;"	m	class:Layer
 prev_layer	Code/nn/layer.hpp	/^        Layer* prev_layer;$/;"	m	class:Layer
 previous	Code/cudann/utils/layers.hpp	/^        Layer* previous;$/;"	m	class:Layer
 print	Code/matrix_network/matrix.cpp	/^void matrix::print() {$/;"	f	class:matrix
+print_FF	Code/matrix_network/layer.cpp	/^void print_FF(float** f, int n) {$/;"	f
 print_array	Code/cuda-nn/main3.cpp	/^void print_array(float *arr, int len) {$/;"	f
 print_array	Code/nn/main3.cpp	/^void print_array(float *arr, int len) {$/;"	f
 print_bias	Code/cuda-nn/layer.cpp	/^void Layer::print_bias() {$/;"	f	class:Layer
@@ -289,6 +291,7 @@ print_bias	Code/nn/layer.cpp	/^void Layer::print_bias() {$/;"	f	class:Layer
 print_bias	Code/nn/nn.cpp	/^void Network::print_bias() {$/;"	f	class:Network
 print_del_bias	Code/matrix_network/layer.hpp	/^        void print_del_bias() { del_bias->print(); }$/;"	f	class:Layer
 print_f_arr	Code/cuda-nn/layer.cpp	/^void print_f_arr(float* a, int n) {$/;"	f
+print_f_arr	Code/matrix_network/network.cpp	/^void print_f_arr(float* f, int n) {$/;"	f
 print_f_arr	Code/nn/layer.cpp	/^void print_f_arr(float* a, int n) {$/;"	f
 print_float_arr	Code/cuda-nn/networkTraining.cpp	/^void print_float_arr(float* a, int n) {$/;"	f
 print_float_arr	Code/nn/networkTraining.cpp	/^void print_float_arr(float* a, int n) {$/;"	f
@@ -300,6 +303,7 @@ print_intarray	Code/nn/main3.cpp	/^void print_intarray(int *arr, int len) {$/;"	
 print_intarray2	Code/cuda-nn/utils/dataset.cpp	/^void print_intarray2(int *arr, int len) {$/;"	f
 print_intarray2	Code/matrix_network/utils/dataset.cpp	/^void print_intarray2(int *arr, int len) {$/;"	f
 print_intarray2	Code/nn/utils/dataset.cpp	/^void print_intarray2(int *arr, int len) {$/;"	f
+print_layer	Code/matrix_network/layer.cpp	/^void Layer::print_layer() {$/;"	f	class:Layer
 print_layers	Code/cuda-nn/nn.cpp	/^void Network::print_layers() {$/;"	f	class:Network
 print_layers	Code/nn/nn.cpp	/^void Network::print_layers() {$/;"	f	class:Network
 print_lweights	Code/cuda-nn/layer.cpp	/^void Layer::print_lweights() {$/;"	f	class:Layer
@@ -352,6 +356,7 @@ update	Code/nn/layer.cpp	/^void Layer::update(float learn_rate, int batch_size) 
 update_weights	Code/cuda-nn/nn.cpp	/^void Network::update_weights(float learn_rate, int batch_size) {$/;"	f	class:Network
 update_weights	Code/matrix_network/network.cpp	/^void Network::update_weights(float learn_rate, int batch_size) {$/;"	f	class:Network
 update_weights	Code/nn/nn.cpp	/^void Network::update_weights(float learn_rate, int batch_size) {$/;"	f	class:Network
+w_idx	Code/matrix_network/layer.hpp	/^        matrix* w_idx;$/;"	m	class:Layer
 weights	Code/cuda-nn/layer.hpp	/^        matrix* weights; \/\/ Multidimensional matrix of the weights$/;"	m	class:Layer
 weights	Code/cudann/utils/layers.hpp	/^        matrix* weights;$/;"	m	class:Layer
 weights	Code/nn/layer.hpp	/^        float** weights;$/;"	m	class:Layer

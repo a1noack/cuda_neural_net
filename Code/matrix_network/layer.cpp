@@ -27,20 +27,40 @@ Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer) {
     del_bias = new matrix(1, node_count);
     del_bias->set_mem_zero();
 
+    n_idx = new matrix(1, node_count);
+    float* idxs = new float[node_count];
+
+    for(int i = 0; i < node_count; i++) {
+        idxs[i] = i+1;
+    }
+
+    n_idx->set_memory(idxs);
+
 }
 
 void Layer::set_next_layer(Layer* next_layer) {
 
     next = next_layer;
-    out_weights = new matrix(next->num_nodes, num_nodes);
+    out_weights = new matrix(num_nodes, next->num_nodes);
     out_weights->set_mem_random();
 
     next->in_weights = out_weights;
     next->inputs = outputs;
 
-    out_del_weights = new matrix(next->num_nodes, num_nodes);
+    out_del_weights = new matrix(num_nodes, next->num_nodes);
     out_del_weights->set_mem_zero();
     next->in_del_weights = out_del_weights;
+
+    //____________________TESTING STUFF
+    w_idx = new matrix(num_nodes, next->num_nodes);
+    float* idxs = new float[num_nodes * next->num_nodes];
+
+    for(int i = 0; i < num_nodes * next->num_nodes; i++) {
+        idxs[i] = i + 1;
+    }
+
+    w_idx->set_memory(idxs);
+
 }
 
 void Layer::zero_grad() {
@@ -50,35 +70,51 @@ void Layer::zero_grad() {
     }
 }
 
+void print_FF(float** f, int n) {
+    for(int i = 0; i < n; i++) {
+        printf("%f ", *f[i]);
+    }
+    printf("\n");
+}
+
 void Layer::forward_pass() {
     if(lp != input) {
 
         for(int i = 0; i < num_nodes; i++) {
-            float dp = dot_prod(in_weights->get_row(i), inputs->get_row(0), prev->num_nodes);
+
+            assert(in_weights->num_rows == inputs->num_cols);
+            float dp = dot_prod(in_weights->get_col(i), inputs->get_row(0), in_weights->num_rows);
+            //float** colidx = prev->w_idx->get_col(i);
+            //print_FF(colidx, prev->w_idx->num_rows);
+            //printf("Dotprod: %f\n", dp);
             //printf("dp = %f\n", dp + *bias->get_row(0)[i]);
             *outputs->get_row(0)[i] = ( 1 / ( 1 + expf( -1 * (dp + *bias->get_row(0)[i] ) ) ) );
+            //printf("Outputs:\n");
+            //outputs->print();
         }
     }
 }
 
 void Layer::back_prop(float* targets) {
     for(int i = 0; i < num_nodes; i++) {
-
+        //printf("backprop node#%d\n", i);
+        assert(num_nodes == outputs->num_cols);
         float o = *outputs->get_row(0)[i];
         float dbloc = (o * (1-o));
 
         if(targets != NULL) {
-            dbloc *= o - targets[i];
+            dbloc *= (o - targets[i]);
         } else {
-            float** w = out_weights->get_col(i);
+            float** w = out_weights->get_row(i);
             //out_weights->print();
             //float** w = out_weights->get_row(i);
             float** ndb = next->del_bias->get_row(0);
             //printf("nextdelb = %d\n", next->del_bias->num_cols);
 
             float db = 0.0;
-            for(int j = 0; j < out_weights->num_rows; j++) {
-                //printf("weights err itr#%d out of %d: ndb[%d], %f\n",j, out_weights->num_cols, /**ndb[i]*/i, *w[j]);
+            assert(out_weights->num_cols == next->del_bias->num_cols);
+            for(int j = 0; j < out_weights->num_cols; j++) {
+                //printf("for node #%d, w*db: %d\n", i,j);
                 db += *ndb[j] * *w[j];
             }
 
@@ -88,11 +124,13 @@ void Layer::back_prop(float* targets) {
 
         *del_bias->get_row(0)[i] += dbloc;
 
-        float** dw = in_del_weights->get_row(i);
+        float** dw = in_del_weights->get_col(i);
 
         float** ins = inputs->get_row(0);
 
-        for(int j = 0; j < in_del_weights->num_cols; j++) {
+        assert(in_del_weights->num_rows == inputs->num_cols);
+        for(int j = 0; j < in_del_weights->num_rows; j++) {
+            //printf("updating del_weight #%d\n", j);
             *dw[j] += dbloc * *ins[j];
         }
     }
@@ -103,19 +141,66 @@ void Layer::update(float learn_rate, int batch_size) {
     float** b = bias->get_row(0);
     float** db = del_bias->get_row(0);
 
+    assert(num_nodes == in_weights->num_cols);
+    //printf("assertion passed\n");
     for(int i = 0; i < num_nodes; i++) {
-        float** w = in_weights->get_row(i);
-        float** dw = in_del_weights->get_row(i);
+        float** w = in_weights->get_col(i);
+        float** dw = in_del_weights->get_col(i);
 
+        assert(prev->num_nodes == in_weights->num_rows);
         for(int j = 0; j < prev->num_nodes; j++) {
             //printf("delw at #%d = %f\n",j, *dw[j]);
             *w[j] = *w[j] - (learn_rate * (*dw[j] / batch_size) );
         }
 
-        *b[i] = *b[i] - (learn_rate * (*db[i] / batch_size) );
+        *b[i] = *b[i] - (learn_rate * (*db[i] / (float)batch_size) );
     }
 }
 
+void Layer::print_layer() {
+    printf("printing layer\n");
+    if(inputs != NULL) {
+        printf("Inputs:\n");
+        inputs->print();
+        printf("\n");
+    }
+    if(in_weights != NULL) {
+        printf("in_weights:\n");
+        in_weights->print();
+        printf("\n");
+    }
+    if(in_del_weights != NULL) {
+        printf("in_del_w:\n");
+        in_del_weights->print();
+        printf("\n");
+    }
+    if(outputs != NULL) {
+        printf("outputs:\n");
+        outputs->print();
+        printf("\n");
+    }
+    if(out_weights != NULL) {
+        printf("oput_weights:\n");
+        out_weights->print();
+        printf("\n");
+    }
+    if(out_del_weights != NULL) {
+        printf("out_del_w:\n");
+        out_del_weights->print();
+        printf("\n");
+    }
+    if(bias != NULL) {
+        printf("Bias:\n");
+        bias->print();
+        printf("\n");
+    }
+    if(del_bias != NULL) {
+        printf("del_bias:\n");
+        del_bias->print();
+        printf("\n");
+    }
+
+}
 float dot_prod(float* x, float* y, int num) {
     float dp = 0.0;
 

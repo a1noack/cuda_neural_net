@@ -2,6 +2,7 @@
 #include <memory>
 #include <cstring>
 #include <stdlib.h>
+#include <time.h>
 //#include <cuda.h>
 //#include <cuda_runtime_api.h>
 
