@@ -40,7 +40,6 @@ void Network::train(int num_epochs, int batch_size, float learn_rate, float min_
 
     int total_samples = d.n;
     int num_batches = d.n / batch_size;
-    //int num_batches = 1;
 
     for(int i = 0; i < num_epochs; i++) {
         printf("Epoch #%d, Current Error: %f\n", i + 1, cur_error);
@@ -48,26 +47,19 @@ void Network::train(int num_epochs, int batch_size, float learn_rate, float min_
         cur_epoch = i+1;
 
         for(int j = 0; j < num_batches; j++) {
-            //printf("Batch# %d, Current Error: %f\n", j+1, cur_error);
             d.load_next_batch();
             this->zero_grad();
             float errors[batch_size];
 
             for(int k = 0; k < batch_size; k++) {
-                //printf("Batch# %d, sample# %d\n", j, k);
                 this->set_input(d.batch_x[k]);
-                //print_f_arr(d.batch_x[k], 5);
-                //printf("Forward Pass\n");
                 this->forward();
-                //printf("Calc Errors\n");
                 errors[k] = MSE(this->get_predictions(), d.batch_y[k], this->get_num_predictions());
-                //printf("Back_Prop\n");
                 this->back_prop(d.batch_y[k]);
             }
 
             cur_batch = j+1;
 
-            //print_f_arr(errors, batch_size);
             cur_error = average_err(errors, batch_size);
 
             if(cur_error <= min_err) { goto done_training; }
@@ -93,7 +85,6 @@ void Network::zero_grad() {
 
 void Network::forward() {
     for(int i = 0; i < num_layers; i++) {
-        //printf("Forward on layer %d\n", i);
         layers[i]->forward_pass();
     }
 }
@@ -101,7 +92,6 @@ void Network::forward() {
 void Network::back_prop(float* targets) {
     float* nts = targets;
     for(int i = num_layers - 1; i > 0; i--) {
-        //printf("Back on layer %d\n", i);
         layers[i]->back_prop(nts);
         nts = NULL;
     }
@@ -114,7 +104,6 @@ void Network::update_weights(float learn_rate, int batch_size) {
 }
 
 float** Network::get_predictions() {
-    //layers[num_layers - 1]->outputs->print();
     return layers[num_layers - 1]->outputs->get_row(0);
 }
 

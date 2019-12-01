@@ -83,21 +83,15 @@ void Layer::forward_pass() {
         for(int i = 0; i < num_nodes; i++) {
 
             assert(in_weights->num_rows == inputs->num_cols);
+            //<---------- COLUMN CALL
             float dp = dot_prod(in_weights->get_col(i), inputs->get_row(0), in_weights->num_rows);
-            //float** colidx = prev->w_idx->get_col(i);
-            //print_FF(colidx, prev->w_idx->num_rows);
-            //printf("Dotprod: %f\n", dp);
-            //printf("dp = %f\n", dp + *bias->get_row(0)[i]);
             *outputs->get_row(0)[i] = ( 1 / ( 1 + expf( -1 * (dp + *bias->get_row(0)[i] ) ) ) );
-            //printf("Outputs:\n");
-            //outputs->print();
         }
     }
 }
 
 void Layer::back_prop(float* targets) {
     for(int i = 0; i < num_nodes; i++) {
-        //printf("backprop node#%d\n", i);
         assert(num_nodes == outputs->num_cols);
         float o = *outputs->get_row(0)[i];
         float dbloc = (o * (1-o));
@@ -106,31 +100,23 @@ void Layer::back_prop(float* targets) {
             dbloc *= (o - targets[i]);
         } else {
             float** w = out_weights->get_row(i);
-            //out_weights->print();
-            //float** w = out_weights->get_row(i);
             float** ndb = next->del_bias->get_row(0);
-            //printf("nextdelb = %d\n", next->del_bias->num_cols);
-
             float db = 0.0;
             assert(out_weights->num_cols == next->del_bias->num_cols);
             for(int j = 0; j < out_weights->num_cols; j++) {
-                //printf("for node #%d, w*db: %d\n", i,j);
                 db += *ndb[j] * *w[j];
             }
-
-            //printf("dbloc: %f, db: %f\n", dbloc, db);
             dbloc *= db;
         }
 
         *del_bias->get_row(0)[i] += dbloc;
 
-        float** dw = in_del_weights->get_col(i);
+        float** dw = in_del_weights->get_col(i); //<------------------ COLUMN CALL
 
         float** ins = inputs->get_row(0);
 
         assert(in_del_weights->num_rows == inputs->num_cols);
         for(int j = 0; j < in_del_weights->num_rows; j++) {
-            //printf("updating del_weight #%d\n", j);
             *dw[j] += dbloc * *ins[j];
         }
     }
@@ -142,14 +128,12 @@ void Layer::update(float learn_rate, int batch_size) {
     float** db = del_bias->get_row(0);
 
     assert(num_nodes == in_weights->num_cols);
-    //printf("assertion passed\n");
     for(int i = 0; i < num_nodes; i++) {
-        float** w = in_weights->get_col(i);
+        float** w = in_weights->get_col(i); //<--------------- COLUMN CALLS
         float** dw = in_del_weights->get_col(i);
 
         assert(prev->num_nodes == in_weights->num_rows);
         for(int j = 0; j < prev->num_nodes; j++) {
-            //printf("delw at #%d = %f\n",j, *dw[j]);
             *w[j] = *w[j] - (learn_rate * (*dw[j] / batch_size) );
         }
 
