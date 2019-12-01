@@ -37,7 +37,7 @@ void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
             printf("Incompatible matrix dimensions. m1 is %d x %d, m2 is %d x %d\n", r1, c1, r2, c2);
     }
     else
-        printf("make sure input matrices and output matrix have been moved to device");
+        printf("Make sure input matrices and output matrix have been moved to device");
 }
 
 __global__ void _sigmoid(float *mat, int n) {
@@ -52,16 +52,39 @@ __global__ void _relu(float *mat, int n) {
         mat[tid] = 0;
 }
 
-void activate(matrix *m, int type) {
-    int n = m->num_vals;
+void activate(matrix *mat, int type) {
+    if(!mat->on_device) { 
+        printf("Make sure matrix is on device before activating.\n");
+        return;
+    }
+    int n = mat->num_vals;
     int threads = 128;
     int blocks = int(ceil(float(n) / threads));
     if(type == 0)
-        _sigmoid<<<blocks, threads>>>(m->device_data, m->num_vals);
+        _sigmoid<<<blocks, threads>>>(mat->device_data, n);
     else if(type == 1)
-        _relu<<<blocks, T>>>(m->device_data, m->num_vals);
+        _relu<<<blocks, threads>>>(mat->device_data, n);
     else if(type == 2)
-        printf("softmax has not been implemented yet.");
+        printf("Softmax has not been implemented yet.\n");
     else
-        printf("This activation function has not been configured.");
+        printf("This activation function has not been configured.\n");
 } 
+
+__global__ void _add_bias(float *mat, float *bias, int num_cols) {
+    int mat_tid = blockIdx.x * blockDim.x + threadIdx.x;
+    int bias_tid = threadIdx.x;
+    if(bias_tid < num_cols)
+        mat[mat_tid] += bias[bias_tid];
+}
+
+void add_bias(matrix *mat, matrix *bias) {
+    if(!mat->on_device || !bias->on_device) { 
+        printf("Make sure matrix and bias are both on device before adding them.\n");
+        return;
+    }
+    int blocks = mat->num_rows;
+    int threads = T;
+    _add_bias<<<blocks, threads>>>(mat->device_data, bias->device_data, mat->num_cols);
+}
+
+
