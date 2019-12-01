@@ -3,7 +3,7 @@
 
 #define T 128
 
-__global__ void _mat_mul(float *mat1, float *mat2, float*result, int c1, int c2) {
+__global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2) {
     __shared__ float shared[T];
     int tid = threadIdx.x;
      
@@ -48,7 +48,7 @@ __global__ void _sigmoid(float *mat, int n) {
 
 __global__ void _relu(float *mat, int n) {
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
-    if(mat[tid] <= 0)
+    if(tid < n && mat[tid] <= 0)
         mat[tid] = 0;
 }
 
@@ -82,9 +82,71 @@ void add_bias(matrix *mat, matrix *bias) {
         printf("Make sure matrix and bias are both on device before adding them.\n");
         return;
     }
+    if(mat->num_cols != bias->num_cols) {
+        printf("mat and del_mat don't have the same dimensions.\n");
+    }
     int blocks = mat->num_rows;
     int threads = T;
     _add_bias<<<blocks, threads>>>(mat->device_data, bias->device_data, mat->num_cols);
 }
 
+__global__ void _update(float *mat, float *del_mat, float lr, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(tid < n)
+        mat[tid] = mat[tid] - lr * del_mat[tid];
+}
 
+void update(matrix *mat, matrix *del_mat, float lr) {
+    if(!mat->on_device || !del_mat->on_device) { 
+        printf("Make sure matrix and gradients are both on device before adding them.\n");
+        return;
+    }
+    if(mat->num_rows != del_mat->num_rows || mat->num_cols != del_mat->num_cols) {
+        printf("mat and del_mat don't have the same dimensions.\n");
+    }
+    int blocks = mat->num_rows;
+    int threads = T;
+    _update<<<blocks, threads>>>(mat->device_data, del_mat->device_data, lr, mat->num_vals);
+}
+
+__global__ void sum_reduce1(float *arr, int n) {
+    __shared__ float shared[T];
+    int g_tid = blockIdx.x * blockDim.x + threadIdx.x;
+    int l_tid = threadIdx.x;
+
+    if(g_tid < n)
+        shared[l_tid] = arr[g_tid];
+    else
+        shared[l_tid] = 0.;
+
+    __syncthreads();
+
+    for(int s = 1; s < blockDim.x; s*=2) {
+        if(l_tid % (2 * s) == 0) {
+            shared[l_tid] = shared[l_tid] + shared[l_tid + s];
+        }
+
+        __syncthreads();
+    }
+
+    if(l_tid == 0) {
+        arr[blockIdx.x] = shared[0];
+    }
+}
+
+void sum_reduce(float *arr, int n) {
+    /*This sum reduction will work for arrays with up to 
+     T ^ 2 = 128 * 128 = 16384 elements in length.*/
+    int blocks = (n % T == 0) ? (n / T) : (n / T + 1);
+    
+    sum_reduce1<<<blocks, T>>>(arr, n);
+
+    n = blocks;
+    sum_reduce1<<<1, T>>>(arr, n);
+}
+
+__global__ void elwise_mult(float **arr1, float **arr2, float *result, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(tid < n)
+        result[tid] = *arr1[tid] * *arr2[tid];
+}

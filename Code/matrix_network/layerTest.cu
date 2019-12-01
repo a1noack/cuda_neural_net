@@ -67,11 +67,17 @@ int main() {
     printf("Layer3\n");
     l3->print_layer();
 
+    l2->move_to_device();
+    l3->move_to_device();
+    
     printf("L2 forward\n");
     l2->forward_pass();
 
     printf("L3 forward\n");
     l3->forward_pass();
+
+    l2->move_to_host();
+    l3->move_to_host();
 
     printf("-----------NETWORK OUTPUT ------------------)\n\t");
     l3->outputs->print();

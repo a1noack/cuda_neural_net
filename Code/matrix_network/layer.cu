@@ -71,6 +71,46 @@ void Layer::zero_grad() {
     }
 }
 
+void Layer::move_to_device() {
+    if(inputs != NULL)
+        inputs->move_to_device();
+    if(outputs != NULL)
+        outputs->move_to_device();
+    
+    if(in_weights != NULL) {
+        in_weights->move_to_device();
+        in_del_weights->move_to_device();
+    }
+    if(out_weights != NULL) {
+        out_weights->move_to_device();
+        out_del_weights->move_to_device();
+    }
+    if(bias != NULL) {
+        bias->move_to_device();
+        del_bias->move_to_device();
+    }
+}
+
+void Layer::move_to_host() {
+    if(inputs != NULL)
+        inputs->move_to_host();
+    if(outputs != NULL)
+        outputs->move_to_host();
+    
+    if(in_weights != NULL) {
+        in_weights->move_to_host();
+        in_del_weights->move_to_host();
+    }
+    if(out_weights != NULL) {
+        out_weights->move_to_host();
+        out_del_weights->move_to_host();
+    }
+    if(bias != NULL) {
+        bias->move_to_host();
+        del_bias->move_to_host();
+    }
+}
+
 void print_FF(float** f, int n) {
     for(int i = 0; i < n; i++) {
         printf("%f ", *f[i]);

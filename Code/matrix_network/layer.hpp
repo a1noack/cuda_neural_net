@@ -33,6 +33,8 @@ class Layer {
         void set_next_layer(Layer*);
         void set_output(float* ins) { outputs->set_memory(ins); }
         void zero_grad();
+        void move_to_device();
+        void move_to_host();
 
         void forward_pass();
         void back_prop(float* targets);
