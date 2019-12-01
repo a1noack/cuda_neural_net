@@ -10,10 +10,10 @@
 
 class matrix{
     private:
-        float* host_data;
-        float* device_data;
 
     public:
+        float* host_data;
+        float* device_data;
         int num_rows;
         int num_cols;
         int num_vals;

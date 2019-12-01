@@ -28,6 +28,9 @@ int main() {
     printf("testing moving to device\n");
     n->print();
 
+    n->get_row(1);
+    n->get_col(1);
+
     delete n;
 }
 

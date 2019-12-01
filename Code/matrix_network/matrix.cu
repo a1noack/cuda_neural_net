@@ -61,21 +61,45 @@ void matrix::set_mem_random() {
 float** matrix::get_row(int index) {
     float** row_at_index = new float*[num_cols];
 
-    for(int i = 0; i < num_cols; i++) {
-        row_at_index[i] = &host_data[(index * num_cols) + i];
+    if(!on_device) {
+        for(int i = 0; i < num_cols; i++) {
+            row_at_index[i] = &host_data[(index * num_cols) + i];
+        }
+        return row_at_index;
+    }
+    else {
+        float **d_row_at_index;
+        for(int i = 0; i < num_cols; i++) {
+            row_at_index[i] = &device_data[(index * num_cols) + i];
+        }
+        cudaMalloc(&d_row_at_index, num_cols * sizeof(float*));
+        cudaMemcpy(d_row_at_index, row_at_index, num_cols * sizeof(float*), cudaMemcpyHostToDevice);
+        return d_row_at_index;
     }
 
-    return row_at_index;
 }
 
 float** matrix::get_col(int index) {
     float** col_at_index = new float*[num_rows];
     int j = 0;
-    for(int i = index; i < num_rows * num_cols; i+=num_cols) {
-        col_at_index[j] = &host_data[i];
-        j++;
+
+    if(!on_device) {
+        for(int i = index; i < num_rows * num_cols; i+=num_cols) {
+            col_at_index[j] = &host_data[i];
+            j++;
+        }
+        return col_at_index;
     }
-    return col_at_index;
+    else {
+        float **d_col_at_index;
+        for(int i = index; i < num_rows * num_cols; i+=num_cols) {
+            col_at_index[j] = &device_data[i];
+            j++;
+        }
+        cudaMalloc(&d_col_at_index, num_rows * sizeof(float*));
+        cudaMemcpy(d_col_at_index, col_at_index, num_rows * sizeof(float*), cudaMemcpyHostToDevice);
+        return d_col_at_index;
+    }
 }
 
 
@@ -93,7 +117,7 @@ void matrix::print() {
         printf("on host: \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
-                printf("%f ", host_data[(i*num_cols) + j]);
+                printf("%.1f ", host_data[(i*num_cols) + j]);
             }
             printf("\n");
         }
@@ -104,7 +128,7 @@ void matrix::print() {
         printf("on device: \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
-                printf("%f ", temp[(i*num_cols) + j]);
+                printf("%.1f ", temp[(i*num_cols) + j]);
             }
             printf("\n");
         }
