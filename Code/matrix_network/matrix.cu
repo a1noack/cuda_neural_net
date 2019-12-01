@@ -117,7 +117,7 @@ void matrix::print() {
         printf("on host: \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
-                printf("%.1f ", host_data[(i*num_cols) + j]);
+                printf("%.2f ", host_data[(i*num_cols) + j]);
             }
             printf("\n");
         }
@@ -128,7 +128,7 @@ void matrix::print() {
         printf("on device: \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
-                printf("%.1f ", temp[(i*num_cols) + j]);
+                printf("%.2f ", temp[(i*num_cols) + j]);
             }
             printf("\n");
         }

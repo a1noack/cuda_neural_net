@@ -127,9 +127,50 @@ void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
             printf("Incompatible matrix dimensions. m1 is %d x %d, m2 is %d x %d\n", r1, c1, r2, c2);
     }
     else
-        printf("make sure input matrices and output matrix have been moved to device");
+        printf("Move input matrices and output matrix have been moved to device");
 }
 
+__global__ void exp(float *mat, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    mat[tid] = exp(mat[tid]);
+}
+
+__global__ void sigmoid(float *mat, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(tid < n)
+        mat[tid] = 1. / (1. + exp(-mat[tid]));
+}
+
+__global__ void relu(float *mat, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(mat[tid] <= 0)
+        mat[tid] = 0;
+}
+
+__global__ void softmax(float *mat, float sum_of_exp, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    mat[tid] = exp(mat[tid]) / sum_of_exp;
+}
+
+void softmax(float *mat, int n) {
+    exp<<<1, T>>>(mat, n);
+    sum_reduce(mat, n); 
+}
+
+void activate(matrix *m, int type) {
+    int n = m->num_vals;
+    int threads = 128;
+    int blocks = int(ceil(float(n) / threads));
+    printf("blocks = %d\n", blocks);
+    if(type == 0)
+        sigmoid<<<blocks, threads>>>(m->device_data, m->num_vals);
+    else if(type == 1)
+        relu<<<blocks, T>>>(m->device_data, m->num_vals);
+    else if(type == 2)
+        printf("softmax has not been implemented yet.");
+    else
+        printf("This activation function has not been configured.");
+} 
 
 __global__ void test2(float **arr1, float *result, int n) {
     int tid = blockIdx.x * gridDim.x + threadIdx.x;
@@ -158,17 +199,20 @@ int main(int argc, char *argv[]) {
     printf("here\n");
     test2<<<1, 32>>>(dd2, res, n);
     print_dev_array(res, n);*/
-    int r1 = 1, c1 = 15, r2 = 15, c2 = 4;
+    int r1 = 1, c1 = 5, r2 = 5, c2 = 4;
 
     float m1dat[r1*c1] = {0};
     float m2dat[r2*c2] = {0};
 
     for(int i = 0; i < r1*c1; i++) {
-        m1dat[i] = 4.;
+        m1dat[i] = .5;
     }
 
     for(int i = 0; i < r2*c2; i++) {
-        m2dat[i] = 3.;
+        if(i % c2 % 2 == 0)
+            m2dat[i] = 1.;
+        else
+            m2dat[i] = -1.1;
     }
 
     matrix *m1 = new matrix(r1, c1);
@@ -185,12 +229,20 @@ int main(int argc, char *argv[]) {
 
     m1->print();
     m2->print();
-    m3->print();
 
     mat_mul(m1, m2, m3);
     
     m3->print();
+    
+    printf("\ntesting relu:\n");
+    activate(m3, 1);
 
+    m3->print();
+    
+    printf("\ntesting sigmoid:\n");
+    activate(m3, 0);
+
+    m3->print();
     
     /*srand(time(NULL));
     if(argc != 2) {

@@ -39,3 +39,29 @@ void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
     else
         printf("make sure input matrices and output matrix have been moved to device");
 }
+
+__global__ void _sigmoid(float *mat, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(tid < n)
+        mat[tid] = 1. / (1. + exp(-mat[tid]));
+}
+
+__global__ void _relu(float *mat, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(mat[tid] <= 0)
+        mat[tid] = 0;
+}
+
+void activate(matrix *m, int type) {
+    int n = m->num_vals;
+    int threads = 128;
+    int blocks = int(ceil(float(n) / threads));
+    if(type == 0)
+        _sigmoid<<<blocks, threads>>>(m->device_data, m->num_vals);
+    else if(type == 1)
+        _relu<<<blocks, T>>>(m->device_data, m->num_vals);
+    else if(type == 2)
+        printf("softmax has not been implemented yet.");
+    else
+        printf("This activation function has not been configured.");
+} 

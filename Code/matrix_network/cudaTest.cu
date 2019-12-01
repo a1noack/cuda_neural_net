@@ -7,11 +7,11 @@ int main(int argc, char *argv[]) {
     float m2dat[r2*c2] = {0};
 
     for(int i = 0; i < r1*c1; i++) {
-        m1dat[i] = 4.;
+        m1dat[i] = .1;
     }
 
     for(int i = 0; i < r2*c2; i++) {
-        m2dat[i] = 3.;
+        m2dat[i] = .5;
     }
 
     matrix *m1 = new matrix(r1, c1);
@@ -28,10 +28,11 @@ int main(int argc, char *argv[]) {
 
     m1->print();
     m2->print();
-    m3->print();
 
     mat_mul(m1, m2, m3);
-    
+    m3->print();
+
+    activate(m3, 0);
     m3->print();
 
     exit(0);
