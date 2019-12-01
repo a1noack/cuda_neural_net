@@ -108,7 +108,7 @@ void Layer::back_prop(float* targets) {
             float** w = out_weights->get_row(i);
             float** ndb = next->del_bias->get_row(0);
             float db = 0.0;
-            assert(out_weights->num_cols == next->del_bias->num_cols);
+//            assert(out_weights->num_cols == next->del_bias->num_cols);
             for(int j = 0; j < out_weights->num_cols; j++) {
                 db += *ndb[j] * *w[j];
             }
@@ -121,7 +121,7 @@ void Layer::back_prop(float* targets) {
 
         float** ins = inputs->get_row(0);
 
-        assert(in_del_weights->num_rows == inputs->num_cols);
+//        assert(in_del_weights->num_rows == inputs->num_cols);
         for(int j = 0; j < in_del_weights->num_rows; j++) {
             *dw[j] += dbloc * *ins[j];
         }
@@ -138,7 +138,7 @@ void Layer::update(float learn_rate, int batch_size) {
         float** w = in_weights->get_col(i); //<--------------- COLUMN CALLS
         float** dw = in_del_weights->get_col(i);
 
-        assert(prev->num_nodes == in_weights->num_rows);
+//        assert(prev->num_nodes == in_weights->num_rows);
         for(int j = 0; j < prev->num_nodes; j++) {
             *w[j] = *w[j] - (learn_rate * (*dw[j] / batch_size) );
         }
