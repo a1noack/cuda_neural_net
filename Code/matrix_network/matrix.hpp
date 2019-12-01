@@ -12,15 +12,19 @@
 class matrix{
     private:
 
-        float* host_data;
-
     public:
+        float* host_data;
+        float* device_data;
         int num_rows;
         int num_cols;
         int num_vals;
+        int on_device;
 
         matrix(int, int); //matrix constrructor takes two dims
         ~matrix();
+
+        void move_to_device();
+        void move_to_host();
 
         void set_memory(float*);
         void set_memory(float*, int, int);

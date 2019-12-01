@@ -6,7 +6,7 @@ int main() {
 
     float ndat[12] = {1,2,3,4,5,6,7,8,9,10,11,12};
 
-    printf("New matrix create\n");
+    printf("New matrix created\n");
     matrix* n = new matrix(3, 4);
 
     printf("set mem\n");
@@ -23,6 +23,13 @@ int main() {
     n->set_mem_random();
 
     n->print();
+
+    n->move_to_device();
+    printf("testing moving to device\n");
+    n->print();
+
+    n->get_row(1);
+    n->get_col(1);
 
     delete n;
 }
