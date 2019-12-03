@@ -59,5 +59,12 @@ int main(int argc, char *argv[]) {
     update(m3, m3grad, 1.);
     m3->print();
 
+    printf("\n");
+    elwise_subtract(m3grad, m3, m3grad);
+    m3grad->print();
+
+    elwise_mult(m3, m3grad, m3);
+    m3->print();
+
     exit(0);
 }

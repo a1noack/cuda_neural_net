@@ -37,7 +37,8 @@ class matrix{
         float** get_row(int);
         float** get_col(int);
         float** get_all_data();
-
+        
+        void print_dims();
         void print();
 };
 

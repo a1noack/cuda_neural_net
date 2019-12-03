@@ -47,7 +47,12 @@ void matrix::set_memory(float* new_vals, int new_rows, int new_cols) {
 }
 
 void matrix::set_mem_zero() {
-    memset(host_data, 0, sizeof(float) * num_vals);
+    if(on_device) {
+        cudaMemset(device_data, 0, sizeof(float) * num_vals);
+    }
+    else{
+        memset(host_data, 0, sizeof(float) * num_vals);
+    }
 }
 
 void matrix::set_mem_random() {
@@ -133,5 +138,9 @@ void matrix::print() {
             printf("\n");
         }
     }
+}
+
+void matrix::print_dims() {
+    printf("%d x %d\n", num_rows, num_cols);
 }
 
