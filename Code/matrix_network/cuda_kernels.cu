@@ -55,17 +55,31 @@ __global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2
     }
 }
 
-
-__global__ void _sigmoid(float *mat, int n) {
+__global__ void _sigmoid_prime(float *mat, float *result, int n) {
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
-    if(tid < n)
-        mat[tid] = 1. / (1. + exp(-mat[tid]));
+    if(tid < n) {
+        float val = 0;
+        val = 1. / (1. + exp(-mat[tid]));
+        mat[tid] = val * (1 - val);
+    }
 }
 
-__global__ void _relu(float *mat, int n) {
+__global__ void _sigmoid(float *mat, float *result, int n) {
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
-    if(tid < n && mat[tid] <= 0)
-        mat[tid] = 0;
+    if(tid < n) {
+        float val = 0;
+        val = 1. / (1. + exp(-mat[tid]));
+        mat[tid] = val;
+    }
+}
+
+__global__ void _relu(float *mat, float *result, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(tid < n)
+        if(mat[tid] <= 0.)
+            result[tid] = 0.;
+        else
+            result[tid] = mat[tid];
 }
 
 __global__ void _elwise_subtract(float *mat1, float *mat2, float *result, int n) {
@@ -80,10 +94,10 @@ __global__ void _elwise_mult(float *mat1, float *mat2, float *result, int n) {
         result[tid] = mat1[tid] * mat2[tid];
 }
 
-__global__ void _add_bias(float *mat, float *bias, int num_cols) {
-    int mat_tid = blockIdx.x * blockDim.x + threadIdx.x;
+__global__ void _add_bias(float *mat, float *bias, int c1) {
+    int mat_tid = blockIdx.x * c1 + threadIdx.x;
     int bias_tid = threadIdx.x;
-    if(bias_tid < num_cols)
+    if(threadIdx.x < c1)
         mat[mat_tid] += bias[bias_tid];
 }
 
@@ -94,7 +108,20 @@ __global__ void _update(float *mat, float *del_mat, float lr, int n) {
 }
 
 
-/*Wrapper functions the CUDA kernels that accept matrix objects.*/
+__global__ void _transpose(float *mat, float *result, int c1, int r1) {
+    int mat_tid = (blockIdx.x * c1) + threadIdx.x;
+    int result_tid = blockIdx.x + (threadIdx.x * r1);
+    if(threadIdx.x < c1)
+        result[result_tid] = mat[mat_tid];
+}
+
+__global__ void _divide(float *mat, float *result, float denom, int n) {
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if(tid < n)
+        result[tid] = mat[tid] / denom;
+}
+
+/*Wrapper functions for the CUDA kernels that accept matrix objects.*/
 
 void add_bias(matrix *mat, matrix *bias) {
     if(!mat->on_device || !bias->on_device) { 
@@ -104,6 +131,7 @@ void add_bias(matrix *mat, matrix *bias) {
     if(mat->num_cols != bias->num_cols) {
         printf("mat and del_mat don't have the same dimensions.\n");
     }
+    bias->print_dims();
     int blocks = mat->num_rows;
     int threads = T;
     _add_bias<<<blocks, threads>>>(mat->device_data, bias->device_data, mat->num_cols);
@@ -118,16 +146,19 @@ void update(matrix *mat, matrix *del_mat, float lr) {
     if(mat->num_rows != del_mat->num_rows || mat->num_cols != del_mat->num_cols) {
         printf("mat and del_mat don't have the same dimensions.\n");
     }
-    int blocks = mat->num_rows;
+    int n = mat->num_vals;
     int threads = T;
-    _update<<<blocks, threads>>>(mat->device_data, del_mat->device_data, lr, mat->num_vals);
+    //int blocks = mat->num_rows;
+    int blocks = int(ceil(float(n) / threads));
+    //int blocks = mat->num_rows;
+    //int threads = T;
+    _update<<<blocks, threads>>>(mat->device_data, del_mat->device_data, lr, n);
 }
 
-
-float sum_reduce(matrix *mat) {
+float *sum_reduce(matrix *mat) {
     if(!mat->on_device) { 
         printf("Make sure matrix and gradients are both on device before adding them.\n");
-        return 1.;
+        return NULL;
     }
     int n = mat->num_vals;
     /*This sum reduction will work for arrays with up to 
@@ -138,7 +169,21 @@ float sum_reduce(matrix *mat) {
 
     n = blocks;
     _sum_reduce1<<<1, T>>>(mat->device_data, n);
-    return mat->device_data[0];
+    return mat->device_data;
+}
+
+void divide(matrix *mat, matrix *result, float denom) {
+    if(!mat->on_device || !result->on_device) {
+        printf("Make sure mat and result are on device before dividing.\n");
+        return;
+    }
+    int n = mat->num_vals;
+    int threads = T;
+    //int blocks = mat->num_rows;
+    int blocks = int(ceil(float(n) / threads));
+    //int blocks = mat->num_rows;
+    //int threads = T;
+    _divide<<<blocks, threads>>>(mat->device_data, result->device_data, denom, n);
 }
 
 void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
@@ -152,9 +197,13 @@ void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
         printf("result: "); result->print_dims();
         return;
     }
-    int blocks = mat1->num_rows;
+    int n = mat1->num_vals;
     int threads = T;
-    _elwise_mult<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, mat1->num_vals);
+    //int blocks = mat->num_rows;
+    int blocks = int(ceil(float(n) / threads));
+    //int blocks = mat1->num_rows;
+    //int threads = T;
+    _elwise_mult<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, n);
 }
 
 
@@ -169,9 +218,13 @@ void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
         printf("result: "); result->print_dims();
         return;
     }
-    int blocks = mat1->num_rows;
+    int n = mat1->num_vals;
     int threads = T;
-    _elwise_subtract<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, mat1->num_vals);
+    //int blocks = mat->num_rows;
+    int blocks = int(ceil(float(n) / threads));
+    //int blocks = mat1->num_rows;
+    //int threads = T;
+    _elwise_subtract<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, n);
 }
 
 void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
@@ -187,20 +240,53 @@ void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
         printf("Make sure input matrices and output matrix have been moved to device");
 }
 
-void activate(matrix *mat, int type) {
+void activate(matrix *mat, matrix *result, int type) {
     if(!mat->on_device) { 
         printf("Make sure matrix is on device before activating.\n");
         return;
     }
     int n = mat->num_vals;
-    int threads = 128;
+    int threads = T;
+    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
+
     if(type == 0)
-        _sigmoid<<<blocks, threads>>>(mat->device_data, n);
+        _sigmoid<<<blocks, threads>>>(mat->device_data, result->device_data, n);
     else if(type == 1)
-        _relu<<<blocks, threads>>>(mat->device_data, n);
+        _relu<<<blocks, threads>>>(mat->device_data, result->device_data, n);
     else if(type == 2)
         printf("Softmax has not been implemented yet.\n");
     else
         printf("This activation function has not been configured.\n");
 } 
+
+void activate_prime(matrix *mat, matrix *result, int type) {
+    if(!mat->on_device) { 
+        printf("Make sure matrix is on device before activating.\n");
+        return;
+    }
+    int n = mat->num_vals;
+    int threads = T;
+    //int blocks = mat->num_rows;
+    int blocks = int(ceil(float(n) / threads));
+
+    if(type == 0)
+        _sigmoid_prime<<<blocks, threads>>>(mat->device_data, result->device_data, n);
+    else
+        printf("This activation function has not been configured.\n");
+} 
+
+void transpose(matrix *mat, matrix *result) {
+    if(!mat->on_device || !result->on_device) { 
+        printf("Make sure mat, result, are on device before transposing.\n");
+        return;
+    }
+    if(mat->num_rows != result->num_cols || mat->num_cols != result->num_rows) {
+        printf("mat: "); mat->print_dims();
+        printf("result: "); result->print_dims();
+        return;
+    }
+    int blocks = mat->num_rows;
+    int threads = T;
+    _transpose<<<blocks, threads>>>(mat->device_data, result->device_data, mat->num_cols, mat->num_rows);
+}

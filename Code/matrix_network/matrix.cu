@@ -119,7 +119,7 @@ float** matrix::get_all_data() {
 
 void matrix::print() {
     if(!on_device) {
-        printf("on host: \n");
+        printf("(on host) \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
                 printf("%.2f ", host_data[(i*num_cols) + j]);
@@ -130,7 +130,7 @@ void matrix::print() {
     else {
         float temp[num_vals];
         cudaMemcpy(temp, device_data, num_vals * sizeof(float), cudaMemcpyDeviceToHost);
-        printf("on device: \n");
+        printf("(on device) \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
                 printf("%.2f ", temp[(i*num_cols) + j]);

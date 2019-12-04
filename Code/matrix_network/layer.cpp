@@ -82,7 +82,7 @@ void Layer::forward_pass() {
     if(lp != input) {
         mat_mul(inputs, in_weights, outputs);
         add_bias(outputs, bias);
-        activate(outputs, 0);
+        activate(outputs, outputs, 0); // 0 for sigmoid activation
     } 
     /*    if(lp != input) {
 
@@ -130,7 +130,11 @@ void Layer::back_prop(float* targets) {
 
 
 void Layer::update(float learn_rate, int batch_size) {
-    float** b = bias->get_row(0);
+    int scaled_lr = learn_rate / float(batch_size);
+    update(in_weights, in_del_weights, scaled_lr); 
+    update(bias, del_bias, scaled_lr);
+
+    /*float** b = bias->get_row(0);
     float** db = del_bias->get_row(0);
 
 //    assert(num_nodes == in_weights->num_cols);
@@ -144,7 +148,7 @@ void Layer::update(float learn_rate, int batch_size) {
         }
 
         *b[i] = *b[i] - (learn_rate * (*db[i] / (float)batch_size) );
-    }
+    }*/
 }
 
 void Layer::print_layer() {

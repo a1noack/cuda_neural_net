@@ -3,7 +3,7 @@
 // it is included in cuda_kernels.cu
 
 int main(int argc, char *argv[]) {
-    int r1 = 1, c1 = 15, r2 = 15, c2 = 4;
+    int r1 = 4, c1 = 15, r2 = 15, c2 = 6;
 
     float m1dat[r1*c1] = {0};
     float m2dat[r2*c2] = {0};
@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     float biasdata[1*c2] = {0};
 
     for(int i = 0; i < r1*c1; i++) {
-        m1dat[i] = .1;
+        m1dat[i] = .1 * i;
     }
 
     for(int i = 0; i < r2*c2; i++) {
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     }
 
     for(int i = 0; i < 1*c2; i++) {
-        biasdata[i] = i;
+        biasdata[i] = 3.;
     }
 
     for(int i = 0; i < r1*c2; i++) {
@@ -27,44 +27,69 @@ int main(int argc, char *argv[]) {
     }
 
     matrix *m1 = new matrix(r1, c1);
+    matrix *m1T = new matrix(c1, r1);
     matrix *m2 = new matrix(r2, c2);
     matrix *m3 = new matrix(r1, c2);
     matrix *m3grad = new matrix(r1, c2);
     matrix *bias = new matrix(1, c2);
 
     m1->set_memory(m1dat);
+    m1T->set_mem_zero();
     m2->set_memory(m2dat);
     m3grad->set_memory(m3graddata);
     bias->set_memory(biasdata);
     m3->set_mem_zero();
 
     m1->move_to_device();
+    m1T->move_to_device();
     m2->move_to_device();
     m3->move_to_device();
     m3grad->move_to_device();
     bias->move_to_device();
 
-    m1->print();
-    m2->print();
+    printf("\nm3grad: "); m3grad->print();
 
+    printf("\nm1: "); m1->print();
+    transpose(m1, m1T);
+    printf("\nm1T: "); m1T->print();
+
+    printf("\nm2: ");
+    m2->print();
+    
+    printf("\nm1 x m2 = m3: ");
     mat_mul(m1, m2, m3);
+    
+    printf("\nm3: ");
     m3->print();
     
+    printf("\nm3 + bias: ");
     add_bias(m3, bias);
     m3->print();
 
-    activate(m3, 0);
+    printf("\nsigmoid(m3): ");
+    activate(m3, m3, 0);
     m3->print();
 
+    printf("\nm3grad: "); m3grad->print();
+    printf("\nm3 - m3grad = m3: ");
     update(m3, m3grad, 1.);
     m3->print();
 
-    printf("\n");
+    printf("\nm3grad - m3: ");
     elwise_subtract(m3grad, m3, m3grad);
     m3grad->print();
 
+    printf("\nm3 * m3grad: ");
     elwise_mult(m3, m3grad, m3);
     m3->print();
 
+    printf("\nm3 / 3.: ");
+    divide(m3, m3, 3.);
+    m3->print();
+
+    printf("\nsigmoid_prime(m3): ");
+    activate_prime(m3, m3, 0);
+    m3->print();
+    
     exit(0);
 }
