@@ -26,8 +26,9 @@ class Layer {
         matrix* bias;
         matrix* del_bias;
 
+        matrix* raw_outputs;
 
-        Layer(int, layer_pos, Layer*);
+        Layer(int, layer_pos, Layer*, int);
         ~Layer();
 
         void set_next_layer(Layer*);

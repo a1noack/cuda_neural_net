@@ -9,7 +9,7 @@ class Network {
         Layer** layers;
 
     public:
-        Network(int, int*, layer_type*);
+        Network(int, int*, layer_type*, int);
 
         void train(int, int, float, float);
         void set_input(float*);

@@ -1,7 +1,7 @@
 #include "layer.hpp"
 #include "cuda_kernels.cu"
 
-Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer) {
+Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer, int batch_sz) {
     lp = lpp;
     num_nodes = node_count;
 
@@ -12,8 +12,9 @@ Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer) {
     out_weights = NULL;
     out_del_weights = NULL;
 
-    outputs = new matrix(1, num_nodes);
-    inputs = new matrix(1, num_nodes);
+    outputs = new matrix(batch_sz, num_nodes);
+    raw_outputs = new matrix(batch_sz, num_nodes);
+    inputs = new matrix(batch_sz, num_nodes);
 
     if(previous_layer != NULL) {
         prev = previous_layer;
@@ -76,7 +77,7 @@ void Layer::move_to_device() {
         inputs->move_to_device();
     if(outputs != NULL)
         outputs->move_to_device();
-    
+
     if(in_weights != NULL) {
         in_weights->move_to_device();
         in_del_weights->move_to_device();
@@ -96,7 +97,7 @@ void Layer::move_to_host() {
         inputs->move_to_host();
     if(outputs != NULL)
         outputs->move_to_host();
-    
+
     if(in_weights != NULL) {
         in_weights->move_to_host();
         in_del_weights->move_to_host();
@@ -122,8 +123,9 @@ void Layer::forward_pass() {
     if(lp != input) {
         mat_mul(inputs, in_weights, outputs);
         add_bias(outputs, bias);
+        raw_outputs->mat_copy_from(outputs);
         activate(outputs, 0);
-    } 
+    }
     /*    if(lp != input) {
 
         for(int i = 0; i < num_nodes; i++) {
@@ -138,8 +140,8 @@ void Layer::forward_pass() {
 
 void Layer::back_prop(float* targets) {
     for(int i = 0; i < num_nodes; i++) {
-//        assert(num_nodes == outputs->num_cols);
-        float o = *outputs->get_row(0)[i];
+        //float o = *outputs->get_row(0)[i];
+        float o = *raw_outputs->get_row(0)[i]; //<---------- CHANGE FOR BATCH SZ
         float dbloc = (o * (1-o));
 
         if(targets != NULL) {
@@ -148,7 +150,6 @@ void Layer::back_prop(float* targets) {
             float** w = out_weights->get_row(i);
             float** ndb = next->del_bias->get_row(0);
             float db = 0.0;
-//            assert(out_weights->num_cols == next->del_bias->num_cols);
             for(int j = 0; j < out_weights->num_cols; j++) {
                 db += *ndb[j] * *w[j];
             }
@@ -157,11 +158,10 @@ void Layer::back_prop(float* targets) {
 
         *del_bias->get_row(0)[i] += dbloc;
 
-        float** dw = in_del_weights->get_col(i); //<------------------ COLUMN CALL
+        float** dw = in_del_weights->get_col(i);
 
-        float** ins = inputs->get_row(0);
+        float** ins = inputs->get_row(0); //<---------- CHANGE FOR BATCH SZ
 
-//        assert(in_del_weights->num_rows == inputs->num_cols);
         for(int j = 0; j < in_del_weights->num_rows; j++) {
             *dw[j] += dbloc * *ins[j];
         }
@@ -173,12 +173,10 @@ void Layer::update(float learn_rate, int batch_size) {
     float** b = bias->get_row(0);
     float** db = del_bias->get_row(0);
 
-//    assert(num_nodes == in_weights->num_cols);
     for(int i = 0; i < num_nodes; i++) {
-        float** w = in_weights->get_col(i); //<--------------- COLUMN CALLS
+        float** w = in_weights->get_col(i);
         float** dw = in_del_weights->get_col(i);
 
-//        assert(prev->num_nodes == in_weights->num_rows);
         for(int j = 0; j < prev->num_nodes; j++) {
             *w[j] = *w[j] - (learn_rate * (*dw[j] / batch_size) );
         }

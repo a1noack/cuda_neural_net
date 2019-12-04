@@ -1,6 +1,6 @@
 #include "network.hpp"
 
-Network::Network(int num_l, int* node_list, layer_type* lt) {
+Network::Network(int num_l, int* node_list, layer_type* lt, int num_batches) {
     num_layers = num_l;
 
     layers = new Layer*[num_layers];
@@ -19,9 +19,9 @@ Network::Network(int num_l, int* node_list, layer_type* lt) {
         }
 
         switch(lt[i]) {
-            case(RELU): nl = new Layer(node_list[i], position, last_layer); break;
-            case(Sigmoid): nl = new Layer(node_list[i], position, last_layer); break;
-            case(Softmax): nl = new Layer(node_list[i], position, last_layer); break;
+            case(RELU): nl = new Layer(node_list[i], position, last_layer, num_batches); break;
+            case(Sigmoid): nl = new Layer(node_list[i], position, last_layer, num_batches); break;
+            case(Softmax): nl = new Layer(node_list[i], position, last_layer, num_batches); break;
         }
 
         last_layer = nl;

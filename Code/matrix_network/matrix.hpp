@@ -17,6 +17,7 @@ class matrix{
     public:
         float* host_data;
         float* device_data;
+
         int num_rows;
         int num_cols;
         int num_vals;
@@ -37,8 +38,10 @@ class matrix{
         float** get_row(int);
         float** get_col(int);
         float** get_all_data();
-        
+
         void print_dims();
         void print();
+
+        void mat_copy_from(matrix*);
 };
 
