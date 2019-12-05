@@ -13,6 +13,4 @@ int main() {
     Network* my_net = new Network(num_layers, layout, lts, batch_sz);
 
     my_net->train(epochs, batch_sz, learn_r, min_error);
-
-
 }

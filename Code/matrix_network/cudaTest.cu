@@ -3,7 +3,7 @@
 // it is included in cuda_kernels.cu
 
 int main(int argc, char *argv[]) {
-    int r1 = 4, c1 = 15, r2 = 15, c2 = 6;
+    int r1 = 20, c1 = 18, r2 = 18, c2 = 6;
 
     float m1dat[r1*c1] = {0};
     float m2dat[r2*c2] = {0};

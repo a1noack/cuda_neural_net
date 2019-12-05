@@ -75,8 +75,10 @@ void Layer::zero_grad() {
 void Layer::move_to_device() {
     if(inputs != NULL)
         inputs->move_to_device();
-    if(outputs != NULL)
+    if(outputs != NULL) {
         outputs->move_to_device();
+        raw_outputs->move_to_device();
+    }
 
     if(in_weights != NULL) {
         in_weights->move_to_device();
@@ -95,9 +97,10 @@ void Layer::move_to_device() {
 void Layer::move_to_host() {
     if(inputs != NULL)
         inputs->move_to_host();
-    if(outputs != NULL)
+    if(outputs != NULL) {
         outputs->move_to_host();
-
+        raw_outputs->move_to_host();
+    }
     if(in_weights != NULL) {
         in_weights->move_to_host();
         in_del_weights->move_to_host();
@@ -121,10 +124,10 @@ void print_FF(float** f, int n) {
 
 void Layer::forward_pass() {
     if(lp != input) {
-        mat_mul(inputs, in_weights, outputs);
-        add_bias(outputs, bias);
-        raw_outputs->mat_copy_from(outputs);
-        activate(outputs, 0);
+        mat_mul(inputs, in_weights, raw_outputs);
+        add_bias(raw_outputs, bias);
+        //raw_outputs->mat_copy_from(outputs);
+        activate(raw_outputs, outputs, 0);
     }
     /*    if(lp != input) {
 

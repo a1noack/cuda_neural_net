@@ -1,9 +1,9 @@
 #include "layer.hpp"
 
 int main() {
-    Layer* l1 = new Layer(5, input, NULL);
-    Layer* l2 = new Layer(3, hidden, l1);
-    Layer* l3 = new Layer(2, output, l2);
+    Layer* l1 = new Layer(5, input, NULL, 1);
+    Layer* l2 = new Layer(3, hidden, l1, 1);
+    Layer* l3 = new Layer(2, output, l2, 1);
 
     float is[5] = {0.05, 0.1, 0.35, 0.75, 0.25};
     float targets[2] = {0.01,  0.99};
