@@ -40,7 +40,7 @@ class Layer {
         void move_to_host();
 
         void forward_pass();
-        void back_prop(matrix* targets);
+        void back_prop(matrix*, int);
         void update(float, int);
 
         //TESTING FUNCTIONS:

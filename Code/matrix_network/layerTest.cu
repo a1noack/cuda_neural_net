@@ -93,13 +93,13 @@ int main() {
 
     printf("<-------------------Back prop L3: ----------------->\n");
     //l3->print_layer();
-    l3->back_prop(tar);
+    l3->back_prop(tar, 1);
     //l3->print_layer();
     printf("<-------------------------------------------------->\n");
 
     printf("<-------------------Back prop L2: ----------------->\n");
     //l2->print_layer();
-    l2->back_prop(NULL);
+    l2->back_prop(NULL, 1);
     //l2->print_layer();
     printf("<-------------------------------------------------->\n");
 
