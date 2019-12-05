@@ -79,7 +79,14 @@ int main() {
     printf("L3 forward\n");
     l3->forward_pass();
 
-    l2->move_to_host();
+    
+    float error1 = MSE_mat_wrapper(l3->outputs, tar, tar);
+    printf("-----------NETWORK ERROR -------------------)\n");
+    printf("\t%f\n (device generated) ", error1);
+    printf("--------------------------------------------)\n");
+
+
+    /*l2->move_to_host();
     l3->move_to_host();
 
     printf("-----------NETWORK OUTPUT ------------------)\n\t");
@@ -90,7 +97,7 @@ int main() {
     printf("-----------NETWORK ERROR -------------------)\n");
     printf("\t%f\n", error);
     printf("--------------------------------------------)\n");
-
+*/
     printf("<-------------------Back prop L3: ----------------->\n");
     //l3->print_layer();
     l3->back_prop(tar, 1);
@@ -119,6 +126,10 @@ int main() {
     float ins2[5] = {0.85, 0.3, 0.15, 0.9, 0.45};
     float targets2[2] = {0.01, 0.99};
 
+    tar->move_to_host();
+    tar->set_memory(targets2);
+    tar->move_to_device();
+
     //l1->zero_grad();
     //l2->zero_grad();
     //l3->zero_grad();
@@ -126,12 +137,17 @@ int main() {
     //l2->forward_pass();
     //l3->forward_pass();
 
-    error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
+    error1 = MSE_mat_wrapper(l3->outputs, tar, tar);
+    printf("-----------NETWORK ERROR -------------------)\n");
+    printf("\t%f\n (device generated) ", error1);
+    printf("--------------------------------------------)\n");
+/*    error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
     printf("-----------NETWORK ERROR -------------------)\n");
     printf("\t%f\n", error);
     printf("--------------------------------------------)\n");
-
-        /*
+*/
+    
+    /*
         float error = MSE(l3->outputs->get_row(0), targets, l3->outputs->num_cols);
     printf("Error: %f\n", error);
 
