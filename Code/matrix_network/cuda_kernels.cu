@@ -6,7 +6,7 @@
 
 /*Cuda kernels*/
 
-__global__ void _sum_reduce1(float *arr, int n) {
+__global__ void _sum_reduce1(float *arr, float *result, int n) {
     __shared__ float shared[T];
     int g_tid = blockIdx.x * blockDim.x + threadIdx.x;
     int l_tid = threadIdx.x;
@@ -27,10 +27,34 @@ __global__ void _sum_reduce1(float *arr, int n) {
     }
 
     if(l_tid == 0) {
-        arr[blockIdx.x] = shared[0];
+        result[blockIdx.x] = shared[0];
     }
 }
 
+__global__ void _sum_reduce_rows(float *mat, float *result, int r1, int c1) {
+    __shared__ float shared[T];
+    int g_tid = blockIdx.x + c1 * threadIdx.x;
+    int l_tid = threadIdx.x;
+
+    if(l_tid < r1)
+        shared[l_tid] = mat[g_tid];
+    else
+        shared[l_tid] = 0.;
+
+    __syncthreads();
+
+    for(int s = 1; s < blockDim.x; s*=2) {
+        if(l_tid % (2 * s) == 0) {
+            shared[l_tid] = shared[l_tid] + shared[l_tid + s];
+        }
+
+        __syncthreads();
+    }
+
+    if(l_tid == 0) {
+        result[blockIdx.x] = shared[0];
+    }
+}
 __global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2) {
     __shared__ float shared[T];
     int tid = threadIdx.x;
@@ -121,6 +145,8 @@ __global__ void _divide(float *mat, float *result, float denom, int n) {
         result[tid] = mat[tid] / denom;
 }
 
+
+
 /*Wrapper functions for the CUDA kernels that accept matrix objects.*/
 
 void add_bias(matrix *mat, matrix *bias) {
@@ -155,9 +181,9 @@ void update(matrix *mat, matrix *del_mat, float lr) {
     _update<<<blocks, threads>>>(mat->device_data, del_mat->device_data, lr, n);
 }
 
-float *sum_reduce(matrix *mat) {
-    if(!mat->on_device) { 
-        printf("Make sure matrix and gradients are both on device before adding them.\n");
+float *sum_reduce(matrix *mat, matrix *result) {
+    if(!mat->on_device || !result->on_device) { 
+        printf("Make sure matrix is on device before summing it.\n");
         return NULL;
     }
     int n = mat->num_vals;
@@ -165,11 +191,21 @@ float *sum_reduce(matrix *mat) {
      T ^ 2 = 128 * 128 = 16384 elements in length.*/
     int blocks = (n % T == 0) ? (n / T) : (n / T + 1);
     
-    _sum_reduce1<<<blocks, T>>>(mat->device_data, n);
+    _sum_reduce1<<<blocks, T>>>(mat->device_data, result->device_data, n);
 
     n = blocks;
-    _sum_reduce1<<<1, T>>>(mat->device_data, n);
-    return mat->device_data;
+    _sum_reduce1<<<1, T>>>(result->device_data, result->device_data, n);
+    return result->device_data;
+}
+
+void sum_reduce_rows(matrix *mat, matrix *result) {
+    if(!mat->on_device || !result->on_device) { 
+        printf("Make sure matrix is on device before summing it.\n");
+    }
+    int blocks = mat->num_cols;
+    int threads = T;
+    
+    _sum_reduce_rows<<<blocks, threads>>>(mat->device_data, result->device_data, mat->num_rows, mat->num_cols);
 }
 
 void divide(matrix *mat, matrix *result, float denom) {
@@ -289,4 +325,23 @@ void transpose(matrix *mat, matrix *result) {
     int blocks = mat->num_rows;
     int threads = T;
     _transpose<<<blocks, threads>>>(mat->device_data, result->device_data, mat->num_cols, mat->num_rows);
+}
+
+float MSE(matrix *y, matrix *yhat, matrix *result) {
+    if(!y->on_device || !yhat->on_device || !result->on_device) { 
+        printf("Make sure y, yhat, result are on device before MSE.\n");
+        return -1;
+    }
+    if(y->num_rows != yhat->num_rows || y->num_cols != yhat->num_cols) {
+        printf("y: "); y->print_dims();
+        printf("yhat: "); yhat->print_dims();
+        printf("result: "); result->print_dims();
+        return -1.;
+    }
+    float mse;
+    elwise_subtract(y, yhat, result);
+    elwise_mult(result, result, result);
+    sum_reduce(result, result);
+    cudaMemcpy(&mse, result->device_data, sizeof(float), cudaMemcpyDeviceToHost);
+    return mse/float(y->num_rows);
 }
