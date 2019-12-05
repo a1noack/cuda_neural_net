@@ -16,7 +16,7 @@ class Network {
         void zero_grad();
 
         void forward();
-        void back_prop(float*);
+        void back_prop(matrix*);
         void update_weights(float, int);
 
         float** get_predictions();

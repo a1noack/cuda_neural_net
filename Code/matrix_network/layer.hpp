@@ -27,6 +27,8 @@ class Layer {
         matrix* del_bias;
 
         matrix* raw_outputs;
+        matrix* out_weightsT;
+        matrix* inputsT;
 
         Layer(int, layer_pos, Layer*, int);
         ~Layer();
@@ -38,7 +40,7 @@ class Layer {
         void move_to_host();
 
         void forward_pass();
-        void back_prop(float* targets);
+        void back_prop(matrix* targets);
         void update(float, int);
 
         //TESTING FUNCTIONS:
