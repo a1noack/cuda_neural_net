@@ -11,10 +11,15 @@ Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer, int batch_sz)
     in_del_weights = NULL;
     out_weights = NULL;
     out_del_weights = NULL;
+    out_weightsT = NULL;
+
 
     outputs = new matrix(batch_sz, num_nodes);
     raw_outputs = new matrix(batch_sz, num_nodes);
-    inputs = new matrix(batch_sz, num_nodes);
+    //inputs = new matrix(batch_sz, num_nodes);
+
+    inputs = NULL;
+    inputsT = NULL;
 
     if(previous_layer != NULL) {
         prev = previous_layer;
@@ -48,10 +53,13 @@ void Layer::set_next_layer(Layer* next_layer) {
 
     next->in_weights = out_weights;
     next->inputs = outputs;
+    next->inputsT = new matrix(outputs->num_cols, outputs->num_rows);
 
     out_del_weights = new matrix(num_nodes, next->num_nodes);
     out_del_weights->set_mem_zero();
     next->in_del_weights = out_del_weights;
+
+    out_weightsT = new matrix(next->num_nodes, num_nodes);
 
     //____________________TESTING STUFF
     w_idx = new matrix(num_nodes, next->num_nodes);
@@ -141,14 +149,15 @@ void Layer::forward_pass() {
     }*/
 }
 
-void Layer::back_prop(float* targets) {
+void Layer::back_prop(matrix* targets) {
+    float** tar = targets->get_row(0);
     for(int i = 0; i < num_nodes; i++) {
         //float o = *outputs->get_row(0)[i];
         float o = *raw_outputs->get_row(0)[i]; //<---------- CHANGE FOR BATCH SZ
         float dbloc = (o * (1-o));
 
         if(targets != NULL) {
-            dbloc *= (o - targets[i]);
+            dbloc *= (o - *tar[i]);
         } else {
             float** w = out_weights->get_row(i);
             float** ndb = next->del_bias->get_row(0);

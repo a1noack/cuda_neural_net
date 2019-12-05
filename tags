@@ -109,7 +109,7 @@ back_prop	Code/cuda-nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop() {$/;"
 back_prop	Code/cuda_matrix_network/layer.cpp	/^void Layer::back_prop(float* targets) {$/;"	f	class:Layer
 back_prop	Code/cuda_matrix_network/network.cpp	/^void Network::back_prop(float* targets) {$/;"	f	class:Network
 back_prop	Code/matrix_network/layer.cpp	/^void Layer::back_prop(float* targets) {$/;"	f	class:Layer
-back_prop	Code/matrix_network/network.cpp	/^void Network::back_prop(float* targets) {$/;"	f	class:Network
+back_prop	Code/matrix_network/network.cpp	/^void Network::back_prop(matrix* targets) {$/;"	f	class:Network
 back_prop	Code/nn/relu_layer.cpp	/^void RELU_Layer::back_prop() {$/;"	f	class:RELU_Layer
 back_prop	Code/nn/sigmoid_layer.cpp	/^void Sigmoid_Layer::back_prop() {$/;"	f	class:Sigmoid_Layer
 back_prop	Code/nn/softmax_layer.cpp	/^void Softmax_Layer::back_prop() {$/;"	f	class:Softmax_Layer
@@ -255,6 +255,7 @@ input	Code/cuda_matrix_network/layer.hpp	/^enum layer_pos {input, hidden, output
 input	Code/matrix_network/layer.hpp	/^enum layer_pos {input, hidden, output};$/;"	e	enum:layer_pos
 inputs	Code/cuda_matrix_network/layer.hpp	/^        matrix* inputs;$/;"	m	class:Layer
 inputs	Code/matrix_network/layer.hpp	/^        matrix* inputs;$/;"	m	class:Layer
+inputsT	Code/matrix_network/layer.hpp	/^        matrix* inputsT;$/;"	m	class:Layer
 k	Code/cuda-nn/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
 k	Code/cuda_matrix_network/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
 k	Code/matrix_network/utils/dataset.hpp	/^    int k;$/;"	m	class:Dataset
@@ -339,6 +340,7 @@ out_del_weights	Code/cuda_matrix_network/layer.hpp	/^        matrix* out_del_wei
 out_del_weights	Code/matrix_network/layer.hpp	/^        matrix* out_del_weights;$/;"	m	class:Layer
 out_weights	Code/cuda_matrix_network/layer.hpp	/^        matrix* out_weights;$/;"	m	class:Layer
 out_weights	Code/matrix_network/layer.hpp	/^        matrix* out_weights;$/;"	m	class:Layer
+out_weightsT	Code/matrix_network/layer.hpp	/^        matrix* out_weightsT;$/;"	m	class:Layer
 output	Code/cuda_matrix_network/layer.hpp	/^enum layer_pos {input, hidden, output};$/;"	e	enum:layer_pos
 output	Code/matrix_network/layer.hpp	/^enum layer_pos {input, hidden, output};$/;"	e	enum:layer_pos
 outputs	Code/cuda-nn/layer.hpp	/^        matrix* outputs; \/\/single dim 1 x num_nodes$/;"	m	class:Layer

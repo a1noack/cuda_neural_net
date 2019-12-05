@@ -89,8 +89,8 @@ void Network::forward() {
     }
 }
 
-void Network::back_prop(float* targets) {
-    float* nts = targets;
+void Network::back_prop(matrix* targets) {
+    matrix* nts = targets;
     for(int i = num_layers - 1; i > 0; i--) {
         layers[i]->back_prop(nts);
         nts = NULL;

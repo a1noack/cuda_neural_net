@@ -7,6 +7,9 @@ int main() {
 
     float is[5] = {0.05, 0.1, 0.35, 0.75, 0.25};
     float targets[2] = {0.01,  0.99};
+    tar = new matrix(1, 2);
+    tar->set_memory(targets);
+    tar->move_to_device();
 
     float w1[3] = {0.15, 0.2, 0.25};
     float w2[3] = {0.4, 0.45, 0.50};
@@ -69,7 +72,7 @@ int main() {
 
     l2->move_to_device();
     l3->move_to_device();
-    
+
     printf("L2 forward\n");
     l2->forward_pass();
 
@@ -90,7 +93,7 @@ int main() {
 
     printf("<-------------------Back prop L3: ----------------->\n");
     //l3->print_layer();
-    l3->back_prop(targets);
+    l3->back_prop(tar);
     //l3->print_layer();
     printf("<-------------------------------------------------->\n");
 
