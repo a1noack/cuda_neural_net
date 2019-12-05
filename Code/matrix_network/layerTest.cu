@@ -7,7 +7,7 @@ int main() {
 
     float is[5] = {0.05, 0.1, 0.35, 0.75, 0.25};
     float targets[2] = {0.01,  0.99};
-    tar = new matrix(1, 2);
+    matrix* tar = new matrix(1, 2);
     tar->set_memory(targets);
     tar->move_to_device();
 
@@ -79,16 +79,19 @@ int main() {
     printf("L3 forward\n");
     l3->forward_pass();
 
-    l2->move_to_host();
-    l3->move_to_host();
+    //l2->move_to_host();
+    //l3->move_to_host();
+
+    //l2->move_to_device();
+    //l3->move_to_device();
 
     printf("-----------NETWORK OUTPUT ------------------)\n\t");
-    l3->outputs->print();
+    //l3->outputs->print();
     printf("--------------------------------------------)\n");
 
-    float error = MSE(l3->outputs->get_row(0), targets, l3->outputs->num_cols);
+    //float error = MSE(l3->outputs->get_row(0), targets, l3->outputs->num_cols);
     printf("-----------NETWORK ERROR -------------------)\n");
-    printf("\t%f\n", error);
+    //printf("\t%f\n", error);
     printf("--------------------------------------------)\n");
 
     printf("<-------------------Back prop L3: ----------------->\n");
@@ -112,7 +115,7 @@ int main() {
 
     printf("<-----------------------Update L2 ----------------->\n");
     //l2->print_layer();
-    l2->update(0.5, 1);
+    //l2->update(0.5, 1);
     //l2->print_layer();
     printf("<-------------------------------------------------->\n");
 
@@ -126,9 +129,9 @@ int main() {
     //l2->forward_pass();
     //l3->forward_pass();
 
-    error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
+    //error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
     printf("-----------NETWORK ERROR -------------------)\n");
-    printf("\t%f\n", error);
+    //printf("\t%f\n", error);
     printf("--------------------------------------------)\n");
 
         /*
