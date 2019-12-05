@@ -83,6 +83,7 @@ void Layer::zero_grad() {
 void Layer::move_to_device() {
     if(inputs != NULL)
         inputs->move_to_device();
+        inputsT->move_to_device();
     if(outputs != NULL) {
         outputs->move_to_device();
         raw_outputs->move_to_device();
@@ -95,6 +96,7 @@ void Layer::move_to_device() {
     if(out_weights != NULL) {
         out_weights->move_to_device();
         out_del_weights->move_to_device();
+        out_weightsT->move_to_device();
     }
     if(bias != NULL) {
         bias->move_to_device();
@@ -105,6 +107,7 @@ void Layer::move_to_device() {
 void Layer::move_to_host() {
     if(inputs != NULL)
         inputs->move_to_host();
+        inputsT->move_to_host();
     if(outputs != NULL) {
         outputs->move_to_host();
         raw_outputs->move_to_host();
@@ -116,6 +119,7 @@ void Layer::move_to_host() {
     if(out_weights != NULL) {
         out_weights->move_to_host();
         out_del_weights->move_to_host();
+        out_weightsT->move_to_host();
     }
     if(bias != NULL) {
         bias->move_to_host();
