@@ -60,7 +60,7 @@ __global__ void _sigmoid_prime(float *mat, float *result, int n) {
     if(tid < n) {
         float val = 0;
         val = 1. / (1. + exp(-mat[tid]));
-        mat[tid] = val * (1 - val);
+        result[tid] = val * (1 - val);
     }
 }
 
@@ -69,7 +69,7 @@ __global__ void _sigmoid(float *mat, float *result, int n) {
     if(tid < n) {
         float val = 0;
         val = 1. / (1. + exp(-mat[tid]));
-        mat[tid] = val;
+        result[tid] = val;
     }
 }
 
