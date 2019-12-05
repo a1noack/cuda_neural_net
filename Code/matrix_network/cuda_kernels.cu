@@ -327,7 +327,7 @@ void transpose(matrix *mat, matrix *result) {
     _transpose<<<blocks, threads>>>(mat->device_data, result->device_data, mat->num_cols, mat->num_rows);
 }
 
-float MSE(matrix *y, matrix *yhat, matrix *result) {
+float MSE_mat(matrix *y, matrix *yhat, matrix *result) {
     if(!y->on_device || !yhat->on_device || !result->on_device) { 
         printf("Make sure y, yhat, result are on device before MSE.\n");
         return -1;
@@ -343,5 +343,5 @@ float MSE(matrix *y, matrix *yhat, matrix *result) {
     elwise_mult(result, result, result);
     sum_reduce(result, result);
     cudaMemcpy(&mse, result->device_data, sizeof(float), cudaMemcpyDeviceToHost);
-    return mse/float(y->num_rows);
+    return mse / (float(y->num_rows) * 2);
 }
