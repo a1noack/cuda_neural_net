@@ -7,7 +7,11 @@ int main() {
 
     float is[5] = {0.05, 0.1, 0.35, 0.75, 0.25};
     float targets[2] = {0.01,  0.99};
+<<<<<<< HEAD
     matrix* tar = new matrix(1, 2);
+=======
+    matrix *tar = new matrix(1, 2);
+>>>>>>> 3618a794ec02167c482de55aba18b00f3abaa4d7
     tar->set_memory(targets);
     tar->move_to_device();
 
@@ -79,11 +83,23 @@ int main() {
     printf("L3 forward\n");
     l3->forward_pass();
 
+<<<<<<< HEAD
     //l2->move_to_host();
     //l3->move_to_host();
 
     //l2->move_to_device();
     //l3->move_to_device();
+=======
+    
+    float error1 = MSE_mat_wrapper(l3->outputs, tar, tar);
+    printf("-----------NETWORK ERROR -------------------)\n");
+    printf("\t%f\n (device generated) ", error1);
+    printf("--------------------------------------------)\n");
+
+
+    /*l2->move_to_host();
+    l3->move_to_host();
+>>>>>>> 3618a794ec02167c482de55aba18b00f3abaa4d7
 
     printf("-----------NETWORK OUTPUT ------------------)\n\t");
     //l3->outputs->print();
@@ -93,7 +109,7 @@ int main() {
     printf("-----------NETWORK ERROR -------------------)\n");
     //printf("\t%f\n", error);
     printf("--------------------------------------------)\n");
-
+*/
     printf("<-------------------Back prop L3: ----------------->\n");
     //l3->print_layer();
     l3->back_prop(tar, 1);
@@ -122,6 +138,10 @@ int main() {
     float ins2[5] = {0.85, 0.3, 0.15, 0.9, 0.45};
     float targets2[2] = {0.01, 0.99};
 
+    tar->move_to_host();
+    tar->set_memory(targets2);
+    tar->move_to_device();
+
     //l1->zero_grad();
     //l2->zero_grad();
     //l3->zero_grad();
@@ -129,12 +149,21 @@ int main() {
     //l2->forward_pass();
     //l3->forward_pass();
 
+<<<<<<< HEAD
     //error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
+=======
+    error1 = MSE_mat_wrapper(l3->outputs, tar, tar);
+    printf("-----------NETWORK ERROR -------------------)\n");
+    printf("\t%f\n (device generated) ", error1);
+    printf("--------------------------------------------)\n");
+/*    error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
+>>>>>>> 3618a794ec02167c482de55aba18b00f3abaa4d7
     printf("-----------NETWORK ERROR -------------------)\n");
     //printf("\t%f\n", error);
     printf("--------------------------------------------)\n");
-
-        /*
+*/
+    
+    /*
         float error = MSE(l3->outputs->get_row(0), targets, l3->outputs->num_cols);
     printf("Error: %f\n", error);
 

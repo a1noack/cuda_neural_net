@@ -69,3 +69,4 @@ float dot_prod(float**, float**, int);
 float MSE(float*, float*, int);
 float MSE(float**, float*, int);
 float MSE(float**, float**, int);
+float MSE_mat_wrapper(matrix *, matrix *, matrix *);

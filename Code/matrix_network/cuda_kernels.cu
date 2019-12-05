@@ -164,7 +164,7 @@ void add_bias(matrix *mat, matrix *bias) {
 }
 
 
-void update(matrix *mat, matrix *del_mat, float lr) {
+void update_cuda(matrix *mat, matrix *del_mat, float lr) {
     if(!mat->on_device || !del_mat->on_device) { 
         printf("Make sure matrix and gradients are both on device before adding them.\n");
         return;

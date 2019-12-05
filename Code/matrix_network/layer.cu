@@ -221,7 +221,10 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
 
 
 void Layer::update(float learn_rate, int batch_size) {
-    float** b = bias->get_row(0);
+    update_cuda(in_weights, in_del_weights, learn_rate / (float)batch_size);
+    update_cuda(bias, del_bias, learn_rate / (float)batch_size);
+    
+    /*float** b = bias->get_row(0);
     float** db = del_bias->get_row(0);
 
     for(int i = 0; i < num_nodes; i++) {
@@ -233,7 +236,7 @@ void Layer::update(float learn_rate, int batch_size) {
         }
 
         *b[i] = *b[i] - (learn_rate * (*db[i] / (float)batch_size) );
-    }
+    }*/
 }
 
 void Layer::print_layer() {
@@ -329,4 +332,6 @@ float MSE(float** v1, float* v2, int num) {
     return ( (float) 1 / (float) num ) * s;
 }
 
-
+float MSE_mat_wrapper(matrix *yhat, matrix *y, matrix *result) {
+    return MSE_mat(yhat, y, y);
+}
