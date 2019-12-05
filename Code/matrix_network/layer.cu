@@ -185,7 +185,7 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
         elwise_subtract(outputs, targets, outputs);
     } else {
         transpose(out_weights, out_weightsT);
-        mat_mul(out_weightsT, next->raw_outputs);
+        mat_mul(out_weightsT, next->raw_outputs, outputs);
     }
     activate_prime(raw_outputs, raw_outputs, 0);
     elwise_mult(outputs, raw_outputs, raw_outputs);

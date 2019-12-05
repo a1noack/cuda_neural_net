@@ -7,7 +7,7 @@ int main() {
 
     float is[5] = {0.05, 0.1, 0.35, 0.75, 0.25};
     float targets[2] = {0.01,  0.99};
-    tar = new matrix(1, 2);
+    matrix *tar = new matrix(1, 2);
     tar->set_memory(targets);
     tar->move_to_device();
 
