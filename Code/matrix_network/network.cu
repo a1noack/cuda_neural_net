@@ -46,7 +46,7 @@ void Network::train(int num_epochs, int batch_size, float learn_rate, float min_
 
     int  cur_epoch, cur_batch = 0;
 
-    char* file_name = "../data/data_n1000_m5_mu1.5.csv";
+    char* file_name = "../data/data_n100_m5_mu1.5.csv";
 
     Dataset d(file_name, batch_size);
 
@@ -64,10 +64,18 @@ void Network::train(int num_epochs, int batch_size, float learn_rate, float min_
             set_input(d.batch_x);
             set_target_out(d.batch_y);
 
-            forward();
-            cur_error = MSE_mat_wrapper(layers[num_layers - 1]->outputs, correct_outputs, outputs_temp);
-            back_prop();
+            printf("Correct outs:\n");
+            correct_outputs->print();
+            printf("Inputs: \n");
+            layers[0]->outputs->print();
 
+            printf("Forward start\n");
+            forward();
+            printf("Forward end\n");
+            cur_error = MSE_mat_wrapper(layers[num_layers - 1]->outputs, correct_outputs, outputs_temp);
+            printf("Backward start\n");
+            back_prop();
+            printf("Backward end\n");
             /*float errors[batch_size];
 
             for(int k = 0; k < batch_size; k++) {

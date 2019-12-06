@@ -264,13 +264,24 @@ void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
 }
 
 void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
+    //printf("mat1: \n");
+    //mat1->print();
+    //printf("mat 2: \n");
+    //mat2->print();
+    //printf("result: \n");
+    //result->print();
     if(mat1->on_device && mat2->on_device && result->on_device) {
         int r1 = mat1->num_rows, c1 = mat1->num_cols;
         int r2 = mat2->num_rows, c2 = mat2->num_cols;
-        if(c1 == r2)
+        if(c1 == r2) {
+            //printf("in the belly of the beast\n");
+            //fflush(stdout);
             _mat_mul<<<r1 * c2, T>>>(mat1->device_data, mat2->device_data, result->device_data, c1, c2);
-        else
+            //printf("out of the belly of the beast\n");
+        }
+        else {
             printf("Incompatible matrix dimensions. m1 is %d x %d, m2 is %d x %d\n", r1, c1, r2, c2);
+        }
     }
     else
         printf("Make sure input matrices and output matrix have been moved to device");

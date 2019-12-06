@@ -60,10 +60,10 @@ int main() {
     float ins2[5] = {0.85, 0.3, 0.15, 0.9, 0.45};
     float targets2[2] = {0.01, 0.99};
 
-    l1->set_weights(w_l1);
-    l2->set_weights(w_l2);
-    l2->set_bias(b_l2);
-    l3->set_bias(b_l3);
+    //l1->set_weights(w_l1);
+    //l2->set_weights(w_l2);
+    //l2->set_bias(b_l2);
+    //l3->set_bias(b_l3);
 
     l2->move_to_device();
     l3->move_to_device();
