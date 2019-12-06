@@ -7,13 +7,10 @@ int main() {
 
     float is[5] = {0.05, 0.1, 0.35, 0.75, 0.25};
     float targets[2] = {0.01,  0.99};
-<<<<<<< HEAD
     matrix* tar = new matrix(1, 2);
-=======
-    matrix *tar = new matrix(1, 2);
->>>>>>> 3618a794ec02167c482de55aba18b00f3abaa4d7
-    tar->set_memory(targets);
     tar->move_to_device();
+    matrix* temp = new matrix(1,2);
+    temp->move_to_device();
 
     float w1[3] = {0.15, 0.2, 0.25};
     float w2[3] = {0.4, 0.45, 0.50};
@@ -60,12 +57,68 @@ int main() {
     float b_l2[3] = {0.35,0.35, 0.35};
     float b_l3[2] = {0.6, 0.6};
 
+    float ins2[5] = {0.85, 0.3, 0.15, 0.9, 0.45};
+    float targets2[2] = {0.01, 0.99};
 
+    l1->set_weights(w_l1);
+    l2->set_weights(w_l2);
+    l2->set_bias(b_l2);
+    l3->set_bias(b_l3);
+
+    l2->move_to_device();
+    l3->move_to_device();
+
+
+    float error = 1.0;
+    int j = 0;
+    while(j < 1000) {
+        j++;
+        l1->zero_grad();
+        l2->zero_grad();
+        l3->zero_grad();
+
+        l1->set_output(is);
+        tar->set_memory(targets);
+
+        l2->forward_pass();
+        l3->forward_pass();
+        error = MSE_mat_wrapper(l3->outputs, tar, temp);
+        printf("Error for sample 1: %f\n", error);
+
+        l3->back_prop(tar, 1);
+        l2->back_prop(NULL, 1);
+
+        l3->update(0.5, 1);
+        l2->update(0.5, 1);
+
+        l1->zero_grad();
+        l2->zero_grad();
+        l3->zero_grad();
+
+        l1->set_output(ins2);
+        tar->set_memory(targets2);
+
+        l2->forward_pass();
+        l3->forward_pass();
+        error = MSE_mat_wrapper(l3->outputs, tar, temp);
+        printf("Error for sample 2: %f\n", error);
+
+        l3->back_prop(tar, 1);
+        l2->back_prop(NULL, 1);
+
+        l3->update(0.5, 1);
+        l2->update(0.5, 1);
+    }
+
+/*
     l1->set_output(is);
     l1->set_weights(w_l1);
     l2->set_weights(w_l2);
     l2->set_bias(b_l2);
     l3->set_bias(b_l3);
+
+    l2->move_to_device();
+    l3->move_to_device();
 
     printf("Layer1\n");
     l1->print_layer();
@@ -74,8 +127,6 @@ int main() {
     printf("Layer3\n");
     l3->print_layer();
 
-    l2->move_to_device();
-    l3->move_to_device();
 
     printf("L2 forward\n");
     l2->forward_pass();
@@ -83,112 +134,72 @@ int main() {
     printf("L3 forward\n");
     l3->forward_pass();
 
-<<<<<<< HEAD
     //l2->move_to_host();
     //l3->move_to_host();
 
     //l2->move_to_device();
     //l3->move_to_device();
-=======
-    
-    float error1 = MSE_mat_wrapper(l3->outputs, tar, tar);
+
+    float error1 = MSE_mat_wrapper(l3->outputs, tar, temp);
     printf("-----------NETWORK ERROR -------------------)\n");
     printf("\t%f\n (device generated) ", error1);
     printf("--------------------------------------------)\n");
 
 
-    /*l2->move_to_host();
-    l3->move_to_host();
->>>>>>> 3618a794ec02167c482de55aba18b00f3abaa4d7
-
-    printf("-----------NETWORK OUTPUT ------------------)\n\t");
-    //l3->outputs->print();
-    printf("--------------------------------------------)\n");
-
-    //float error = MSE(l3->outputs->get_row(0), targets, l3->outputs->num_cols);
-    printf("-----------NETWORK ERROR -------------------)\n");
-    //printf("\t%f\n", error);
-    printf("--------------------------------------------)\n");
-*/
     printf("<-------------------Back prop L3: ----------------->\n");
-    //l3->print_layer();
     l3->back_prop(tar, 1);
-    //l3->print_layer();
     printf("<-------------------------------------------------->\n");
 
     printf("<-------------------Back prop L2: ----------------->\n");
-    //l2->print_layer();
     l2->back_prop(NULL, 1);
-    //l2->print_layer();
     printf("<-------------------------------------------------->\n");
 
     printf("<-----------------------Update L3 ----------------->\n");
-    //l3->print_layer();
     l3->update(0.5, 1);
-    //l3->print_layer();
     printf("<-------------------------------------------------->\n");
 
 
     printf("<-----------------------Update L2 ----------------->\n");
-    //l2->print_layer();
-    //l2->update(0.5, 1);
-    //l2->print_layer();
+    l2->update(0.5, 1);
     printf("<-------------------------------------------------->\n");
 
-    float ins2[5] = {0.85, 0.3, 0.15, 0.9, 0.45};
-    float targets2[2] = {0.01, 0.99};
 
-    tar->move_to_host();
     tar->set_memory(targets2);
-    tar->move_to_device();
 
-    //l1->zero_grad();
-    //l2->zero_grad();
-    //l3->zero_grad();
-    //l1->set_output(ins2);
-    //l2->forward_pass();
-    //l3->forward_pass();
+    printf("Layer1\n");
+    l1->print_layer();
+    printf("Layer2\n");
+    l2->print_layer();
+    printf("Layer3\n");
+    l3->print_layer();
 
-<<<<<<< HEAD
-    //error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
-=======
-    error1 = MSE_mat_wrapper(l3->outputs, tar, tar);
+    l1->zero_grad();
+    l2->zero_grad();
+    l3->zero_grad();
+
+    l1->set_output(ins2);
+    l2->forward_pass();
+    l3->forward_pass();
+
+    error1 = MSE_mat_wrapper(l3->outputs, tar, temp);
     printf("-----------NETWORK ERROR -------------------)\n");
     printf("\t%f\n (device generated) ", error1);
     printf("--------------------------------------------)\n");
-/*    error = MSE(l3->outputs->get_row(0), targets2, l3->outputs->num_cols);
->>>>>>> 3618a794ec02167c482de55aba18b00f3abaa4d7
-    printf("-----------NETWORK ERROR -------------------)\n");
-    //printf("\t%f\n", error);
-    printf("--------------------------------------------)\n");
-*/
-    
-    /*
-        float error = MSE(l3->outputs->get_row(0), targets, l3->outputs->num_cols);
-    printf("Error: %f\n", error);
 
-    printf("Backprop l3:\n");
-    l3->back_prop(targets);
-    //l3->print_del_bias();
-    l3->print_in_del_W();
+    l3->back_prop(tar, 1);
+    l2->back_prop(NULL, 1);
 
-    printf("Backprop l2:\n");
-    l2->back_prop(NULL);
-    //l2->print_del_bias();
-    l2->print_in_del_W();
-
-    printf("----------------------- UPDATES ------------------------\n");
-
-    l2->update(0.5, 1);
-    printf("L2 bias\n");
-    l2->print_bias();
-    printf("l2 weights\n");
-    l2->print_in_weights();
-    printf("l3 update:\n");
     l3->update(0.5, 1);
-    printf("L3 bias\n");
-    l3->print_bias();
-    printf("l3 weights\n");
-    l3->print_in_weights();
+    l2->update(0.5, 1);
+
+
+    l1->set_output(ins2);
+    l2->forward_pass();
+    l3->forward_pass();
+
+    error1 = MSE_mat_wrapper(l3->outputs, tar, temp);
+    printf("-----------NETWORK ERROR -------------------)\n");
+    printf("\t%f\n (device generated) ", error1);
+    printf("--------------------------------------------)\n");
 */
 }

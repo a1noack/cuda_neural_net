@@ -81,9 +81,10 @@ void Layer::zero_grad() {
 }
 
 void Layer::move_to_device() {
-    if(inputs != NULL)
+    if(inputs != NULL) {
         inputs->move_to_device();
         inputsT->move_to_device();
+    }
     if(outputs != NULL) {
         outputs->move_to_device();
         raw_outputs->move_to_device();
@@ -105,9 +106,10 @@ void Layer::move_to_device() {
 }
 
 void Layer::move_to_host() {
-    if(inputs != NULL)
+    if(inputs != NULL) {
         inputs->move_to_host();
         inputsT->move_to_host();
+    }
     if(outputs != NULL) {
         outputs->move_to_host();
         raw_outputs->move_to_host();
@@ -195,9 +197,9 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
     elwise_mult(outputs, raw_outputs, raw_outputs);
     transpose(inputs, inputsT);
     mat_mul(inputsT, raw_outputs, in_del_weights);
-    divide(in_del_weights, in_del_weights, batch_sz);
+    divide(in_del_weights, in_del_weights, (float) batch_sz);
     sum_reduce_rows(raw_outputs, del_bias);
-    divide(del_bias, del_bias, batch_sz);
+    divide(del_bias, del_bias, (float) batch_sz);
     /* for output layer:
        1. outputs - targets -> outputs
        2. sigmoid_prime(raw_outputs) -> raw_outputs
@@ -223,7 +225,7 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
 void Layer::update(float learn_rate, int batch_size) {
     update_cuda(in_weights, in_del_weights, learn_rate / (float)batch_size);
     update_cuda(bias, del_bias, learn_rate / (float)batch_size);
-    
+
     /*float** b = bias->get_row(0);
     float** db = del_bias->get_row(0);
 
@@ -333,5 +335,5 @@ float MSE(float** v1, float* v2, int num) {
 }
 
 float MSE_mat_wrapper(matrix *yhat, matrix *y, matrix *result) {
-    return MSE_mat(yhat, y, y);
+    return MSE_mat(yhat, y, result);
 }

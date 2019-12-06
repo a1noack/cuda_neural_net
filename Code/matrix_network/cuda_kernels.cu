@@ -58,12 +58,12 @@ __global__ void _sum_reduce_rows(float *mat, float *result, int r1, int c1) {
 __global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2) {
     __shared__ float shared[T];
     int tid = threadIdx.x;
-     
+
     if(tid < c1)
         shared[tid] = mat1[blockIdx.x / c2 * c1 + tid] * mat2[blockIdx.x % c2 + c2 * tid];
     else
-        shared[tid] = 0;        
-    
+        shared[tid] = 0;
+
     __syncthreads();
 
     for(int s = 1; s < blockDim.x; s*=2) {
@@ -150,14 +150,14 @@ __global__ void _divide(float *mat, float *result, float denom, int n) {
 /*Wrapper functions for the CUDA kernels that accept matrix objects.*/
 
 void add_bias(matrix *mat, matrix *bias) {
-    if(!mat->on_device || !bias->on_device) { 
+    if(!mat->on_device || !bias->on_device) {
         printf("Make sure matrix and bias are both on device before adding them.\n");
         return;
     }
     if(mat->num_cols != bias->num_cols) {
         printf("mat and del_mat don't have the same dimensions.\n");
     }
-    bias->print_dims();
+    //bias->print_dims();
     int blocks = mat->num_rows;
     int threads = T;
     _add_bias<<<blocks, threads>>>(mat->device_data, bias->device_data, mat->num_cols);
@@ -165,7 +165,7 @@ void add_bias(matrix *mat, matrix *bias) {
 
 
 void update_cuda(matrix *mat, matrix *del_mat, float lr) {
-    if(!mat->on_device || !del_mat->on_device) { 
+    if(!mat->on_device || !del_mat->on_device) {
         printf("Make sure matrix and gradients are both on device before adding them.\n");
         return;
     }
@@ -182,15 +182,15 @@ void update_cuda(matrix *mat, matrix *del_mat, float lr) {
 }
 
 float *sum_reduce(matrix *mat, matrix *result) {
-    if(!mat->on_device || !result->on_device) { 
+    if(!mat->on_device || !result->on_device) {
         printf("Make sure matrix is on device before summing it.\n");
         return NULL;
     }
     int n = mat->num_vals;
-    /*This sum reduction will work for arrays with up to 
+    /*This sum reduction will work for arrays with up to
      T ^ 2 = 128 * 128 = 16384 elements in length.*/
     int blocks = (n % T == 0) ? (n / T) : (n / T + 1);
-    
+
     _sum_reduce1<<<blocks, T>>>(mat->device_data, result->device_data, n);
 
     n = blocks;
@@ -199,12 +199,12 @@ float *sum_reduce(matrix *mat, matrix *result) {
 }
 
 void sum_reduce_rows(matrix *mat, matrix *result) {
-    if(!mat->on_device || !result->on_device) { 
+    if(!mat->on_device || !result->on_device) {
         printf("Make sure matrix is on device before summing it.\n");
     }
     int blocks = mat->num_cols;
     int threads = T;
-    
+
     _sum_reduce_rows<<<blocks, threads>>>(mat->device_data, result->device_data, mat->num_rows, mat->num_cols);
 }
 
@@ -223,7 +223,7 @@ void divide(matrix *mat, matrix *result, float denom) {
 }
 
 void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
-    if(!mat1->on_device || !mat2->on_device || !result->on_device) { 
+    if(!mat1->on_device || !mat2->on_device || !result->on_device) {
         printf("Make sure mat1, mat2, result, are on device before multiplying.\n");
         return;
     }
@@ -244,7 +244,7 @@ void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
 
 
 void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
-    if(!mat1->on_device || !mat2->on_device || !result->on_device) { 
+    if(!mat1->on_device || !mat2->on_device || !result->on_device) {
         printf("Make sure mat1, mat2, result, are on device before subtracting.\n");
         return;
     }
@@ -277,7 +277,7 @@ void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
 }
 
 void activate(matrix *mat, matrix *result, int type) {
-    if(!mat->on_device) { 
+    if(!mat->on_device) {
         printf("Make sure matrix is on device before activating.\n");
         return;
     }
@@ -294,10 +294,10 @@ void activate(matrix *mat, matrix *result, int type) {
         printf("Softmax has not been implemented yet.\n");
     else
         printf("This activation function has not been configured.\n");
-} 
+}
 
 void activate_prime(matrix *mat, matrix *result, int type) {
-    if(!mat->on_device) { 
+    if(!mat->on_device) {
         printf("Make sure matrix is on device before activating.\n");
         return;
     }
@@ -310,10 +310,10 @@ void activate_prime(matrix *mat, matrix *result, int type) {
         _sigmoid_prime<<<blocks, threads>>>(mat->device_data, result->device_data, n);
     else
         printf("This activation function has not been configured.\n");
-} 
+}
 
 void transpose(matrix *mat, matrix *result) {
-    if(!mat->on_device || !result->on_device) { 
+    if(!mat->on_device || !result->on_device) {
         printf("Make sure mat, result, are on device before transposing.\n");
         return;
     }
@@ -328,7 +328,7 @@ void transpose(matrix *mat, matrix *result) {
 }
 
 float MSE_mat(matrix *y, matrix *yhat, matrix *result) {
-    if(!y->on_device || !yhat->on_device || !result->on_device) { 
+    if(!y->on_device || !yhat->on_device || !result->on_device) {
         printf("Make sure y, yhat, result are on device before MSE.\n");
         return -1;
     }

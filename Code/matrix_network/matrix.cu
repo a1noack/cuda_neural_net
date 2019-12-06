@@ -31,8 +31,13 @@ void matrix::move_to_host() {
 }
 
 void matrix::set_memory(float* new_vals) {
-    std::memcpy(host_data, new_vals, sizeof(float) * num_rows * num_cols);
+    if(!on_device) {
+        std::memcpy(host_data, new_vals, sizeof(float) * num_rows * num_cols);
+    } else {
+        cudaMemcpy(device_data, new_vals, num_vals * sizeof(float), cudaMemcpyHostToDevice);
+    }
 }
+
 
 void matrix::set_memory(float* new_vals, int new_rows, int new_cols) {
     num_rows = new_rows;
@@ -122,7 +127,7 @@ void matrix::print() {
         printf("(on host) \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
-                printf("%.2f ", host_data[(i*num_cols) + j]);
+                printf("%.5f ", host_data[(i*num_cols) + j]);
             }
             printf("\n");
         }
@@ -133,7 +138,7 @@ void matrix::print() {
         printf("(on device) \n");
         for(int i = 0; i < num_rows; i++) {
             for(int j = 0; j < num_cols; j++) {
-                printf("%.2f ", temp[(i*num_cols) + j]);
+                printf("%.5f ", temp[(i*num_cols) + j]);
             }
             printf("\n");
         }
