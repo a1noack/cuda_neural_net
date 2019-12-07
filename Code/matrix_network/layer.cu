@@ -138,9 +138,9 @@ void print_FF(float** f, int n) {
 
 void Layer::forward_pass() {
     if(lp != input) {
-        printf("BEfore mat mul\n");
+        //printf("BEfore mat mul\n");
         mat_mul(inputs, in_weights, raw_outputs);
-        printf("after mat_mul\n");
+       // printf("after mat_mul\n");
         add_bias(raw_outputs, bias);
         //raw_outputs->mat_copy_from(outputs);
         activate(raw_outputs, outputs, 0);

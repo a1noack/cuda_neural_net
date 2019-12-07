@@ -7,51 +7,40 @@
 #include <string>
 
 Dataset::Dataset(char* fname, int batch_size) {
-    this->load_data(fname);
+    load_data(fname);
     this->fname = fname;
     this->batch_size = batch_size;
 
-    this->batch_x = new float*[this->batch_size];
-    this->batch_y = new float*[this->batch_size];
-//    for(int i = 0; i < this->batch_size; i++) {
-//        this->minibatch[i] = new float[this->m];
-//        this->minibatch[i] = new float[this->k];
-//    }
-
-    this->sample_order = new int[this->n];
-    for(int i = 0; i < this->n; i++) 
-        this->sample_order[i] = i;
-    //this->shuffle_sample_order();
-    //printf("bs = %d\n", this->batch_size);
-
-    this->position = 0;
+    batch_x = new float*[batch_size];
+    batch_y = new float*[batch_size];
+    sample_order = new int[n];
+    for(int i = 0; i < n; i++) {
+        sample_order[i] = i;
+    }
+position = 0;
 }
 
 Dataset::~Dataset() {
-//    for(int i = 0; i < this->batch_size; i++) {
-//        delete this->batch_x[i];
-//        delete this->batch_y[i];
-//    }
-    delete this->batch_x;
-    delete this->batch_y;
+    delete batch_x;
+    delete batch_y;
 
-    delete this->sample_order;
+    delete sample_order;
 
-    for(int r = 0; r < this->n; r++) {
-        delete this->x[r];
-        delete this->y[r];
+    for(int r = 0; r < n; r++) {
+        delete x[r];
+        delete y[r];
     }
-    delete this->x;
-    delete this->y;
+    delete x;
+    delete y;
 }
 
 void Dataset::load_data(char* fname) {
     // load file
     std::ifstream file(fname);
-    
+
     // make sure file was loaded correctly
     if(!file.good()) {
-        printf("file load failed");
+        printf("file load failed\n");
         return;
     }
 
@@ -62,8 +51,8 @@ void Dataset::load_data(char* fname) {
     std::getline(file, line);
     this->n = stoi(line.substr(2, line.find(delimeter)));
     this->m = stoi(line.substr(line.find(delimeter) + 1));
-    this->k = 2; 
-    
+    this->k = 2;
+
     // allocate space on heap for data
     int r, c;
     this->x = new float*[this->n];
@@ -90,7 +79,7 @@ void Dataset::load_data(char* fname) {
             if(c < this->m){
                 convertor >> this->x[r][c];
 //                printf("%f ", x[r][c]);
-            } 
+            }
             else{
                 convertor >> label;
                 this->y[r][int(label)] = 1.0;
@@ -120,9 +109,9 @@ void print_intarray2(int *arr, int len) {
 }
 
 void Dataset::shuffle_sample_order() {
-    //print_intarray2(this->sample_order, 100);    
+    //print_intarray2(this->sample_order, 100);
     std::random_shuffle(&this->sample_order[0], &this->sample_order[this->n]);
-    //print_intarray2(this->sample_order, 100);    
+    //print_intarray2(this->sample_order, 100);
 }
 
 int Dataset::get_batch_size() {

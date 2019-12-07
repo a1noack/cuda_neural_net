@@ -43,5 +43,6 @@ class matrix{
         void print();
 
         void mat_copy_from(matrix*);
+        void set_data_loader(float**);
 };
 

@@ -159,4 +159,15 @@ void matrix::mat_copy_from(matrix* a) {
     }
 }
 
+void matrix::set_data_loader(float** data) {
+    float* data_1d = new float[num_cols * num_rows];
+
+    for(int i = 0; i < num_rows; i++) {
+        for(int j = 0; j < num_cols; j++) {
+            data_1d[(i * num_cols) + j] = data[i][j];
+        }
+    }
+
+    set_memory(data_1d);
+}
 

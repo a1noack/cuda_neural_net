@@ -249,9 +249,6 @@ void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
         return;
     }
     if(mat1->num_rows != mat2->num_rows || mat1->num_cols != mat2->num_cols || result->num_rows != mat1->num_rows || result->num_cols != mat1->num_cols) {
-        printf("mat1: "); mat1->print_dims();
-        printf("mat2: "); mat2->print_dims();
-        printf("result: "); result->print_dims();
         return;
     }
     int n = mat1->num_vals;
@@ -264,20 +261,11 @@ void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
 }
 
 void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
-    //printf("mat1: \n");
-    //mat1->print();
-    //printf("mat 2: \n");
-    //mat2->print();
-    //printf("result: \n");
-    //result->print();
     if(mat1->on_device && mat2->on_device && result->on_device) {
         int r1 = mat1->num_rows, c1 = mat1->num_cols;
         int r2 = mat2->num_rows, c2 = mat2->num_cols;
         if(c1 == r2) {
-            //printf("in the belly of the beast\n");
-            //fflush(stdout);
             _mat_mul<<<r1 * c2, T>>>(mat1->device_data, mat2->device_data, result->device_data, c1, c2);
-            //printf("out of the belly of the beast\n");
         }
         else {
             printf("Incompatible matrix dimensions. m1 is %d x %d, m2 is %d x %d\n", r1, c1, r2, c2);
@@ -294,7 +282,6 @@ void activate(matrix *mat, matrix *result, int type) {
     }
     int n = mat->num_vals;
     int threads = T;
-    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
 
     if(type == 0)
