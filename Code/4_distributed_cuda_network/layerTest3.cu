@@ -6,18 +6,16 @@
 #define NUM_OUT 2
 #define MIN_ERR 0.001
 #define MAX_EPOCH 100
-#define LEARN_RATE 0.01
+#define LEARN_RATE 0.1
 
 int main() {
 
     //printf("SETTING LAYERS\n");
     //fflush(stdout);
     Layer* l1 = new Layer(NUM_IN, input, NULL, BATCH_SZ);
-    Layer* l2 = new Layer(10, hidden, l1, BATCH_SZ);
-    Layer* l3 = new Layer(20, hidden, l2, BATCH_SZ);
-    Layer* l4 = new Layer(10, hidden, l3, BATCH_SZ);
-    Layer* l5 = new Layer(5, hidden, l4, BATCH_SZ);
-    Layer* l6 = new Layer(NUM_OUT, output, l5, BATCH_SZ);
+    Layer* l2 = new Layer(3, hidden, l1, BATCH_SZ);
+    Layer* l3 = new Layer(3, hidden, l2, BATCH_SZ);
+    Layer* l4 = new Layer(NUM_OUT, output, l3, BATCH_SZ);
 
 
     //printf("CREATING TARGETS\n");
@@ -32,8 +30,6 @@ int main() {
     l2->move_to_device();
     l3->move_to_device();
     l4->move_to_device();
-    l5->move_to_device();
-    l6->move_to_device();
 
     float error = 1.0;
     int j = 0;
@@ -48,7 +44,7 @@ int main() {
     int num_batches = d.n / BATCH_SZ;
 
 
-    while(j < MAX_EPOCH) {
+    while(error > MIN_ERR || j < MAX_EPOCH) {
         //printf("SHUFFLING....\n");
         //fflush(stdout);
        d.shuffle_sample_order();
@@ -65,8 +61,6 @@ int main() {
            l2->zero_grad();
            l3->zero_grad();
            l4->zero_grad();
-           l5->zero_grad();
-           l6->zero_grad();
 
            //printf("SETTING BATCH DATA\n");
     //fflush(stdout);
@@ -78,31 +72,20 @@ int main() {
            l2->forward_pass();
            l3->forward_pass();
            l4->forward_pass();
-           l5->forward_pass();
-           l6->forward_pass();
-
 
       //     printf("ERROR\n");
     ///fflush(stdout);
-           error = MSE_mat_wrapper(l6->outputs, targets, temp);
+           error = MSE_mat_wrapper(l4->outputs, targets, temp);
            if (error < MIN_ERR) { break; }
 
        //    printf("BACK_PROP\n");
     //fflush(stdout);
-           l6->back_prop(targets, BATCH_SZ);
-           l5->back_prop(NULL, BATCH_SZ);
-           l4->back_prop(NULL, BATCH_SZ);
+           l4->back_prop(targets, BATCH_SZ);
            l3->back_prop(NULL, BATCH_SZ);
            l2->back_prop(NULL, BATCH_SZ);
 
-           if( j % 10 == 0) {
-                l6->print_layer();
-                targets->print();
-           }
       //     printf("UPDATES\n");
     //fflush(stdout);
-           l6->update(LEARN_RATE, BATCH_SZ);
-           l5->update(LEARN_RATE, BATCH_SZ);
            l4->update(LEARN_RATE, BATCH_SZ);
            l3->update(LEARN_RATE, BATCH_SZ);
            l2->update(LEARN_RATE, BATCH_SZ);

@@ -138,59 +138,16 @@ void print_FF(float** f, int n) {
 
 void Layer::forward_pass() {
     if(lp != input) {
-        //printf("BEfore mat mul\n");
         mat_mul(inputs, in_weights, raw_outputs);
-       // printf("after mat_mul\n");
         add_bias(raw_outputs, bias);
-        //raw_outputs->mat_copy_from(outputs);
         activate(raw_outputs, outputs, 0);
     }
-    /*    if(lp != input) {
-
-        for(int i = 0; i < num_nodes; i++) {
-
-            assert(in_weights->num_rows == inputs->num_cols);
-            //<---------- COLUMN CALL
-            float dp = dot_prod(in_weights->get_col(i), inputs->get_row(0), in_weights->num_rows);
-            *outputs->get_row(0)[i] = ( 1 / ( 1 + expf( -1 * (dp + *bias->get_row(0)[i] ) ) ) );
-        }
-    }*/
 }
-
-/*void Layer::back_prop(matrix* targets) {
-    float** tar = targets->get_row(0);
-    for(int i = 0; i < num_nodes; i++) {
-        //float o = *outputs->get_row(0)[i];
-        float o = *raw_outputs->get_row(0)[i]; //<---------- CHANGE FOR BATCH SZ
-        float dbloc = (o * (1-o));
-
-        if(targets != NULL) {
-            dbloc *= (o - *tar[i]);
-        } else {
-            float** w = out_weights->get_row(i);
-            float** ndb = next->del_bias->get_row(0);
-            float db = 0.0;
-            for(int j = 0; j < out_weights->num_cols; j++) {
-                db += *ndb[j] * *w[j];
-            }
-            dbloc *= db;
-        }
-
-        *del_bias->get_row(0)[i] += dbloc;
-
-        float** dw = in_del_weights->get_col(i);
-
-        float** ins = inputs->get_row(0); //<---------- CHANGE FOR BATCH SZ
-
-        for(int j = 0; j < in_del_weights->num_rows; j++) {
-            *dw[j] += dbloc * *ins[j];
-        }
-    }
-}*/
 
 void Layer::back_prop(matrix* targets, int batch_sz) {
     if(targets != NULL) {
-        elwise_subtract(outputs, targets, outputs);
+        elwise_subtract(targets, outputs, outputs);
+        //elwise_subtract(outputs, targets, outputs);
     } else {
         transpose(out_weights, out_weightsT);
         mat_mul(next->raw_outputs, out_weightsT, outputs);
@@ -227,20 +184,6 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
 void Layer::update(float learn_rate, int batch_size) {
     update_cuda(in_weights, in_del_weights, learn_rate / (float)batch_size);
     update_cuda(bias, del_bias, learn_rate / (float)batch_size);
-
-    /*float** b = bias->get_row(0);
-    float** db = del_bias->get_row(0);
-
-    for(int i = 0; i < num_nodes; i++) {
-        float** w = in_weights->get_col(i);
-        float** dw = in_del_weights->get_col(i);
-
-        for(int j = 0; j < prev->num_nodes; j++) {
-            *w[j] = *w[j] - (learn_rate * (*dw[j] / batch_size) );
-        }
-
-        *b[i] = *b[i] - (learn_rate * (*db[i] / (float)batch_size) );
-    }*/
 }
 
 void Layer::print_layer() {

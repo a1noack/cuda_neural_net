@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --account=cis631   ### change this to your actual account for charging
-#SBATCH --job-name=TOY_NET     ### Job Name
+#SBATCH --job-name=GPU_COUNT     ### Job Name
 #SBATCH --partition=gpu       ### Quality of Service (like a queue in PBS)
-#SBATCH --time=0-00:10:00     ### Wall clock time limit in Days-HH:MM:SS
+#SBATCH --time=0-00:01:00     ### Wall clock time limit in Days-HH:MM:SS
 #SBATCH --nodes=1             ### Node count required for the job
 #SBATCH --output=test.out
 #SBATCH --ntasks-per-node=1   ### Nuber of tasks to be launched per Node
-#SBATCH --gres=gpu:1          ### General REServation of gpu:number of gpus
+#SBATCH --gres=gpu:2          ### General REServation of gpu:number of gpus
 
-./LayerTest
+./Test
