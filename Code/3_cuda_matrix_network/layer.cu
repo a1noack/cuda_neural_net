@@ -182,8 +182,8 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
 
 
 void Layer::update(float learn_rate, int batch_size) {
-    update_cuda(in_weights, in_del_weights, learn_rate / (float)batch_size);
-    update_cuda(bias, del_bias, learn_rate / (float)batch_size);
+    update_cuda(in_weights, in_del_weights, learn_rate);
+    update_cuda(bias, del_bias, learn_rate);
 }
 
 void Layer::print_layer() {
