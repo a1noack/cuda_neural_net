@@ -4,7 +4,7 @@
 // make sure T is bigger than the number of neurons in the largest layer and a multiple of 32
 #define T 32
 
-// a variety of sum reduction methods for testing from (https://jeewhanchoi.github.io/uocis631f19/lecture12.pptx)
+// a variety of sum reduction methods (https://jeewhanchoi.github.io/uocis631f19/lecture12.pptx)
 #define naive_reduce { \
     for(int s = 1; s < blockDim.x; s*=2) { \
         if(l_tid % (2 * s) == 0) { \
@@ -40,9 +40,14 @@
 
 #define _reduce_ loop_unrolled_reduce
 
+
 /*Cuda kernels*/
 
-__global__ void _sum_reduce1(float *arr, float *result, int n) {
+__global__ void _sum_reduce(float *arr, float *result, int n) {
+    /**
+     * Sums across all elements in an array arr and places result at &result[0].
+     * n is the number of elements in arr.
+     */
     __shared__ volatile float shared[T];
     int g_tid = blockIdx.x * blockDim.x + threadIdx.x;
     int l_tid = threadIdx.x;
@@ -62,6 +67,10 @@ __global__ void _sum_reduce1(float *arr, float *result, int n) {
 }
 
 __global__ void _sum_reduce_rows(float *mat, float *result, int r1, int c1) {
+    /**
+     * Sums down columns in row major matrix mat and places sums in the first 
+     * row of the matrix result. r1 and c1 are the dimensions of mat.
+     */
     __shared__ volatile float shared[T];
     int g_tid = blockIdx.x + c1 * threadIdx.x;
     int l_tid = threadIdx.x;
@@ -80,7 +89,10 @@ __global__ void _sum_reduce_rows(float *mat, float *result, int r1, int c1) {
     }
 }
 __global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2) {
-    // must specify shared is volatile to use loop unrolling
+    /**
+     * Multiplies row major matrices mat1 and mat2. Then it places results in result. 
+     * c1 and c2 are the numbers of columns in mat1 and mat2.
+     */
     __shared__ volatile float shared[T];
     int l_tid = threadIdx.x;
 
@@ -99,6 +111,10 @@ __global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2
 }
 
 __global__ void _sigmoid_prime(float *mat, float *result, int n) {
+    /**
+     * Applies the sigmoid prime function to all values in mat and places results in result. n
+     * is the number of elements in mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n) {
         float val = 0;
@@ -108,6 +124,10 @@ __global__ void _sigmoid_prime(float *mat, float *result, int n) {
 }
 
 __global__ void _sigmoid(float *mat, float *result, int n) {
+    /**
+     * Applies the sigmoid function to all values in mat and places results in result. n
+     * is the number of elements in mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n) {
         float val = 0;
@@ -117,6 +137,10 @@ __global__ void _sigmoid(float *mat, float *result, int n) {
 }
 
 __global__ void _relu(float *mat, float *result, int n) {
+    /**
+     * Applies the RELU function to all values in mat and places results in result. n
+     * is the number of elements in mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n)
         if(mat[tid] <= 0.)
@@ -126,18 +150,30 @@ __global__ void _relu(float *mat, float *result, int n) {
 }
 
 __global__ void _elwise_subtract(float *mat1, float *mat2, float *result, int n) {
+    /**
+     * Subtracts each element in mat2 from the corresponding element in mat1 
+     * and places results in result. n is the number of elements in mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n)
         result[tid] = mat1[tid] - mat2[tid];
 }
 
 __global__ void _elwise_mult(float *mat1, float *mat2, float *result, int n) {
+    /**
+     * Multiplies each element in mat1 with the corresponding element in mat2 
+     * and places results in result. n is the number of elements in mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n)
         result[tid] = mat1[tid] * mat2[tid];
 }
 
 __global__ void _add_bias(float *mat, float *bias, int c1) {
+    /**
+     * Adds the 1 x c1 matrix bias to mat by broadcasting the vector across each
+     * row of mat.
+     */
     int mat_tid = blockIdx.x * c1 + threadIdx.x;
     int bias_tid = threadIdx.x;
     if(threadIdx.x < c1)
@@ -145,6 +181,11 @@ __global__ void _add_bias(float *mat, float *bias, int c1) {
 }
 
 __global__ void _update(float *mat, float *del_mat, float lr, int n) {
+    /**
+     * Adds to each element in mat the corresponding value in del_mat 
+     * scaled by the learning rate lr. n is the number of elements in mat
+     * and del_mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n)
         mat[tid] = mat[tid] - lr * del_mat[tid];
@@ -152,6 +193,10 @@ __global__ void _update(float *mat, float *del_mat, float lr, int n) {
 
 
 __global__ void _transpose(float *mat, float *result, int c1, int r1) {
+    /**
+     * Transposes the matrix mat and places the resulting matrix in result.
+     * c1 is the number of columns in mat and r1 is the number of rows.
+     */
     int mat_tid = (blockIdx.x * c1) + threadIdx.x;
     int result_tid = blockIdx.x + (threadIdx.x * r1);
     if(threadIdx.x < c1)
@@ -159,10 +204,15 @@ __global__ void _transpose(float *mat, float *result, int c1, int r1) {
 }
 
 __global__ void _divide(float *mat, float *result, float denom, int n) {
+    /**
+     * Divides each element of mat by denom and places each result in the 
+     * matrix result. n is the number of elements in mat.
+     */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n)
         result[tid] = mat[tid] / denom;
 }
+
 
 /*Wrapper functions for the CUDA kernels that accept matrix objects.*/
 
@@ -204,10 +254,10 @@ void sum_reduce(matrix *mat, matrix *result) {
      T ^ 2 = 128 * 128 = 16384 elements in length.*/
     int blocks = (n % T == 0) ? (n / T) : (n / T + 1);
 
-    _sum_reduce1<<<blocks, T>>>(mat->device_data, result->device_data, n);
+    _sum_reduce<<<blocks, T>>>(mat->device_data, result->device_data, n);
 
     n = blocks;
-    _sum_reduce1<<<1, T>>>(result->device_data, result->device_data, n);
+    _sum_reduce<<<1, T>>>(result->device_data, result->device_data, n);
 }
 
 void sum_reduce_rows(matrix *mat, matrix *result) {
