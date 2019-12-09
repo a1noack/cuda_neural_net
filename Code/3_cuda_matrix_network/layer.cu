@@ -279,6 +279,6 @@ float MSE(float** v1, float* v2, int num) {
     return ( (float) 1 / (float) num ) * s;
 }
 
-float MSE_mat_wrapper(matrix *yhat, matrix *y, matrix *result) {
-    return MSE_mat(yhat, y, result);
+float MSE_mat_wrapper(matrix *y, matrix *yhat, matrix *result) {
+    return MSE_mat(y, yhat, result);
 }

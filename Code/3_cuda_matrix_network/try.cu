@@ -10,9 +10,10 @@
 
 int main() {
 
-    Layer* l1 = new Layer(NUM_IN, input, NULL, BATCH_SZ);
+    Layer* l1 = new Layer(2, input, NULL, BATCH_SZ);
     Layer* l2 = new Layer(2, hidden, l1, BATCH_SZ);
-    Layer* l3 = new Layer(NUM_OUT, output, l2, BATCH_SZ);
+    Layer* l3 = new Layer(2, output, l2, BATCH_SZ);
+
 
     matrix* targets = new matrix(BATCH_SZ,NUM_OUT);
     targets->move_to_device();
@@ -25,13 +26,13 @@ int main() {
     float error = 1.0;
     int j = 0;
 
-    char* file_name = "../data/data_n1000_m5_mu1.5.csv";
+    //char* file_name = "../data/data_n1000_m5_mu1.5.csv";
 
-    Dataset d(file_name, BATCH_SZ);
-    int total_samples = d.n;
-    int num_batches = d.n / BATCH_SZ;
+    //Dataset d(file_name, BATCH_SZ);
+    //int total_samples = d.n;
+    //int num_batches = d.n / BATCH_SZ;
 
-
+/*
     while(j < MAX_EPOCH) {
        d.shuffle_sample_order();
 
@@ -49,7 +50,7 @@ int main() {
            l2->forward_pass();
            l3->forward_pass();
 
-/*           if( j % 10 == 0) {
+           if( j % 10 == 0) {
                printf("Printing layer 2:\n");
                 l2->print_layer();
                printf("Printing layer 3:\n");
@@ -57,7 +58,6 @@ int main() {
                printf("Printing targets:\n");
                 targets->print();
            }
-*/
 
            error = MSE_mat_wrapper(targets, l3->outputs, temp);
            if (error < MIN_ERR) { break; }
@@ -76,5 +76,6 @@ int main() {
 
     printf("TRAINING SUSPENDED AT: EPOCH #%d, ERROR: %f\n", j, error);
     fflush(stdout);
+    */
 }
 
