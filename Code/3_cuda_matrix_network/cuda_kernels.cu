@@ -1,13 +1,49 @@
 #include <stdio.h>
 #include "matrix.hpp"
 
-// make sure T is bigger than the number of neurons in the largest layer
-#define T 128
+// make sure T is bigger than the number of neurons in the largest layer and a multiple of 32
+#define T 32
+
+// a variety of sum reduction methods for testing from (https://jeewhanchoi.github.io/uocis631f19/lecture12.pptx)
+#define naive_reduce { \
+    for(int s = 1; s < blockDim.x; s*=2) { \
+        if(l_tid % (2 * s) == 0) { \
+            shared[l_tid] = shared[l_tid] + shared[l_tid + s]; \
+        } __syncthreads(); }}
+
+#define nondivergent_branch_reduce {\
+    int idx; \
+    for(int s = 1; s < blockDim.x; s*=2) { \
+        idx = 2 * s * l_tid; \
+        if(idx < blockDim.x) { \
+            shared[l_tid] += shared[l_tid + s]; \
+        } __syncthreads(); }}
+
+#define seq_addressing_reduce {\
+    for(int s = blockDim.x / 2; s > 0; s>>=1) { \
+        if(l_tid < s) { \
+            shared[l_tid] += shared[l_tid + s]; \
+        } __syncthreads(); }}
+
+#define loop_unrolled_reduce {\
+    for(unsigned int s = blockDim.x / 2; s > 32; s>>=1) { \
+        if(l_tid < s) { \
+            shared[l_tid] += shared[l_tid + s]; \
+        } __syncthreads();} \
+    if(l_tid < 32) { \
+        shared[l_tid] += shared[l_tid + 32]; \
+        shared[l_tid] += shared[l_tid + 16]; \
+        shared[l_tid] += shared[l_tid + 8]; \
+        shared[l_tid] += shared[l_tid + 4]; \
+        shared[l_tid] += shared[l_tid + 2]; \
+        shared[l_tid] += shared[l_tid + 1]; }}
+
+#define _reduce_ loop_unrolled_reduce
 
 /*Cuda kernels*/
 
 __global__ void _sum_reduce1(float *arr, float *result, int n) {
-    __shared__ float shared[T];
+    __shared__ volatile float shared[T];
     int g_tid = blockIdx.x * blockDim.x + threadIdx.x;
     int l_tid = threadIdx.x;
 
@@ -18,13 +54,7 @@ __global__ void _sum_reduce1(float *arr, float *result, int n) {
 
     __syncthreads();
 
-    for(int s = 1; s < blockDim.x; s*=2) {
-        if(l_tid % (2 * s) == 0) {
-            shared[l_tid] = shared[l_tid] + shared[l_tid + s];
-        }
-
-        __syncthreads();
-    }
+    _reduce_
 
     if(l_tid == 0) {
         result[blockIdx.x] = shared[0];
@@ -32,7 +62,7 @@ __global__ void _sum_reduce1(float *arr, float *result, int n) {
 }
 
 __global__ void _sum_reduce_rows(float *mat, float *result, int r1, int c1) {
-    __shared__ float shared[T];
+    __shared__ volatile float shared[T];
     int g_tid = blockIdx.x + c1 * threadIdx.x;
     int l_tid = threadIdx.x;
 
@@ -43,38 +73,27 @@ __global__ void _sum_reduce_rows(float *mat, float *result, int r1, int c1) {
 
     __syncthreads();
 
-    for(int s = 1; s < blockDim.x; s*=2) {
-        if(l_tid % (2 * s) == 0) {
-            shared[l_tid] = shared[l_tid] + shared[l_tid + s];
-        }
-
-        __syncthreads();
-    }
+    _reduce_
 
     if(l_tid == 0) {
         result[blockIdx.x] = shared[0];
     }
 }
 __global__ void _mat_mul(float *mat1, float *mat2, float *result, int c1, int c2) {
-    __shared__ float shared[T];
-    int tid = threadIdx.x;
+    // must specify shared is volatile to use loop unrolling
+    __shared__ volatile float shared[T];
+    int l_tid = threadIdx.x;
 
-    if(tid < c1)
-        shared[tid] = mat1[blockIdx.x / c2 * c1 + tid] * mat2[blockIdx.x % c2 + c2 * tid];
+    if(l_tid < c1)
+        shared[l_tid] = mat1[blockIdx.x / c2 * c1 + l_tid] * mat2[blockIdx.x % c2 + c2 * l_tid];
     else
-        shared[tid] = 0;
+        shared[l_tid] = 0;
 
     __syncthreads();
 
-    for(int s = 1; s < blockDim.x; s*=2) {
-        if(tid % (2 * s) == 0) {
-            shared[tid] = shared[tid] + shared[tid + s];
-        }
+    _reduce_
 
-        __syncthreads();
-    }
-
-    if(tid == 0) {
+    if(l_tid == 0) {
         result[blockIdx.x] = shared[0];
     }
 }
@@ -145,8 +164,6 @@ __global__ void _divide(float *mat, float *result, float denom, int n) {
         result[tid] = mat[tid] / denom;
 }
 
-
-
 /*Wrapper functions for the CUDA kernels that accept matrix objects.*/
 
 void add_bias(matrix *mat, matrix *bias) {
@@ -157,7 +174,6 @@ void add_bias(matrix *mat, matrix *bias) {
     if(mat->num_cols != bias->num_cols) {
         printf("mat and del_mat don't have the same dimensions.\n");
     }
-    //bias->print_dims();
     int blocks = mat->num_rows;
     int threads = T;
     _add_bias<<<blocks, threads>>>(mat->device_data, bias->device_data, mat->num_cols);
@@ -174,17 +190,14 @@ void update_cuda(matrix *mat, matrix *del_mat, float lr) {
     }
     int n = mat->num_vals;
     int threads = T;
-    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
-    //int blocks = mat->num_rows;
-    //int threads = T;
     _update<<<blocks, threads>>>(mat->device_data, del_mat->device_data, lr, n);
 }
 
-float *sum_reduce(matrix *mat, matrix *result) {
+void sum_reduce(matrix *mat, matrix *result) {
     if(!mat->on_device || !result->on_device) {
         printf("Make sure matrix is on device before summing it.\n");
-        return NULL;
+        return;
     }
     int n = mat->num_vals;
     /*This sum reduction will work for arrays with up to
@@ -195,7 +208,6 @@ float *sum_reduce(matrix *mat, matrix *result) {
 
     n = blocks;
     _sum_reduce1<<<1, T>>>(result->device_data, result->device_data, n);
-    return result->device_data;
 }
 
 void sum_reduce_rows(matrix *mat, matrix *result) {
@@ -215,10 +227,7 @@ void divide(matrix *mat, matrix *result, float denom) {
     }
     int n = mat->num_vals;
     int threads = T;
-    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
-    //int blocks = mat->num_rows;
-    //int threads = T;
     _divide<<<blocks, threads>>>(mat->device_data, result->device_data, denom, n);
 }
 
@@ -235,10 +244,7 @@ void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
     }
     int n = mat1->num_vals;
     int threads = T;
-    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
-    //int blocks = mat1->num_rows;
-    //int threads = T;
     _elwise_mult<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, n);
 }
 
@@ -253,10 +259,7 @@ void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
     }
     int n = mat1->num_vals;
     int threads = T;
-    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
-    //int blocks = mat1->num_rows;
-    //int threads = T;
     _elwise_subtract<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, n);
 }
 
@@ -301,7 +304,6 @@ void activate_prime(matrix *mat, matrix *result, int type) {
     }
     int n = mat->num_vals;
     int threads = T;
-    //int blocks = mat->num_rows;
     int blocks = int(ceil(float(n) / threads));
 
     if(type == 0)
