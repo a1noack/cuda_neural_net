@@ -304,6 +304,10 @@ void sum_reduce_rows(matrix *mat, matrix *result) {
 }
 
 void divide(matrix *mat, matrix *result, float denom) {
+    /**
+     * Calculates the mimimum number of blocks needed to divide each element
+     * in mat by demon and then calls the _divide kernel.
+     */
     if(!mat->on_device || !result->on_device) {
         printf("Make sure mat and result are on device before dividing.\n");
         return;
@@ -311,10 +315,16 @@ void divide(matrix *mat, matrix *result, float denom) {
     int n = mat->num_vals;
     int threads = T;
     int blocks = int(ceil(float(n) / threads));
+    
     _divide<<<blocks, threads>>>(mat->device_data, result->device_data, denom, n);
 }
 
 void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
+    /**
+     * Calculates the mimimum number of blocks needed to multiply each element
+     * in mat1 by corresponding element in mat2 and then calls the _elwise_mult kernel.
+     * Only calls kernel if mat1, mat2, and result have the same dimensions.
+     */
     if(!mat1->on_device || !mat2->on_device || !result->on_device) {
         printf("Make sure mat1, mat2, result, are on device before multiplying.\n");
         return;
@@ -328,11 +338,17 @@ void elwise_mult(matrix *mat1, matrix *mat2, matrix *result) {
     int n = mat1->num_vals;
     int threads = T;
     int blocks = int(ceil(float(n) / threads));
+    
     _elwise_mult<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, n);
 }
 
 
 void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
+    /**
+     * Calculates the mimimum number of blocks needed to subtract each element
+     * in mat1 by corresponding element in mat2 and then calls the _subtract kernel.
+     * Only calls kernel if mat1, mat2, and result have the same dimensions.
+     */
     if(!mat1->on_device || !mat2->on_device || !result->on_device) {
         printf("Make sure mat1, mat2, result, are on device before subtracting.\n");
         return;
@@ -343,10 +359,15 @@ void elwise_subtract(matrix *mat1, matrix *mat2, matrix *result) {
     int n = mat1->num_vals;
     int threads = T;
     int blocks = int(ceil(float(n) / threads));
+    
     _elwise_subtract<<<blocks, threads>>>(mat1->device_data, mat2->device_data, result->device_data, n);
 }
 
 void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
+    /** 
+     * Assigns a block to an element in result and then calls the _mat_mul kernel.
+     * Only calls the kernel if mat1's columns and mat2's rows are equal.
+     */
     if(mat1->on_device && mat2->on_device && result->on_device) {
         int r1 = mat1->num_rows, c1 = mat1->num_cols;
         int r2 = mat2->num_rows, c2 = mat2->num_cols;
@@ -362,6 +383,10 @@ void mat_mul(matrix *mat1, matrix *mat2, matrix *result) {
 }
 
 void activate(matrix *mat, matrix *result, int type) {
+    /**
+     * Calculates the mimimum number of blocks needed to activate each element
+     * in mat and then calls activation kernel specified by type.
+     */
     if(!mat->on_device) {
         printf("Make sure matrix is on device before activating.\n");
         return;
@@ -381,6 +406,10 @@ void activate(matrix *mat, matrix *result, int type) {
 }
 
 void activate_prime(matrix *mat, matrix *result, int type) {
+    /**
+     * Calculates the mimimum number of blocks needed to "reverse" activate each element
+     * in mat and then callsthe kernel for the derivative of the activation function specified by type.
+     */
     if(!mat->on_device) {
         printf("Make sure matrix is on device before activating.\n");
         return;
@@ -396,6 +425,10 @@ void activate_prime(matrix *mat, matrix *result, int type) {
 }
 
 void transpose(matrix *mat, matrix *result) {
+    /**
+     * Assigns a block to each row in mat and then calls the _transpose kernel.
+     * Only calls the kernel if the dimensions of mat1 are the reverse of mat2.
+     */
     if(!mat->on_device || !result->on_device) {
         printf("Make sure mat, result, are on device before transposing.\n");
         return;
@@ -411,6 +444,13 @@ void transpose(matrix *mat, matrix *result) {
 }
 
 float MSE_mat(matrix *y, matrix *yhat, matrix *result) {
+    /**
+     * Calls various kernels in order to calculate the mean squared error
+     * given the one-hot label vectors making up each row of y
+     * and the logit outputs from the last layer of the network, yhat.
+     * The mean squared error is then returned as a float. The constituent
+     * wrappers and kernels are only called if y and yhat's dimensions are the same.
+     */
     if(!y->on_device || !yhat->on_device || !result->on_device) {
         printf("Make sure y, yhat, result are on device before MSE.\n");
         return -1;
