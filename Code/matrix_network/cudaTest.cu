@@ -3,7 +3,7 @@
 // it is included in cuda_kernels.cu
 
 int main(int argc, char *argv[]) {
-    int r1 = 20, c1 = 18, r2 = 18, c2 = 6;
+    int r1 = 8, c1 = 128, r2 = 128, c2 = 7;
 
     float m1dat[r1*c1] = {0};
     float m2dat[r2*c2] = {0};
@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
     matrix *m3grad = new matrix(r1, c2);
     matrix *bias = new matrix(1, c2);
     matrix *bias2 = new matrix(1, c2);
+    matrix *bias3 = new matrix(1, c2);
 
     m1->set_memory(m1dat);
     m1T->set_mem_zero();
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
     m3grad->move_to_device();
     bias->move_to_device();
     bias2->move_to_device();
+    bias3->move_to_device();
 
     printf("\nm3grad: "); m3grad->print();
 
@@ -80,7 +82,7 @@ int main(int argc, char *argv[]) {
 
     printf("\nm3grad: "); m3grad->print();
     printf("\nm3 - m3grad = m3: ");
-    update(m3, m3grad, 1.);
+    update_cuda(m3, m3grad, 1.);
     m3->print();
 
     printf("\nm3grad - m3: ");
@@ -100,7 +102,7 @@ int main(int argc, char *argv[]) {
     m3->print();
     
     printf("\nsum_row_reduce: ");
-    sum_reduce_rows(m3, m3);
+    sum_reduce_rows(m3, bias);
     m3->print();
 
     printf("\nbias: ");
@@ -110,8 +112,15 @@ int main(int argc, char *argv[]) {
     bias2->print();
 
     printf("\nMSE(bias, bias2): ");
-    float mse = MSE(bias, bias2, bias);
-    printf("\n%f\n");
+    float mse = MSE_mat(bias, bias2, bias3);
+    printf("\n%f\n", mse);
+
+
+    printf("\nbias: ");
+    bias->print();
+    
+    printf("\nbias2: ");
+    bias2->print();
     
     exit(0);
 }
