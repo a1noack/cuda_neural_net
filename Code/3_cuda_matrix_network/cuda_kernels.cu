@@ -128,7 +128,7 @@ __global__ void _add_bias(float *mat, float *bias, int c1) {
 __global__ void _update(float *mat, float *del_mat, float lr, int n) {
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if(tid < n)
-        mat[tid] = mat[tid] - lr * del_mat[tid];
+        mat[tid] = mat[tid] + lr * del_mat[tid];
 }
 
 
