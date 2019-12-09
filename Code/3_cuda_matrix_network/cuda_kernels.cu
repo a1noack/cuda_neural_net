@@ -116,6 +116,7 @@ __global__ void _sigmoid_prime(float *mat, float *result, int n) {
      * is the number of elements in mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    
     if(tid < n) {
         float val = 0;
         val = 1. / (1. + exp(-mat[tid]));
@@ -129,6 +130,7 @@ __global__ void _sigmoid(float *mat, float *result, int n) {
      * is the number of elements in mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    
     if(tid < n) {
         float val = 0;
         val = 1. / (1. + exp(-mat[tid]));
@@ -142,6 +144,7 @@ __global__ void _relu(float *mat, float *result, int n) {
      * is the number of elements in mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    
     if(tid < n)
         if(mat[tid] <= 0.)
             result[tid] = 0.;
@@ -155,6 +158,7 @@ __global__ void _elwise_subtract(float *mat1, float *mat2, float *result, int n)
      * and places results in result. n is the number of elements in mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    
     if(tid < n)
         result[tid] = mat1[tid] - mat2[tid];
 }
@@ -165,6 +169,7 @@ __global__ void _elwise_mult(float *mat1, float *mat2, float *result, int n) {
      * and places results in result. n is the number of elements in mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    
     if(tid < n)
         result[tid] = mat1[tid] * mat2[tid];
 }
@@ -176,6 +181,7 @@ __global__ void _add_bias(float *mat, float *bias, int c1) {
      */
     int mat_tid = blockIdx.x * c1 + threadIdx.x;
     int bias_tid = threadIdx.x;
+
     if(threadIdx.x < c1)
         mat[mat_tid] += bias[bias_tid];
 }
@@ -187,6 +193,7 @@ __global__ void _update(float *mat, float *del_mat, float lr, int n) {
      * and del_mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+
     if(tid < n)
         mat[tid] = mat[tid] - lr * del_mat[tid];
 }
@@ -199,6 +206,7 @@ __global__ void _transpose(float *mat, float *result, int c1, int r1) {
      */
     int mat_tid = (blockIdx.x * c1) + threadIdx.x;
     int result_tid = blockIdx.x + (threadIdx.x * r1);
+
     if(threadIdx.x < c1)
         result[result_tid] = mat[mat_tid];
 }
@@ -209,6 +217,7 @@ __global__ void _divide(float *mat, float *result, float denom, int n) {
      * matrix result. n is the number of elements in mat.
      */
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
+
     if(tid < n)
         result[tid] = mat[tid] / denom;
 }
@@ -217,52 +226,76 @@ __global__ void _divide(float *mat, float *result, float denom, int n) {
 /*Wrapper functions for the CUDA kernels that accept matrix objects.*/
 
 void add_bias(matrix *mat, matrix *bias) {
+    /** 
+     * Assigns a block to each row of mat and calls the _add_bias kernel.
+     * Only calls the kernel if mat and bias have the same
+     * number of columns.
+     */
     if(!mat->on_device || !bias->on_device) {
         printf("Make sure matrix and bias are both on device before adding them.\n");
         return;
     }
     if(mat->num_cols != bias->num_cols) {
         printf("mat and del_mat don't have the same dimensions.\n");
+        return;
     }
     int blocks = mat->num_rows;
     int threads = T;
+
     _add_bias<<<blocks, threads>>>(mat->device_data, bias->device_data, mat->num_cols);
 }
 
-
 void update_cuda(matrix *mat, matrix *del_mat, float lr) {
+    /** 
+     * Calculates the mimimum number of blocks needed to perform the in-place
+     * update to mat and calls the _update kernel.
+     * Only calls the kernel if mat and del_mat have the same dimensions.
+     */
     if(!mat->on_device || !del_mat->on_device) {
         printf("Make sure matrix and gradients are both on device before adding them.\n");
         return;
     }
     if(mat->num_rows != del_mat->num_rows || mat->num_cols != del_mat->num_cols) {
         printf("mat and del_mat don't have the same dimensions.\n");
+        return;
     }
     int n = mat->num_vals;
     int threads = T;
     int blocks = int(ceil(float(n) / threads));
+
     _update<<<blocks, threads>>>(mat->device_data, del_mat->device_data, lr, n);
 }
 
 void sum_reduce(matrix *mat, matrix *result) {
+    /**
+     * Calculates the mimimum number of blocks needed to reduce mat
+     * and then calls the _sum_reduce kernel.
+     * This sum reduction will work for arrays with up to 
+     * T ^ 2 elements in length.
+     */
     if(!mat->on_device || !result->on_device) {
         printf("Make sure matrix is on device before summing it.\n");
         return;
     }
     int n = mat->num_vals;
-    /*This sum reduction will work for arrays with up to
-     T ^ 2 = 128 * 128 = 16384 elements in length.*/
     int blocks = (n % T == 0) ? (n / T) : (n / T + 1);
 
     _sum_reduce<<<blocks, T>>>(mat->device_data, result->device_data, n);
 
     n = blocks;
+    
     _sum_reduce<<<1, T>>>(result->device_data, result->device_data, n);
 }
 
 void sum_reduce_rows(matrix *mat, matrix *result) {
+    /** 
+     * Assigns a block to each column of mat and calls the _sum_reduce_rows kernel.
+     * Only calls the kernel if mat and bias have the same
+     * number of columns.
+     */
     if(!mat->on_device || !result->on_device) {
         printf("Make sure matrix is on device before summing it.\n");
+        return;
     }
     int blocks = mat->num_cols;
     int threads = T;
