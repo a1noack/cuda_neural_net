@@ -1,4 +1,3 @@
-//#define _GLIBCXX_USE_CXX11_ABI 0
 #include "dataset.hpp"
 #include <stdio.h>
 #include <fstream>
@@ -6,6 +5,7 @@
 #include <algorithm>
 #include <string>
 
+//dataset constructor, reads from file and creates everything needed
 Dataset::Dataset(const char* fname, int batch_size) {
     this->load_data(fname);
     this->fname = fname;
@@ -13,25 +13,16 @@ Dataset::Dataset(const char* fname, int batch_size) {
 
     this->batch_x = new float*[this->batch_size];
     this->batch_y = new float*[this->batch_size];
-//    for(int i = 0; i < this->batch_size; i++) {
-//        this->minibatch[i] = new float[this->m];
-//        this->minibatch[i] = new float[this->k];
-//    }
 
     this->sample_order = new int[this->n];
     for(int i = 0; i < this->n; i++)
         this->sample_order[i] = i;
-    //this->shuffle_sample_order();
-    //printf("bs = %d\n", this->batch_size);
 
     this->position = 0;
 }
 
+//dataset destructor
 Dataset::~Dataset() {
-//    for(int i = 0; i < this->batch_size; i++) {
-//        delete this->batch_x[i];
-//        delete this->batch_y[i];
-//    }
     delete this->batch_x;
     delete this->batch_y;
 
@@ -45,6 +36,7 @@ Dataset::~Dataset() {
     delete this->y;
 }
 
+//loads the dataset from the file
 void Dataset::load_data(const char* fname) {
     // load file
     std::ifstream file(fname);
@@ -89,18 +81,17 @@ void Dataset::load_data(const char* fname) {
             std::stringstream convertor(val);
             if(c < this->m){
                 convertor >> this->x[r][c];
-//                printf("%f ", x[r][c]);
             }
             else{
                 convertor >> label;
                 this->y[r][int(label)] = 1.0;
-//                printf(" label: [%f, %f]\n", y[r][0], y[r][1]);
             }
         }
     }
     printf("x[1][4] = %f\n", this->x[1][4]);
 }
 
+//Function to load up next batch in the dataset pointers
 void Dataset::load_next_batch() {
     int idx;
     for(int i = 0; i < this->batch_size; i++) {
@@ -113,16 +104,16 @@ void Dataset::load_next_batch() {
         this->position = 0;
 }
 
+
 void print_intarray2(int *arr, int len) {
     for(int i = 0; i < len; i++)
         printf("%d ", arr[i]);
     printf("\n");
 }
 
+//function to shuffle the sample orders of the dataset this is needed for every epoch so the network doesn't overfit
 void Dataset::shuffle_sample_order() {
-    //print_intarray2(this->sample_order, 100);
     std::random_shuffle(&this->sample_order[0], &this->sample_order[this->n]);
-    //print_intarray2(this->sample_order, 100);
 }
 
 int Dataset::get_batch_size() {

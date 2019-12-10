@@ -3,6 +3,7 @@
 
 #include <string>
 
+//This is the dataset class, it handles all the loading of the data from a file. Then preforms some crucial operations on it, conditioning it for network training.
 class Dataset {
 public:
     Dataset(const char*, int);

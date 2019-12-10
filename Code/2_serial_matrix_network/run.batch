@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --partition=long
-#SBATCH --job-name=Serial_NN_1024m_2048n
-#SBATCH --output=Serial_NN_1024m_2048m.out
-#SBATCH --error=Serial_NN_1024m_2048m.err
+#SBATCH --job-name=Serial_NN
+#SBATCH --output=Serial_NN.out
+#SBATCH --error=Serial_NN.err
 #SBATCH --time=0-00:10:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
