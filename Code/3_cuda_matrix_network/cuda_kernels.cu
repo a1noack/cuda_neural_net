@@ -2,7 +2,7 @@
 #include "matrix.hpp"
 
 // make sure T is bigger than the number of neurons in the largest layer and a multiple of 32
-#define T 32
+#define T 1024
 
 // a variety of sum reduction methods (https://jeewhanchoi.github.io/uocis631f19/lecture12.pptx)
 #define naive_reduce { \
