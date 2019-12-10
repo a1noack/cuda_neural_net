@@ -1,5 +1,6 @@
 #include "layer.hpp"
 #include "utils/dataset.hpp"
+#include <time.h>
 
 #define BATCH_SZ 1024
 #define NUM_IN 1024
@@ -9,6 +10,9 @@
 #define LEARN_RATE 0.1
 
 int main() {
+    clock_t t;
+    srand(5);
+
     Layer* l1 = new Layer(NUM_IN, input, NULL, BATCH_SZ);
     Layer* l2 = new Layer(32, hidden, l1, BATCH_SZ);
     Layer* l3 = new Layer(NUM_OUT, output, l2, BATCH_SZ);
@@ -30,7 +34,7 @@ int main() {
     int total_samples = d.n;
     int num_batches = d.n / BATCH_SZ;
 
-
+    t = clock();
     while(j < MAX_EPOCH) {
        error = 0;
        d.shuffle_sample_order();
@@ -54,10 +58,6 @@ int main() {
            l3->back_prop(targets, BATCH_SZ);
            l2->back_prop(NULL, BATCH_SZ);
 
-           //if( j % 10 == 0) {
-           //     l3->print_layer();
-           //     targets->print();
-           //}
            l3->update(LEARN_RATE, BATCH_SZ);
            l2->update(LEARN_RATE, BATCH_SZ);
        }
@@ -65,6 +65,8 @@ int main() {
        fflush(stdout);
        j++;
     }
+    double elapsed_seconds = double(clock() - t) / CLOCKS_PER_SEC;
+    printf("time = %f seconds\n", elapsed_seconds);
 
     printf("TRAINING SUSPENDED AT: EPOCH #%d, ERROR: %f\n", j, error);
     fflush(stdout);

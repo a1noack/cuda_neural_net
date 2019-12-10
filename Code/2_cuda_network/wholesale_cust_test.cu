@@ -2,7 +2,7 @@
 #include "utils/dataset.hpp"
 #include <time.h>
 
-#define BATCH_SZ 10
+#define BATCH_SZ 40
 #define NUM_IN 7
 #define NUM_OUT 2
 #define MIN_ERR 0.001
@@ -32,7 +32,6 @@ int main() {
     float error = 1.0;
     int j = 0;
 
-    //char* file_name = "../data/data_n1000_m5_mu1.5.csv";
     char* file_name = "../data/wholesale_cust_mean.csv";
 
     Dataset d(file_name, BATCH_SZ);
@@ -48,7 +47,6 @@ int main() {
        error = 0;
 
        for(int i = 0; i < num_batches; i++) {
-           //batch
            d.load_next_batch();
 
            l1->zero_grad();
@@ -71,7 +69,6 @@ int main() {
            }
 
            error += MSE_mat_wrapper(targets, l5->outputs, temp);
-           //if (error < MIN_ERR) { break; }
 
            l5->back_prop(targets, BATCH_SZ);
            l4->back_prop(NULL, BATCH_SZ);
