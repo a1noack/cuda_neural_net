@@ -4,7 +4,7 @@
 #SBATCH --partition=gpu       ### Quality of Service (like a queue in PBS)
 #SBATCH --time=0-00:00:59     ### Wall clock time limit in Days-HH:MM:SS
 #SBATCH --nodes=1             ### Node count required for the job
-#SBATCH --output=wholesale_cust_test.out
+#SBATCH --output=large_input_test.out
 #SBATCH --ntasks-per-node=1   ### Nuber of tasks to be launched per Node
 #SBATCH --gres=gpu:1          ### General REServation of gpu:number of gpus
 

@@ -2,7 +2,7 @@
 #include "utils/dataset.hpp"
 #include <time.h>
 
-#define BATCH_SZ 40
+#define BATCH_SZ 10
 #define NUM_IN 7
 #define NUM_OUT 2
 #define MIN_ERR 0.001
