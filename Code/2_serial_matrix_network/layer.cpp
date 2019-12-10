@@ -64,8 +64,10 @@ void Layer::set_next_layer(Layer* next_layer) {
 }
 
 void Layer::zero_grad() {
-    if(lp != output) {
+    if(del_bias != NULL) {
         del_bias->set_mem_zero();
+    }
+    if(out_del_weights != NULL) {
         out_del_weights->set_mem_zero();
     }
 }

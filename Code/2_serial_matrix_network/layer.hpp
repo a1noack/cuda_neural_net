@@ -1,5 +1,6 @@
 #include "matrix.hpp"
 #include <math.h>
+#include <assert.h>
 
 enum layer_pos {input, hidden, output};
 
