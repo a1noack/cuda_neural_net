@@ -5,11 +5,11 @@
 #include <cstring>
 #include <stdlib.h>
 #include <time.h>
-//#include <cuda.h>
-//#include <cuda_runtime_api.h>
 
 #define RF_HI 0.99
 #define RF_LO 0.01
+
+/* This is the matrix class. It holds the data that represents the parameters in the network. This class will also handle the deivce to host and vice versa transfers. */
 
 class matrix{
     private:
@@ -23,21 +23,16 @@ class matrix{
         int num_vals;
         int on_device;
 
-        matrix(int, int); //matrix constrructor takes two dims
+        matrix(int, int);
         ~matrix();
 
         void move_to_device();
         void move_to_host();
 
         void set_memory(float*);
-        void set_memory(float*, int, int);
 
         void set_mem_zero();
         void set_mem_random();
-
-        float** get_row(int);
-        float** get_col(int);
-        float** get_all_data();
 
         void print_dims();
         void print();

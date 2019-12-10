@@ -1,10 +1,10 @@
 #include "layer.hpp"
 #include "cuda_kernels.cu"
 
+// Layer constructor creates the layers, and links them to the next and previous layers in the network. Sincel the layers will hold pointers to weight parameters in and out, linking is crucial
 Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer, int batch_sz) {
     lp = lpp;
     num_nodes = node_count;
-
     prev = NULL;
     next = NULL;
     in_weights = NULL;
@@ -12,12 +12,8 @@ Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer, int batch_sz)
     out_weights = NULL;
     out_del_weights = NULL;
     out_weightsT = NULL;
-
-
     outputs = new matrix(batch_sz, num_nodes);
     raw_outputs = new matrix(batch_sz, num_nodes);
-    //inputs = new matrix(batch_sz, num_nodes);
-
     inputs = NULL;
     inputsT = NULL;
 
@@ -30,49 +26,27 @@ Layer::Layer(int node_count, layer_pos lpp, Layer* previous_layer, int batch_sz)
 
     bias = new matrix(1, node_count);
     bias->set_mem_random();
-
     del_bias = new matrix(1, node_count);
     del_bias->set_mem_zero();
-
-    n_idx = new matrix(1, node_count);
-    float* idxs = new float[node_count];
-
-    for(int i = 0; i < node_count; i++) {
-        idxs[i] = i+1;
-    }
-
-    n_idx->set_memory(idxs);
-
 }
 
+//This function sets the pointers in the layers and connects it to the next layer
 void Layer::set_next_layer(Layer* next_layer) {
 
     next = next_layer;
     out_weights = new matrix(num_nodes, next->num_nodes);
     out_weights->set_mem_random();
-
     next->in_weights = out_weights;
     next->inputs = outputs;
     next->inputsT = new matrix(outputs->num_cols, outputs->num_rows);
-
     out_del_weights = new matrix(num_nodes, next->num_nodes);
     out_del_weights->set_mem_zero();
     next->in_del_weights = out_del_weights;
-
     out_weightsT = new matrix(next->num_nodes, num_nodes);
-
-    //____________________TESTING STUFF
-    w_idx = new matrix(num_nodes, next->num_nodes);
-    float* idxs = new float[num_nodes * next->num_nodes];
-
-    for(int i = 0; i < num_nodes * next->num_nodes; i++) {
-        idxs[i] = i + 1;
-    }
-
-    w_idx->set_memory(idxs);
 
 }
 
+//This function zeros out the gradients in the layer
 void Layer::zero_grad() {
     if(lp != output) {
         del_bias->set_mem_zero();
@@ -80,6 +54,7 @@ void Layer::zero_grad() {
     }
 }
 
+//This function handles the movement between host and device for the matrix members
 void Layer::move_to_device() {
     if(inputs != NULL) {
         inputs->move_to_device();
@@ -105,6 +80,7 @@ void Layer::move_to_device() {
     }
 }
 
+//This function handles device to host transfers of all the matrix members
 void Layer::move_to_host() {
     if(inputs != NULL) {
         inputs->move_to_host();
@@ -129,13 +105,7 @@ void Layer::move_to_host() {
     }
 }
 
-void print_FF(float** f, int n) {
-    for(int i = 0; i < n; i++) {
-        printf("%f ", *f[i]);
-    }
-    printf("\n");
-}
-
+//This is the forward pass function. It computes the outputs for each layer given the weight and bias parameters attatched to it
 void Layer::forward_pass() {
     if(lp != input) {
         mat_mul(inputs, in_weights, raw_outputs);
@@ -144,6 +114,7 @@ void Layer::forward_pass() {
     }
 }
 
+//This function preforms the backwards pass, different from output layers and hidden layers. Targets must be passed for the output layer. Targets are set to NULL for the hidden layers.
 void Layer::back_prop(matrix* targets, int batch_sz) {
     if(targets != NULL) {
         elwise_subtract(outputs, targets, outputs);
@@ -158,12 +129,13 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
     sum_reduce_rows(raw_outputs, del_bias);
 }
 
-
+//This function handles the parameter updates for the network.
 void Layer::update(float learn_rate, int batch_size) {
     update_cuda(in_weights, in_del_weights, learn_rate / (float)batch_size);
     update_cuda(bias, del_bias, learn_rate / (float)batch_size);
 }
 
+//Handy Function to print the layer parameters
 void Layer::print_layer() {
     printf("printing layer\n");
     if(inputs != NULL) {
@@ -208,55 +180,22 @@ void Layer::print_layer() {
     }
 
 }
-float dot_prod(float* x, float* y, int num) {
-    float dp = 0.0;
 
-    for(int i = 0; i < num; i++) {
-        dp += x[i] * y[i];
-    }
-    return dp;
+Layer::~Layer() {
+    if( outputs != NULL) delete outputs;
+    if( inputs != NULL) delete inputs;
+    if( out_weights != NULL) delete out_weights;
+    if( in_weights != NULL) delete in_weights;
+    if( in_del_weights != NULL) delete in_del_weights;
+    if( out_del_weights != NULL) delete out_del_weights;
+    if( bias != NULL) delete bias;
+    if( del_bias != NULL) delete del_bias;
+    if( raw_outputs != NULL) delete raw_outputs;
+    if( out_weightsT != NULL) delete out_weightsT;
+    if( inputsT != NULL) delete inputsT;
 }
 
-float dot_prod(float** x, float** y, int num) {
-    //printf("in dp\n");
-    float dp = 0.0;
-
-    for(int i = 0; i < num; i++) {
-        dp += *x[i] * *y[i];
-    }
-    return dp;
-}
-
-float MSE(float* v1, float* v2, int num) {
-    float s = 0.0;
-
-    for(int i = 0; i < num; i++) {
-        s += pow( (double) v1[i] - v2[i], 2);
-    }
-
-    return ( (float) 1 / (float) num ) * s;
-}
-
-float MSE(float** v1, float** v2, int num) {
-    float s = 0.0;
-
-    for(int i = 0; i < num; i++) {
-        s += pow( (double) *v1[i] - *v2[i], 2);
-    }
-
-    return ( (float) 1 / (float) num ) * s;
-}
-
-float MSE(float** v1, float* v2, int num) {
-    float s = 0.0;
-
-    for(int i = 0; i < num; i++) {
-        s += pow( (double) *v1[i] - v2[i], 2);
-    }
-
-    return ( (float) 1 / (float) num ) * s;
-}
-
+//This function is a CUDA kernel wrapper function to compute mean squared error
 float MSE_mat_wrapper(matrix *y, matrix *yhat, matrix *result) {
     return MSE_mat(y, yhat, result);
 }
