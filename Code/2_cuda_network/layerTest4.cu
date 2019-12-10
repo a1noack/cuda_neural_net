@@ -6,7 +6,7 @@
 #define NUM_IN 7
 #define NUM_OUT 2
 #define MIN_ERR 0.001
-#define MAX_EPOCH 100
+#define MAX_EPOCH 75
 #define LEARN_RATE 2
 
 int main() {
