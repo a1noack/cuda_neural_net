@@ -2,14 +2,13 @@
 #include <math.h>
 #include <assert.h>
 
+/* This is the layer class. It holds all of the parameters required for a neural network layer. These are stored in matrix data types. The layers implement the forward pass, back propogation, and update functions needed for network training. There are also some testing functions that should be left in. */
+
+//enum to define a layer's position in a network
 enum layer_pos {input, hidden, output};
 
 class Layer {
-    protected:
-
-
     public:
-
         int num_nodes;
         layer_pos lp;
 
@@ -39,17 +38,6 @@ class Layer {
         void back_prop(float* targets);
         void update(float, int);
 
-        //TESTING FUNCTIONS:
-        //
-        void print_outputs() { outputs->print(); }
-        void print_inputs() { inputs->print(); }
-        void print_in_weights() { in_weights->print(); }
-        void print_out_weights() { out_weights->print(); }
-        void print_in_del_W() { in_del_weights->print(); }
-        void print_out_del_W() { out_del_weights->print(); }
-        void print_bias() { bias->print(); }
-        void print_del_bias() { del_bias->print(); }
-
         void print_layer();
 
         void set_weights(float* w) { out_weights->set_memory(w); }
@@ -60,8 +48,5 @@ class Layer {
         matrix* n_idx;
 };
 
-float dot_prod(float*, float*, int);
 float dot_prod(float**, float**, int);
 float MSE(float*, float*, int);
-float MSE(float**, float*, int);
-float MSE(float**, float**, int);

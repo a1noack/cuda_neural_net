@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <string>
 
-Dataset::Dataset(char* fname, int batch_size) {
+Dataset::Dataset(const char* fname, int batch_size) {
     this->load_data(fname);
     this->fname = fname;
     this->batch_size = batch_size;
@@ -45,7 +45,7 @@ Dataset::~Dataset() {
     delete this->y;
 }
 
-void Dataset::load_data(char* fname) {
+void Dataset::load_data(const char* fname) {
     // load file
     std::ifstream file(fname);
 

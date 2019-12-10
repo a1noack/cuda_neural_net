@@ -15,26 +15,17 @@ matrix::~matrix() {
     delete [] host_data;
 }
 
+//Function to set the values in the matrix.
 void matrix::set_memory(float* new_vals) {
     std::memcpy(host_data, new_vals, sizeof(float) * num_rows * num_cols);
 }
 
-void matrix::set_memory(float* new_vals, int new_rows, int new_cols) {
-    num_rows = new_rows;
-    num_cols = new_cols;
-    num_vals = new_rows * new_cols;
-
-    delete [] host_data;
-
-    host_data = new float[num_vals];
-
-    std::memcpy(host_data, new_vals, sizeof(float) * num_vals);
-}
-
+// Function to set all the matrix memory to zero
 void matrix::set_mem_zero() {
     memset(host_data, 0, sizeof(float) * num_vals);
 }
 
+// Function to set random values in the matrix
 void matrix::set_mem_random() {
     srand(time(NULL));
     for(int i = 0; i < num_vals; i++) {
@@ -54,6 +45,7 @@ float** matrix::get_row(int index) {
     return row_at_index;
 }
 
+//Returns an array of float pointer that are pointers to the values in the column requested
 float** matrix::get_col(int index) {
     float** col_at_index = new float*[num_rows];
     int j = 0;
@@ -64,16 +56,7 @@ float** matrix::get_col(int index) {
     return col_at_index;
 }
 
-
-float** matrix::get_all_data() {
-    float** all_data = new float*[num_vals];
-
-    for(int i = 0; i < num_vals; i++) {
-        all_data[i] = &host_data[i];
-    }
-    return all_data;
-}
-
+//debug function to print the data in the matrix. Nice and ordered.
 void matrix::print() {
     for(int i = 0; i < num_rows; i++) {
         for(int j = 0; j < num_cols; j++) {

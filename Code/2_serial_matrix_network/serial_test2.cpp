@@ -25,7 +25,7 @@
 #define NUM_INPUTS 5
 #define NUM_OUTPUTS 2
 
-char* data_file = "../data/data_n1000_m5_mu1.5.csv";
+const char* data_file = "../data/data_n1000_m5_mu1.5.csv";
 //----------------------------------------------------------------------
 
 int main() {
@@ -43,7 +43,6 @@ int main() {
     //Load up the dataset
     Dataset d(data_file, BATCH_SIZE);
 
-    int total_samples = d.n;
     int num_batches = d.n / BATCH_SIZE;
 
     int j = 0;
