@@ -19,13 +19,13 @@
 #define NUM_INPUTS 1024
 #define NUM_OUTPUTS 2
 
-char* data_file = "../data/data_n10240_m1024_mu2.0.csv";
+char* data_file = "../data/data_n1024_m1024_mu2.0.csv";
 //----------------------------------------------------------------------
 
 int main() {
     //create layers:
     Layer* l1 = new Layer(NUM_INPUTS, input, NULL);
-    Layer* l2 = new Layer(2, hidden, l1);
+    Layer* l2 = new Layer(32, hidden, l1);
     Layer* l3 = new Layer(NUM_OUTPUTS, output, l2);
 
     //Load up the dataset
@@ -84,7 +84,7 @@ int main() {
     }
     double elapsed_time = double(clock() - start) / CLOCKS_PER_SEC;
 
-    printf("TRAINING NETWORK: [5,3,2], Batch Size: %d, Epochs: %d, Error Threshold: %f, Error: %f, Training Time: %f Seconds\n", BATCH_SIZE, NUM_EPOCHS, MIN_ERROR, error, elapsed_time);
+    printf("TRAINING NETWORK: [1025,32,2], Batch Size: %d, Epochs: %d, Error: %f, Training Time: %f Seconds\n", BATCH_SIZE, NUM_EPOCHS, error, elapsed_time);
 }
 
 
