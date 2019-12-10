@@ -87,7 +87,6 @@ void Dataset::load_data(char* fname) {
             }
         }
     }
-    printf("x[1][4] = %f\n", this->x[1][4]);
 }
 
 void Dataset::load_next_batch() {

@@ -1,4 +1,4 @@
-#define _GLIBCXX_USE_CXX11_ABI 0
+//#define _GLIBCXX_USE_CXX11_ABI 0
 #include "dataset.hpp"
 #include <stdio.h>
 #include <fstream>
@@ -19,7 +19,7 @@ Dataset::Dataset(char* fname, int batch_size) {
 //    }
 
     this->sample_order = new int[this->n];
-    for(int i = 0; i < this->n; i++) 
+    for(int i = 0; i < this->n; i++)
         this->sample_order[i] = i;
     //this->shuffle_sample_order();
     //printf("bs = %d\n", this->batch_size);
@@ -48,7 +48,7 @@ Dataset::~Dataset() {
 void Dataset::load_data(char* fname) {
     // load file
     std::ifstream file(fname);
-    
+
     // make sure file was loaded correctly
     if(!file.good()) {
         printf("file load failed");
@@ -62,8 +62,8 @@ void Dataset::load_data(char* fname) {
     std::getline(file, line);
     this->n = stoi(line.substr(2, line.find(delimeter)));
     this->m = stoi(line.substr(line.find(delimeter) + 1));
-    this->k = 2; 
-    
+    this->k = 2;
+
     // allocate space on heap for data
     int r, c;
     this->x = new float*[this->n];
@@ -90,7 +90,7 @@ void Dataset::load_data(char* fname) {
             if(c < this->m){
                 convertor >> this->x[r][c];
 //                printf("%f ", x[r][c]);
-            } 
+            }
             else{
                 convertor >> label;
                 this->y[r][int(label)] = 1.0;
@@ -120,9 +120,9 @@ void print_intarray2(int *arr, int len) {
 }
 
 void Dataset::shuffle_sample_order() {
-    //print_intarray2(this->sample_order, 100);    
+    //print_intarray2(this->sample_order, 100);
     std::random_shuffle(&this->sample_order[0], &this->sample_order[this->n]);
-    //print_intarray2(this->sample_order, 100);    
+    //print_intarray2(this->sample_order, 100);
 }
 
 int Dataset::get_batch_size() {

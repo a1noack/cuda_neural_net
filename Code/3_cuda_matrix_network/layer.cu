@@ -146,8 +146,7 @@ void Layer::forward_pass() {
 
 void Layer::back_prop(matrix* targets, int batch_sz) {
     if(targets != NULL) {
-        elwise_subtract(targets, outputs, outputs);
-        //elwise_subtract(outputs, targets, outputs);
+        elwise_subtract(outputs, targets, outputs);
     } else {
         transpose(out_weights, out_weightsT);
         mat_mul(next->raw_outputs, out_weightsT, outputs);
@@ -156,34 +155,13 @@ void Layer::back_prop(matrix* targets, int batch_sz) {
     elwise_mult(outputs, raw_outputs, raw_outputs);
     transpose(inputs, inputsT);
     mat_mul(inputsT, raw_outputs, in_del_weights);
-    divide(in_del_weights, in_del_weights, (float) batch_sz);
     sum_reduce_rows(raw_outputs, del_bias);
-    divide(del_bias, del_bias, (float) batch_sz);
-    /* for output layer:
-       1. outputs - targets -> outputs
-       2. sigmoid_prime(raw_outputs) -> raw_outputs
-       3. element_mul(outputs, raw_outputs) -> raw_outputs
-       4. Transpose(inputs) -> inputsT
-       5. mat_mul(raw_outs, inputsT) -> del_Weights / batch_sz
-       6. sum_cols(raw_outputs) - > del_bias / batch_sz
-       */
-
-    /* for hidden layer:
-       1. Transpose(out_weights) -> out_weightsT
-       2. mat_mul(out_weightsT, next->raw_outputs) -> outputs
-       3. sigmoid_prime(raw_outputs) -> raw_outtputs
-       4. element_mul(outputs, raw_outputs) -> raw_outputs
-       5. Transpose(inputs) -> inputsT
-       6. mat_mul(raw_outs, inputsT)
-       7. sum_cols(raw_outputs) - > del_bias / batch_sz
-       */
-
 }
 
 
 void Layer::update(float learn_rate, int batch_size) {
-    update_cuda(in_weights, in_del_weights, learn_rate);
-    update_cuda(bias, del_bias, learn_rate);
+    update_cuda(in_weights, in_del_weights, learn_rate / (float)batch_size);
+    update_cuda(bias, del_bias, learn_rate / (float)batch_size);
 }
 
 void Layer::print_layer() {
