@@ -12,10 +12,10 @@
 class matrix{
     private:
 
-        float* host_data;
 
     public:
         int num_rows;
+        float* host_data;
         int num_cols;
         int num_vals;
 
