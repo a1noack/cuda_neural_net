@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --partition=long
+#SBATCH --job-name=Serial_NN
+#SBATCH --output=Serial_NN.out
+#SBATCH --error=Serial_NN.err
+#SBATCH --time=0-00:10:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --account=cis631
+#SBATCH --mem 16000
+
+ ./test_serial1
+ ./test_serial2
