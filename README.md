@@ -17,6 +17,7 @@ Two batch files have been written to run these executables.
 This directory holds our data files and a subdirectory that holds our python scripts for generating testing datasets.
 
 Each of our data files takes the following form:
+
 - the file header holds `n`, the number of samples in the dataset, followed by `m`, the number of dimensions of each sample, i.e. `#n,m`
 - each line holds one sample's values, separated by commas
 - the last value in each line is the number of the class to which the sample belongs
