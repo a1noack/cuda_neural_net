@@ -21,3 +21,9 @@ Each of our data files takes the following form:
 - the file header holds `n`, the number of samples in the dataset, followed by `m`, the number of dimensions of each sample, i.e. `#n,m`
 - each line holds one sample's values, separated by commas
 - the last value in each line is the number of the class to which the sample belongs
+
+### 631_project/Proposal
+This directory holds the files for our initial proposal.
+
+### 631_project/Report
+This directory holds the files for our final report.
