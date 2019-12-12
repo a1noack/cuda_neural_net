@@ -32,13 +32,12 @@ int main() {
     float error = 1.0;
     int j = 0;
 
-    char* file_name = "../data/wholesale_cust_mean.csv";
+    const char* file_name = "../data/wholesale_cust_mean.csv";
 
     Dataset d(file_name, BATCH_SZ);
-    int total_samples = d.n;
     int num_batches = d.n / BATCH_SZ;
     float learn_rate = LEARN_RATE;
-    
+
     t = clock();
     while(j < MAX_EPOCH) {
        if(j % 30 == 0)
@@ -74,7 +73,7 @@ int main() {
            l4->back_prop(NULL, BATCH_SZ);
            l3->back_prop(NULL, BATCH_SZ);
            l2->back_prop(NULL, BATCH_SZ);
-        
+
            l5->update(learn_rate, BATCH_SZ);
            l4->update(learn_rate, BATCH_SZ);
            l3->update(learn_rate, BATCH_SZ);

@@ -28,10 +28,9 @@ int main() {
     float error = 0;
     int j = 0;
 
-    char* file_name = "../data/data_n2048_m1024_mu2.0.csv";
+    const char* file_name = "../data/data_n2048_m1024_mu2.0.csv";
 
     Dataset d(file_name, BATCH_SZ);
-    int total_samples = d.n;
     int num_batches = d.n / BATCH_SZ;
 
     t = clock();

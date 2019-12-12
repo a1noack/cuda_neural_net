@@ -6,7 +6,8 @@
 #include <algorithm>
 #include <string>
 
-Dataset::Dataset(char* fname, int batch_size) {
+//Constructor for the dataset, handles all of the initilaization and reading and loading data
+Dataset::Dataset(const char* fname, int batch_size) {
     load_data(fname);
     this->fname = fname;
     this->batch_size = batch_size;
@@ -20,6 +21,7 @@ Dataset::Dataset(char* fname, int batch_size) {
 position = 0;
 }
 
+//dataset destructor
 Dataset::~Dataset() {
     delete batch_x;
     delete batch_y;
@@ -34,7 +36,8 @@ Dataset::~Dataset() {
     delete y;
 }
 
-void Dataset::load_data(char* fname) {
+//Function loads all the data from the file to the class
+void Dataset::load_data(const char* fname) {
     // load file
     std::ifstream file(fname);
 
@@ -78,17 +81,16 @@ void Dataset::load_data(char* fname) {
             std::stringstream convertor(val);
             if(c < this->m){
                 convertor >> this->x[r][c];
-//                printf("%f ", x[r][c]);
             }
             else{
                 convertor >> label;
                 this->y[r][int(label)] = 1.0;
-//                printf(" label: [%f, %f]\n", y[r][0], y[r][1]);
             }
         }
     }
 }
 
+//Function loads the next batch into the correct access parameters
 void Dataset::load_next_batch() {
     int idx;
     for(int i = 0; i < this->batch_size; i++) {
@@ -101,16 +103,9 @@ void Dataset::load_next_batch() {
         this->position = 0;
 }
 
-void print_intarray2(int *arr, int len) {
-    for(int i = 0; i < len; i++)
-        printf("%d ", arr[i]);
-    printf("\n");
-}
-
+//Important function to shuffle the sample order. Needs to happen every epoch
 void Dataset::shuffle_sample_order() {
-    //print_intarray2(this->sample_order, 100);
     std::random_shuffle(&this->sample_order[0], &this->sample_order[this->n]);
-    //print_intarray2(this->sample_order, 100);
 }
 
 int Dataset::get_batch_size() {

@@ -2,12 +2,12 @@
 #define dataset_hpp
 
 #include <string>
-
+/* The data set class handles loading the trining data from the file and making it accesible. Holds critical conditioning functions */
 class Dataset {
 public:
-    Dataset(char*, int);
+    Dataset(const char*, int);
     ~Dataset();
-    void load_data(char*);
+    void load_data(const char*);
     void load_next_batch();
     void shuffle_sample_order();
     int get_batch_size();

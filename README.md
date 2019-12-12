@@ -6,6 +6,10 @@ __Trevor Bergstrom & Adam Noack__
 This directory contains all of the C++ code for our project. In this directory are three subdirectories. The purpose of each will be explained in the following three subsections.
 ##### 631_project/Code/1_serial_network
 This directory contains the code for our baseline implementation of the neural network that runs entirely on the CPU. The `matrix` class represents matrices in row major format and was constructed for easy passing of data between the host and the device.
+
+Two tests are queued up to run. One runs on a artificial dataset, the other in the below mentioned Wholesale Customers dataset. Test results show the network layout, error, and time it took to run.
+
+To run the tests, use make to build targets. Then run the 'run.batch' script to run on talapas node.
 ##### 631_project/Code/2_cuda_network
 This directory holds the code for our implementation of a neural network written using CUDA. In this implementation, each portion of our training setup (the dataset and each minibatch during training, the weight and bias matrices, and the loss gradients for each weight matrix, etc.) is represented as a `matrix` object. CUDA kernels were then written that operate on these row major matrices. These CUDA kernels and their wrapper functions that accept `matrix` objects can be found in `cuda_kernels.cu`.
 
